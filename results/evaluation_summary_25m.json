@@ -1,0 +1,42 @@
+{
+  "dataset_size": "25m",
+  "best_hyperparameters": {
+    "rank": 50,
+    "regParam": 0.1,
+    "maxIter": 15
+  },
+  "models_comparison": {
+    "popularity_baseline": {
+      "rmse": 1.0097,
+      "mae": 0.772
+    },
+    "als_final": {
+      "rmse": 0.8455,
+      "mae": 0.6333
+    }
+  },
+  "ranking_metrics": [
+    {
+      "k": 5,
+      "als_prec": 0.7343496916063287,
+      "als_recall": 0.28395873403891825,
+      "pop_prec": 0.6961814986419557,
+      "pop_recall": 0.2943312634731304
+    },
+    {
+      "k": 10,
+      "als_prec": 0.7005617489688286,
+      "als_recall": 0.4015025335403714,
+      "pop_prec": 0.6715068713750613,
+      "pop_recall": 0.42177131206091756
+    },
+    {
+      "k": 20,
+      "als_prec": 0.6610512796110097,
+      "als_recall": 0.5302950027473812,
+      "pop_prec": 0.643345170813709,
+      "pop_recall": 0.5710492015458579
+    }
+  ],
+  "total_execution_time_sec": 3843.87
+}

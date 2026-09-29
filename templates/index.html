@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Khám Phá Toàn Bộ Kho Phim — Apache Spark ALS & MovieLens 25M</title>
+
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+    <style>
+        @layer base {
+            html, body { margin: 0; padding: 0; }
+            body { overscroll-behavior: none; }
+        }
+        ::-webkit-scrollbar { display: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+
+    <!-- Tailwind CSS with Custom Material Theme -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#93ccff",
+                        "on-primary": "#003351",
+                        "primary-container": "#3198dc",
+                        "secondary": "#c6c6ca",
+                        "tertiary": "#ffb875",
+                        "surface": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#bfc7d2",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container": "#201f1f",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-highest": "#353534",
+                        "outline": "#89929b",
+                        "outline-variant": "#3f4850",
+                        "background": "#131313"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "display-hero": ["Plus Jakarta Sans"],
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"]
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="bg-surface-container-lowest font-body text-on-surface antialiased min-h-screen">
+
+    <!-- 1. TOP NAVBAR -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+        <div class="h-16 w-full px-4 lg:px-12 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Project Identity -->
+            <a href="/" class="flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[22px]">smart_display</span>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <span class="font-headline tracking-tight text-white font-bold leading-none text-base">AETHER CINEMA</span>
+                    <span class="text-[10px] text-primary uppercase font-semibold tracking-wider mt-0.5">Spark ALS • MovieLens 25M</span>
+                </div>
+            </a>
+
+            <!-- Functional Navigation Tabs -->
+            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
+                <a href="/" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">movie</span>
+                    <span>Khám Phá</span>
+                </a>
+                <a href="/foryou?uid={{ active_uid | default(100) }}" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                    <span>Gợi Ý & Gu Phim</span>
+                </a>
+                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                    <span>Phân Tích Dữ Liệu</span>
+                </a>
+                <a href="/system" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                    <span>Mô Hình & Hệ Thống</span>
+                </a>
+            </nav>
+
+            <!-- Search Bar & User ID Selector -->
+            <div class="flex items-center gap-3 shrink-0">
+                <form action="/" method="GET" class="hidden md:flex items-center relative">
+                    <span class="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">search</span>
+                    <input name="q" value="{{ query }}" class="w-48 lg:w-64 bg-surface-container-low text-on-surface placeholder:text-outline text-xs pl-9 pr-14 py-1.5 rounded border border-outline-variant/40 focus:outline-none focus:border-primary transition-all" placeholder="Tìm theo tên phim (CSDL)..." type="text"/>
+                    <button type="submit" class="absolute right-1 px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary text-xs rounded text-outline font-medium transition-colors">Tìm</button>
+                </form>
+
+                <!-- Active User Dropdown -->
+                <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded border border-outline-variant/30">
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px]">
+                        ID
+                    </div>
+                    <form action="/profile" method="GET" class="flex items-center">
+                        <select name="uid" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold text-on-surface focus:outline-none cursor-pointer" title="Chọn User ID để xem Hồ sơ & Gu phim">
+                            <option value="100" class="bg-surface-container-high" {% if active_uid == 100 %}selected{% endif %}>User #100</option>
+                            <option value="414" class="bg-surface-container-high" {% if active_uid == 414 %}selected{% endif %}>User #414 (Super-rater)</option>
+                            <option value="500" class="bg-surface-container-high" {% if active_uid == 500 %}selected{% endif %}>User #500</option>
+                            <option value="1000" class="bg-surface-container-high" {% if active_uid == 1000 %}selected{% endif %}>User #1000</option>
+                            <option value="12847" class="bg-surface-container-high" {% if active_uid == 12847 %}selected{% endif %}>User #12847</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="w-full pt-16 bg-surface-container-lowest min-h-screen">
+        <div class="w-full px-4 lg:px-12 py-6">
+
+            <!-- 1. PHIM NỔI BẬT (FEATURED HERO SPOTLIGHT) -->
+            <div class="relative rounded-2xl overflow-hidden min-h-[440px] md:min-h-[480px] flex flex-col justify-between p-6 md:p-10 shadow-2xl bg-surface-container-low mb-8 group border border-outline-variant/20">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
+                     style="background-image: url('{{ hero.backdrop_url }}');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/95 via-surface-container-lowest/50 to-transparent"></div>
+                
+                <!-- Header Status -->
+                <div class="relative z-10 flex items-center justify-between w-full">
+                    <div class="flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-primary/30">
+                        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        <span class="text-xs font-semibold text-primary uppercase tracking-wider">Top #1 Phim Nổi Bật MovieLens 25M</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-outline-variant/30">
+                        <span class="material-symbols-outlined text-[16px] text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="text-base text-white font-bold">{{ hero.score }}</span>
+                        <span class="text-xs text-outline">/ 5.0</span>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="relative z-10 max-w-2xl mt-auto pt-8">
+                    <div class="flex flex-wrap items-center gap-2 mb-2 text-xs text-on-surface-variant">
+                        <span class="bg-primary/20 text-primary px-2.5 py-0.5 rounded font-semibold border border-primary/30">MovieID #{{ hero.id }}</span>
+                        <span class="text-outline">•</span>
+                        <span class="text-white font-medium">Năm {{ hero.year }}</span>
+                        <span class="text-outline">•</span>
+                        <span class="flex items-center gap-1 text-white">
+                            <span class="material-symbols-outlined text-[14px] text-primary">groups</span>
+                            {{ hero.pop_txt }}
+                        </span>
+                        <span class="text-outline">•</span>
+                        <span class="text-primary font-medium">{{ hero.genres_vi }}</span>
+                    </div>
+
+                    <h1 class="font-display-hero text-3xl md:text-5xl tracking-tight text-white font-bold leading-tight mb-3 drop-shadow-md">
+                        {{ hero.title }}
+                    </h1>
+
+                    <p class="text-sm text-on-surface-variant line-clamp-2 md:line-clamp-3 max-w-xl mb-5 leading-relaxed">
+                        {{ hero.overview }}
+                    </p>
+
+                    <!-- Buttons: Xem chi tiết CSDL, IMDb gốc, So sánh -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="openMovieDetail({{ hero.id }})" class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary hover:bg-primary-container text-sm font-semibold rounded-lg transition-all shadow-lg active:scale-95 cursor-pointer" type="button">
+                            <span class="material-symbols-outlined text-[18px]">info</span>
+                            <span>Xem Chi Tiết & Phân Phối Rating</span>
+                        </button>
+                        
+                        {% if hero.imdb_url %}
+                            <a href="{{ hero.imdb_url }}" target="_blank" class="flex items-center gap-1.5 px-4 py-2.5 bg-surface-container-high/80 hover:bg-surface-container-highest text-white text-xs font-semibold rounded-lg backdrop-blur-md transition-all border border-outline-variant/30" title="Mở trang chính thức trên IMDb">
+                                <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                                <span>IMDb Gốc</span>
+                            </a>
+                        {% endif %}
+
+                        <button onclick="toggleCompare({{ hero.id }})" class="flex items-center gap-1.5 px-4 py-2.5 bg-surface-container-high/80 hover:bg-surface-container-highest text-on-surface-variant hover:text-white text-xs font-semibold rounded-lg backdrop-blur-md transition-all border border-outline-variant/30 cursor-pointer" title="Thêm vào danh sách so sánh">
+                            <span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+                            <span>+ So Sánh</span>
+                        </button>
+
+                        <a href="/analytics" class="hidden sm:flex items-center gap-1.5 ml-auto text-outline text-xs bg-surface-container-lowest/70 px-3 py-1.5 rounded backdrop-blur-sm border border-outline-variant/20 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[16px] text-primary">analytics</span>
+                            <span>RMSE: 0.8455 (Spark ALS)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. CÁC NHÓM PHIM ĐỂ KHÁM PHÁ (COLLECTIONS NAV) -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
+                <a href="/?collection=all" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'all' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[16px]">explore</span>
+                    <span>Tất Cả Kho Phim</span>
+                </a>
+                <a href="/?collection=popular" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'popular' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[16px] text-orange-400">local_fire_department</span>
+                    <span>🔥 Phổ Biến Nhất (Most Popular)</span>
+                </a>
+                <a href="/?collection=high_rated" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'high_rated' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[16px] text-amber-400">star</span>
+                    <span>⭐ Đánh Giá Cao (Highly Rated)</span>
+                </a>
+                <a href="/?collection=recent" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'recent' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[16px] text-cyan-400">fiber_new</span>
+                    <span>🆕 Phim Mới (2015-2019)</span>
+                </a>
+                <a href="/?collection=classic" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'classic' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[16px] text-amber-500">movie</span>
+                    <span>🎬 Phim Kinh Điển (Classic)</span>
+                </a>
+                <a href="/?collection=hidden_gems" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'hidden_gems' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[16px] text-emerald-400">diamond</span>
+                    <span>💎 Báu Vật Ẩn (Hidden Gems)</span>
+                </a>
+            </div>
+
+            <!-- 3. THANH THỂ LOẠI (GENRE PILLS) -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-6">
+                <span class="text-xs text-outline shrink-0 flex items-center gap-1 mr-1">
+                    <span class="material-symbols-outlined text-[15px]">filter_alt</span> Thể loại:
+                </span>
+                {% for g in genres_list %}
+                    <a href="/?genre={{ g.key }}&collection={{ active_collection }}&sort={{ active_sort }}" class="flex items-center gap-1 px-3 py-1 rounded text-xs font-medium whitespace-nowrap transition-all {% if active_genre == g.key %}bg-primary text-on-primary font-bold shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white border border-outline-variant/15{% endif %}">
+                        <span class="material-symbols-outlined text-[14px]">{{ g.icon }}</span>
+                        <span>{{ g.name }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!-- 4. KHỐI BỘ LỌC NÂNG CAO, TÌM KIẾM & SẮP XẾP -->
+            <form action="/" method="GET" class="bg-surface-container-low rounded-xl p-4 md:p-5 border border-outline-variant/20 mb-6 shadow-lg">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+                    
+                    <!-- Search Input -->
+                    <div class="lg:col-span-2">
+                        <label class="block text-[11px] font-semibold text-outline uppercase tracking-wider mb-1">Tìm Tên Phim (Gần đúng)</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[16px]">search</span>
+                            <input type="text" name="q" value="{{ query }}" placeholder="Nhập tên (Matrix, Star Wars...)" class="w-full bg-surface-container text-white placeholder:text-outline text-xs pl-8 pr-3 py-2 rounded border border-outline-variant/30 focus:outline-none focus:border-primary">
+                        </div>
+                    </div>
+
+                    <!-- Year Range -->
+                    <div>
+                        <label class="block text-[11px] font-semibold text-outline uppercase tracking-wider mb-1">Khoảng Năm</label>
+                        <select name="year_range" class="w-full bg-surface-container text-white text-xs px-2.5 py-2 rounded border border-outline-variant/30 focus:outline-none focus:border-primary cursor-pointer">
+                            <option value="all" {% if active_year_range == 'all' %}selected{% endif %}>Tất cả năm</option>
+                            <option value="before_1980" {% if active_year_range == 'before_1980' %}selected{% endif %}>Trước 1980 (Cổ điển)</option>
+                            <option value="1980_1999" {% if active_year_range == '1980_1999' %}selected{% endif %}>1980 – 1999 (Thập niên vàng)</option>
+                            <option value="2000_2010" {% if active_year_range == '2000_2010' %}selected{% endif %}>2000 – 2010</option>
+                            <option value="after_2010" {% if active_year_range == 'after_2010' %}selected{% endif %}>Sau 2010 (Hiện đại)</option>
+                        </select>
+                    </div>
+
+                    <!-- Min Rating -->
+                    <div>
+                        <label class="block text-[11px] font-semibold text-outline uppercase tracking-wider mb-1">Rating Tối Thiểu</label>
+                        <select name="min_rating" class="w-full bg-surface-container text-white text-xs px-2.5 py-2 rounded border border-outline-variant/30 focus:outline-none focus:border-primary cursor-pointer">
+                            <option value="0" {% if active_min_rating == 0 %}selected{% endif %}>Tất cả điểm</option>
+                            <option value="3.0" {% if active_min_rating == 3.0 %}selected{% endif %}>≥ 3.0 ★ (Khá)</option>
+                            <option value="3.5" {% if active_min_rating == 3.5 %}selected{% endif %}>≥ 3.5 ★ (Tốt)</option>
+                            <option value="4.0" {% if active_min_rating == 4.0 %}selected{% endif %}>≥ 4.0 ★ (Rất hay)</option>
+                            <option value="4.2" {% if active_min_rating == 4.2 %}selected{% endif %}>≥ 4.2 ★ (Kiệt tác)</option>
+                        </select>
+                    </div>
+
+                    <!-- Min Votes -->
+                    <div>
+                        <label class="block text-[11px] font-semibold text-outline uppercase tracking-wider mb-1">Lượt Đánh Giá</label>
+                        <select name="min_votes" class="w-full bg-surface-container text-white text-xs px-2.5 py-2 rounded border border-outline-variant/30 focus:outline-none focus:border-primary cursor-pointer">
+                            <option value="0" {% if active_min_votes == 0 %}selected{% endif %}>Tất cả số vote</option>
+                            <option value="100" {% if active_min_votes == 100 %}selected{% endif %}>≥ 100 votes</option>
+                            <option value="500" {% if active_min_votes == 500 %}selected{% endif %}>≥ 500 votes</option>
+                            <option value="2000" {% if active_min_votes == 2000 %}selected{% endif %}>≥ 2,000 votes</option>
+                            <option value="10000" {% if active_min_votes == 10000 %}selected{% endif %}>≥ 10,000 votes</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort -->
+                    <div>
+                        <label class="block text-[11px] font-semibold text-outline uppercase tracking-wider mb-1">Sắp Xếp Theo</label>
+                        <select name="sort" class="w-full bg-surface-container text-white text-xs px-2.5 py-2 rounded border border-outline-variant/30 focus:outline-none focus:border-primary cursor-pointer">
+                            <option value="votes_desc" {% if active_sort == 'votes_desc' %}selected{% endif %}>Nhiều vote nhất ↓</option>
+                            <option value="rating_desc" {% if active_sort == 'rating_desc' %}selected{% endif %}>Rating cao nhất ↓</option>
+                            <option value="year_desc" {% if active_sort == 'year_desc' %}selected{% endif %}>Mới nhất ↓</option>
+                            <option value="year_asc" {% if active_sort == 'year_asc' %}selected{% endif %}>Cũ nhất ↑</option>
+                            <option value="title_asc" {% if active_sort == 'title_asc' %}selected{% endif %}>Tên phim (A → Z)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Hidden preserving fields -->
+                <input type="hidden" name="genre" value="{{ active_genre }}">
+                <input type="hidden" name="collection" value="{{ active_collection }}">
+                <input type="hidden" name="tag" value="{{ active_tag }}">
+
+                <!-- Submit & Clear Row -->
+                <div class="flex items-center justify-between mt-3 pt-3 border-t border-outline-variant/15 text-xs">
+                    <div class="text-outline">
+                        Hiển thị kết quả: <strong class="text-white">{{ total_count | default(0) }}</strong> phim phù hợp trong CSDL MovieLens 25M
+                        {% if query %}<span class="text-primary font-medium">(từ khóa: "{{ query }}")</span>{% endif %}
+                        {% if active_tag %}<span class="text-tertiary font-medium">(tag: #{{ active_tag }})</span>{% endif %}
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="/" class="px-3 py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-white transition-colors">Xóa bộ lọc</a>
+                        <button type="submit" class="px-4 py-1.5 rounded bg-primary text-on-primary font-bold hover:bg-primary-container transition-colors shadow">Áp Dụng Lọc</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- 5. TỪ KHÓA / TAGS NỔI BẬT TỪ TAGS.CSV -->
+            <div class="mb-6 flex flex-wrap items-center gap-1.5">
+                <span class="text-xs text-outline mr-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[15px]">label</span> Tags phổ biến:
+                </span>
+                {% for t in popular_tags %}
+                    <a href="/?tag={{ t }}&collection={{ active_collection }}&genre={{ active_genre }}" class="px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-all {% if active_tag == t %}bg-tertiary text-black font-bold shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white border border-outline-variant/20{% endif %}">
+                        #{{ t }}
+                    </a>
+                {% endfor %}
+                {% if active_tag %}
+                    <a href="/?genre={{ active_genre }}&collection={{ active_collection }}" class="text-[11px] text-red-400 hover:underline ml-2">✕ Bỏ chọn tag</a>
+                {% endif %}
+            </div>
+
+            <!-- 6. DANH SÁCH PHIM (MOVIE GRID) -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+                {% for m in movies %}
+                    <div class="group flex flex-col justify-between bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/15 hover:border-primary/40 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <div>
+                            <!-- Poster -->
+                            <div onclick="openMovieDetail({{ m.id }})" class="relative aspect-[2/3] w-full rounded-lg overflow-hidden bg-surface-container-high mb-2 cursor-pointer shadow-md flex items-center justify-center">
+                                {% if m.poster_url %}
+                                    <img src="{{ m.poster_url }}" alt="{{ m.title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.classList.add('hidden'); if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');">
+                                    <div class="hidden absolute inset-0 bg-gradient-to-br from-surface-container-high to-surface-container flex flex-col items-center justify-center p-3 text-center">
+                                        <span class="material-symbols-outlined text-outline text-3xl mb-1">movie</span>
+                                        <span class="text-[11px] font-semibold text-white line-clamp-2">{{ m.title }}</span>
+                                        <span class="text-[10px] text-outline mt-0.5">{{ m.year }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="w-full h-full bg-gradient-to-br from-surface-container-high to-surface-container flex flex-col items-center justify-center p-3 text-center">
+                                        <span class="material-symbols-outlined text-outline text-3xl mb-1">movie</span>
+                                        <span class="text-[11px] font-semibold text-white line-clamp-2">{{ m.title }}</span>
+                                        <span class="text-[10px] text-outline mt-0.5">{{ m.year }}</span>
+                                    </div>
+                                {% endif %}
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                                    <span class="text-[11px] font-semibold text-white flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[13px] text-primary">info</span> Xem Chi Tiết
+                                    </span>
+                                </div>
+                                <div class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-surface-container-lowest/80 text-[10px] font-bold text-white border border-outline-variant/30">
+                                    {{ m.year }}
+                                </div>
+                                <div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-surface-container-lowest/90 text-[10px] font-bold text-tertiary flex items-center gap-0.5 border border-tertiary/30">
+                                    <span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    {{ m.score }}
+                                </div>
+                            </div>
+
+                            <!-- Meta -->
+                            <h3 onclick="openMovieDetail({{ m.id }})" class="font-headline text-xs font-bold text-white truncate cursor-pointer hover:text-primary transition-colors" title="{{ m.title }}">
+                                {{ m.title }}
+                            </h3>
+                            <div class="flex items-center gap-1.5 text-[10px] text-outline mt-0.5 mb-1 truncate">
+                                <span>{{ m.pop_txt }}</span>
+                            </div>
+                            <p class="text-[10px] text-on-surface-variant truncate">{{ m.genres_vi }}</p>
+                        </div>
+
+                        <!-- Card Action Buttons -->
+                        <div class="flex items-center gap-1.5 mt-2.5 pt-2 border-t border-outline-variant/15">
+                            <button onclick="openMovieDetail({{ m.id }})" class="flex-1 py-1 rounded bg-surface-container hover:bg-surface-container-high text-[11px] font-medium text-white transition-colors flex items-center justify-center gap-1 cursor-pointer" title="Xem chi tiết CSDL & Phân phối ratings">
+                                <span class="material-symbols-outlined text-[13px]">visibility</span> Chi tiết
+                            </button>
+                            <button onclick="toggleCompare({{ m.id }})" class="px-2 py-1 rounded bg-surface-container hover:bg-primary hover:text-on-primary text-[11px] font-semibold text-outline transition-colors flex items-center justify-center cursor-pointer" title="Thêm vào bảng so sánh">
+                                <span class="material-symbols-outlined text-[14px]">compare_arrows</span>
+                            </button>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-span-full py-16 text-center text-outline">
+                        <span class="material-symbols-outlined text-4xl mb-2 text-outline/60">search_off</span>
+                        <div class="text-base font-semibold text-white">Không tìm thấy phim phù hợp với bộ lọc</div>
+                        <p class="text-xs text-outline mt-1">Hãy thử nới lỏng rating tối thiểu hoặc xóa bớt từ khóa tìm kiếm.</p>
+                        <a href="/" class="inline-block mt-4 px-4 py-2 rounded bg-primary text-on-primary font-bold text-xs">Quay về mặc định</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- 7. PHÂN TRANG (PAGINATION) -->
+            {% if total_pages > 1 %}
+                <div class="flex items-center justify-center gap-2 mb-12 text-xs">
+                    {% if current_page > 1 %}
+                        <a href="/?page={{ current_page - 1 }}&q={{ query }}&genre={{ active_genre }}&collection={{ active_collection }}&year_range={{ active_year_range }}&min_rating={{ active_min_rating }}&min_votes={{ active_min_votes }}&sort={{ active_sort }}&tag={{ active_tag }}" class="px-3 py-2 rounded bg-surface-container hover:bg-surface-container-high text-white transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">arrow_back</span> Trước
+                        </a>
+                    {% endif %}
+                    
+                    <span class="px-4 py-2 rounded bg-surface-container-high text-primary font-bold border border-primary/30">
+                        Trang {{ current_page }} / {{ total_pages }}
+                    </span>
+
+                    {% if current_page < total_pages %}
+                        <a href="/?page={{ current_page + 1 }}&q={{ query }}&genre={{ active_genre }}&collection={{ active_collection }}&year_range={{ active_year_range }}&min_rating={{ active_min_rating }}&min_votes={{ active_min_votes }}&sort={{ active_sort }}&tag={{ active_tag }}" class="px-3 py-2 rounded bg-surface-container hover:bg-surface-container-high text-white transition-colors flex items-center gap-1">
+                            Sau <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <!-- 8. MODAL CHI TIẾT BỘ PHIM TOÀN DIỆN (MOVIE DETAIL MODAL) -->
+    <div id="movie-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-surface-container rounded-2xl max-w-2xl w-full p-6 border border-outline-variant/40 shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-outline hover:text-white p-1 rounded-full cursor-pointer z-10" aria-label="Đóng">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <!-- Movie Top Info Header -->
+            <div class="flex flex-col sm:flex-row gap-5 mb-5">
+                <img id="modal-poster" src="" class="w-32 h-48 object-cover rounded-xl shadow-lg shrink-0 border border-outline-variant/20 bg-surface-container" alt="Poster" onerror="this.onerror=null; this.src='https://placehold.co/300x450/1e293b/ffffff?text=Poster';">
+                <div class="flex flex-col justify-center min-w-0">
+                    <span id="modal-id" class="text-xs text-primary font-bold"></span>
+                    <h2 id="modal-title" class="font-headline text-2xl font-bold text-white mb-1"></h2>
+                    <p id="modal-year" class="text-xs text-outline mb-2"></p>
+                    <div class="flex items-center gap-3 text-sm text-tertiary font-bold mb-2">
+                        <span class="flex items-center gap-0.5">
+                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span id="modal-score"></span>
+                        </span>
+                        <span class="text-outline font-normal text-xs">(<span id="modal-votes"></span>)</span>
+                    </div>
+                    <p id="modal-overview" class="text-xs text-on-surface-variant leading-relaxed line-clamp-3"></p>
+                </div>
+            </div>
+
+            <!-- CSDL IDs Grid -->
+            <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/20 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs mb-5">
+                <div><span class="text-outline">MovieLens ID:</span> <strong id="modal-grid-movid" class="text-white block"></strong></div>
+                <div><span class="text-outline">Mã IMDb:</span> <strong id="modal-grid-imdb" class="text-primary block"></strong></div>
+                <div><span class="text-outline">Mã TMDb:</span> <strong id="modal-grid-tmdb" class="text-white block"></strong></div>
+                <div><span class="text-outline">Tiền xử lý:</span> <strong class="text-emerald-400 block">Đã làm sạch</strong></div>
+            </div>
+
+            <!-- Rating Distribution 0.5 - 5.0 Histogram -->
+            <div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/20 mb-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-tertiary">bar_chart</span>
+                        Phân Phối Rating (0.5 – 5.0 Sao)
+                    </span>
+                    <span class="text-[11px] text-outline">Thống kê từ MovieLens 25M</span>
+                </div>
+                <div id="modal-dist-bars" class="space-y-1 text-xs">
+                    <!-- Dynamically populated by JS -->
+                </div>
+            </div>
+
+            <!-- Tags from tags.csv -->
+            <div class="mb-5">
+                <span class="text-xs font-bold text-white uppercase tracking-wider block mb-2">Tags / Từ Khóa Người Dùng Gán:</span>
+                <div id="modal-tags" class="flex flex-wrap gap-1.5">
+                    <!-- Dynamically populated by JS -->
+                </div>
+            </div>
+
+            <!-- Similar Movies -->
+            <div class="mb-5">
+                <span class="text-xs font-bold text-white uppercase tracking-wider block mb-2 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-primary">hub</span>
+                    Phim Tương Tự (Similar Movies):
+                </span>
+                <div id="modal-similar" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <!-- Dynamically populated by JS -->
+                </div>
+            </div>
+
+            <!-- Modal Footer Actions -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-outline-variant/20">
+                <div class="flex items-center gap-2">
+                    <a id="modal-imdb" href="#" target="_blank" class="px-4 py-2 bg-primary text-on-primary text-xs font-semibold rounded-lg hover:bg-primary-container flex items-center gap-1.5 transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                        <span>Mở Trang IMDb</span>
+                    </a>
+                    <a id="modal-api" href="#" target="_blank" class="px-3.5 py-2 bg-surface-container-high text-on-surface-variant hover:text-white text-xs font-medium rounded-lg border border-outline-variant/30 flex items-center gap-1 transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">data_object</span>
+                        <span>JSON CSDL</span>
+                    </a>
+                </div>
+                <button onclick="closeModal()" class="px-4 py-2 bg-surface-container-high text-on-surface text-xs font-medium rounded-lg hover:bg-surface-container-highest cursor-pointer">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. THANH SO SÁNH NỔI DƯỚI ĐÁY MÀN HÌNH (COMPARISON DOCK) -->
+    <div id="compare-dock" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-surface-container-high/95 backdrop-blur-xl border border-primary/40 rounded-2xl px-5 py-3 shadow-2xl flex items-center gap-4 transition-all duration-300 transform translate-y-32 opacity-0 pointer-events-none">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">compare_arrows</span>
+            <span class="text-xs font-bold text-white">So Sánh Phim (<span id="compare-count">0</span>/3):</span>
+        </div>
+        <div id="compare-chips" class="flex items-center gap-2">
+            <!-- Dynamically populated chips -->
+        </div>
+        <div class="flex items-center gap-2 border-l border-outline-variant/30 pl-3">
+            <button onclick="launchCompareModal()" class="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition-colors shadow cursor-pointer">
+                So Sánh Ngay
+            </button>
+            <button onclick="clearCompare()" class="p-1.5 rounded-lg text-outline hover:text-white hover:bg-surface-container transition-colors cursor-pointer" title="Xóa hết">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 10. MODAL SO SÁNH PHIM ĐỐI ĐẦU (COMPARISON MODAL) -->
+    <div id="compare-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-surface-container rounded-2xl max-w-4xl w-full p-6 border border-outline-variant/40 shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-outline-variant/20">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-[22px]">compare_arrows</span>
+                    <h2 class="font-headline text-lg font-bold text-white">Bảng So Sánh Đối Đầu Trực Diện</h2>
+                </div>
+                <button onclick="closeCompareModal()" class="text-outline hover:text-white p-1 rounded-full cursor-pointer">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div id="compare-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Dynamically populated by launchCompareModal() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="w-full bg-surface-container-lowest border-t border-outline-variant/20 py-8">
+        <div class="w-full px-4 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant text-xs">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2">
+                    <span class="font-headline text-white font-bold text-sm">AETHER CINEMA</span>
+                    <span class="bg-surface-container-high px-2 py-0.5 rounded text-primary text-[10px] font-semibold border border-outline-variant/30">HỆ THỐNG GỢI Ý PHÂN TÁN</span>
+                </div>
+                <p class="text-outline">Đồ án Big Data: Xử lý 25,000,000 đánh giá bằng Apache Spark ALS trên cụm Hadoop HDFS.</p>
+            </div>
+            <div class="text-outline text-center md:text-right">Báo cáo nghiệm thu & thực nghiệm thuật toán Spark MLlib ALS.</div>
+        </div>
+    </footer>
+
+    <!-- INTERACTION SCRIPT -->
+    <script>
+        // Comparison State Store
+        let compareList = [];
+
+        async function toggleCompare(id) {
+            const idx = compareList.findIndex(x => x.id === id);
+            if (idx >= 0) {
+                compareList.splice(idx, 1);
+                renderCompareDock();
+                return;
+            }
+            if (compareList.length >= 3) {
+                alert("Chỉ có thể chọn tối đa 3 phim để so sánh cùng lúc!");
+                return;
+            }
+            try {
+                const res = await fetch('/api/movie/' + id);
+                const m = await res.json();
+                compareList.push({ id: m.id, title: m.title, score: m.score, year: m.year, poster: m.poster_url });
+                renderCompareDock();
+            } catch (e) {
+                console.error("Lỗi khi thêm phim vào so sánh:", e);
+            }
+        }
+
+        function clearCompare() {
+            compareList = [];
+            renderCompareDock();
+        }
+
+        function renderCompareDock() {
+            const dock = document.getElementById('compare-dock');
+            const chips = document.getElementById('compare-chips');
+            const count = document.getElementById('compare-count');
+            
+            count.innerText = compareList.length;
+            chips.innerHTML = '';
+
+            if (compareList.length > 0) {
+                dock.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+                dock.classList.add('translate-y-0', 'opacity-100');
+
+                compareList.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center gap-1.5 bg-surface-container px-2 py-1 rounded text-xs text-white border border-outline-variant/30';
+                    el.innerHTML = `
+                        <span class="truncate max-w-[100px] font-medium">${item.title}</span>
+                        <span class="text-tertiary font-bold text-[10px]">★ ${item.score}</span>
+                        <button onclick="toggleCompare(${item.id})" class="text-outline hover:text-red-400 ml-1">✕</button>
+                    `;
+                    chips.appendChild(el);
+                });
+            } else {
+                dock.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+                dock.classList.remove('translate-y-0', 'opacity-100');
+            }
+        }
+
+        async function launchCompareModal() {
+            if (compareList.length < 2) {
+                alert("Hãy chọn ít nhất 2 phim để xem bảng so sánh!");
+                return;
+            }
+            const ids = compareList.map(x => x.id).join(',');
+            const res = await fetch('/api/compare?ids=' + ids);
+            const data = await res.json();
+
+            const grid = document.getElementById('compare-grid');
+            grid.innerHTML = '';
+
+            data.forEach(m => {
+                const col = document.createElement('div');
+                col.className = 'bg-surface-container-low rounded-xl p-4 border border-outline-variant/30 flex flex-col justify-between';
+                col.innerHTML = `
+                    <div>
+                        <div class="aspect-[2/3] w-full rounded-lg overflow-hidden bg-surface-container mb-3 shadow">
+                            <img src="${m.poster_url || 'https://placehold.co/300x450/1e293b/ffffff?text=' + encodeURIComponent(m.title)}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/300x450/1e293b/ffffff?text=' + encodeURIComponent('${m.title.replace(/'/g, '')}');">
+                        </div>
+                        <h3 class="font-headline font-bold text-white text-base truncate mb-1" title="${m.title}">${m.title}</h3>
+                        <div class="text-xs text-outline mb-3">Năm: <strong class="text-white">${m.year}</strong></div>
+
+                        <div class="space-y-2 text-xs border-t border-outline-variant/20 pt-3">
+                            <div class="flex justify-between py-1 bg-surface-container px-2 rounded">
+                                <span class="text-outline">Điểm Rating:</span>
+                                <strong class="text-tertiary font-bold">★ ${m.score} / 5.0</strong>
+                            </div>
+                            <div class="flex justify-between py-1 bg-surface-container px-2 rounded">
+                                <span class="text-outline">Tổng Lượt Vote:</span>
+                                <strong class="text-primary font-bold">${m.count_raw}</strong>
+                            </div>
+                            <div class="py-1">
+                                <span class="text-outline block mb-1">Thể loại:</span>
+                                <span class="text-white font-medium">${m.genres_vi}</span>
+                            </div>
+                            <div class="py-1">
+                                <span class="text-outline block mb-1">Mã MovieLens:</span>
+                                <span class="text-white font-mono">#${m.id}</span>
+                            </div>
+                            <div class="py-1">
+                                <span class="text-outline block mb-1">Tags nổi bật:</span>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    ${(m.tags || []).slice(0, 4).map(t => `<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[10px] text-on-surface-variant">#${t}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-outline-variant/20 flex gap-2">
+                        <a href="${m.imdb_url || '#'}" target="_blank" class="flex-1 py-1.5 rounded bg-primary text-on-primary text-center font-bold text-xs hover:bg-primary-container">IMDb</a>
+                        <button onclick="openMovieDetail(${m.id})" class="flex-1 py-1.5 rounded bg-surface-container text-white text-center font-medium text-xs hover:bg-surface-container-high">Chi Tiết</button>
+                    </div>
+                `;
+                grid.appendChild(col);
+            });
+
+            document.getElementById('compare-modal').classList.remove('hidden');
+            document.getElementById('compare-modal').classList.add('flex');
+        }
+
+        function closeCompareModal() {
+            document.getElementById('compare-modal').classList.add('hidden');
+            document.getElementById('compare-modal').classList.remove('flex');
+        }
+
+        // Movie Detail Modal Functions
+        async function openMovieDetail(id) {
+            const res = await fetch('/api/movie/' + id);
+            const m = await res.json();
+
+            document.getElementById('modal-id').innerText = 'MovieLens ID: #' + m.id;
+            document.getElementById('modal-grid-movid').innerText = '#' + m.id;
+            document.getElementById('modal-title').innerText = m.title;
+            document.getElementById('modal-year').innerText = 'Năm phát hành: ' + m.year + ' • ' + m.genres_vi;
+            document.getElementById('modal-score').innerText = m.score + ' / 5.0';
+            document.getElementById('modal-votes').innerText = m.pop_txt;
+            document.getElementById('modal-poster').src = m.poster_url || ('https://placehold.co/300x450/1e293b/ffffff?text=' + encodeURIComponent(m.title));
+            document.getElementById('modal-overview').innerText = m.overview;
+            document.getElementById('modal-grid-imdb').innerText = m.imdb_code || 'N/A';
+            document.getElementById('modal-grid-tmdb').innerText = m.tmdb_code || 'N/A';
+            document.getElementById('modal-api').href = '/api/movie/' + m.id;
+
+            const imdbBtn = document.getElementById('modal-imdb');
+            if (m.imdb_url) {
+                imdbBtn.href = m.imdb_url;
+                imdbBtn.classList.remove('hidden');
+            } else {
+                imdbBtn.classList.add('hidden');
+            }
+
+            // Rating Distribution Bars
+            const distContainer = document.getElementById('modal-dist-bars');
+            distContainer.innerHTML = '';
+            (m.distribution || []).slice().reverse().forEach(d => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2';
+                row.innerHTML = `
+                    <span class="w-8 font-medium text-right text-outline text-[11px]">${d.star} ★</span>
+                    <div class="flex-1 bg-surface-container-highest rounded-full h-2 overflow-hidden">
+                        <div class="bg-tertiary h-full rounded-full transition-all duration-500" style="width: ${d.pct}%"></div>
+                    </div>
+                    <span class="w-14 text-right text-[10px] text-outline">${d.pct}% (${d.count.toLocaleString()})</span>
+                `;
+                distContainer.appendChild(row);
+            });
+
+            // Tags
+            const tagContainer = document.getElementById('modal-tags');
+            tagContainer.innerHTML = '';
+            (m.tags || []).forEach(t => {
+                const chip = document.createElement('a');
+                chip.href = '/?tag=' + encodeURIComponent(t);
+                chip.className = 'bg-surface-container-high hover:bg-tertiary hover:text-black transition-colors px-2.5 py-1 rounded text-xs text-on-surface-variant border border-outline-variant/30 font-medium';
+                chip.innerText = '#' + t;
+                tagContainer.appendChild(chip);
+            });
+
+            // Similar Movies
+            const simContainer = document.getElementById('modal-similar');
+            simContainer.innerHTML = '';
+            (m.similar_movies || []).forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'bg-surface-container rounded-lg p-2 cursor-pointer hover:bg-surface-container-high transition-colors border border-outline-variant/15 flex flex-col justify-between';
+                item.onclick = () => openMovieDetail(s.id);
+                item.innerHTML = `
+                    <div class="aspect-[2/3] w-full rounded overflow-hidden bg-surface-container-highest mb-1.5 shadow">
+                        <img src="${s.poster_url || 'https://placehold.co/200x300/1e293b/ffffff?text=' + encodeURIComponent(s.title)}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/200x300/1e293b/ffffff?text=' + encodeURIComponent('${s.title.replace(/'/g, '')}');">
+                    </div>
+                    <span class="font-headline text-[11px] font-bold text-white truncate block" title="${s.title}">${s.title}</span>
+                    <div class="flex items-center justify-between text-[10px] text-outline mt-0.5">
+                        <span>${s.year}</span>
+                        <span class="text-tertiary font-bold">★ ${s.score}</span>
+                    </div>
+                `;
+                simContainer.appendChild(item);
+            });
+
+            const modal = document.getElementById('movie-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('movie-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+</body>
+</html>

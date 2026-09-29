@@ -1,0 +1,10 @@
+{
+  "dataset_size": "100k",
+  "num_ratings": 100000,
+  "train_time_sec": 11.67,
+  "rmse": 0.9972,
+  "mae": 0.7945,
+  "rank": 50,
+  "reg_param": 0.1,
+  "max_iter": 15
+}

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gợi Ý Cá Nhân Hóa & Gu Phim — User #{{ uid }} • Spark ALS</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#93ccff",
+                        "on-primary": "#003351",
+                        "primary-container": "#004a73",
+                        "surface": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#bfc7d2",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container": "#201f1f",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-highest": "#353534",
+                        "outline": "#89929b",
+                        "outline-variant": "#3f4850",
+                        "tertiary": "#ffb875"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+
+<body class="bg-surface-container-lowest font-body text-on-surface antialiased min-h-screen">
+
+    <!-- 1. TOP NAVBAR (UNIFIED 4-TAB NAVIGATION ACROSS ALL PAGES) -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+        <div class="h-16 w-full px-4 lg:px-12 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Project Identity -->
+            <a href="/" class="flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[22px]">smart_display</span>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <span class="font-headline tracking-tight text-white font-bold leading-none text-base">AETHER CINEMA</span>
+                    <span class="text-[10px] text-primary uppercase font-semibold tracking-wider mt-0.5">Spark ALS • MovieLens 25M</span>
+                </div>
+            </a>
+
+            <!-- Functional Navigation Tabs (4 Core Pillars) -->
+            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
+                <a href="/" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">movie</span>
+                    <span>Khám Phá</span>
+                </a>
+                <a href="/foryou?uid={{ uid }}" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                    <span>Gợi Ý & Gu Phim</span>
+                </a>
+                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                    <span>Phân Tích Dữ Liệu</span>
+                </a>
+                <a href="/system" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                    <span>Mô Hình & Hệ Thống</span>
+                </a>
+            </nav>
+
+            <!-- Search Bar & User ID Selector -->
+            <div class="flex items-center gap-3 shrink-0">
+                <form action="/" method="GET" class="hidden md:flex items-center relative">
+                    <span class="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">search</span>
+                    <input name="q" class="w-48 lg:w-60 bg-surface-container-low text-on-surface placeholder:text-outline text-xs pl-9 pr-14 py-2 rounded border border-outline-variant/40 focus:outline-none focus:border-primary transition-all" placeholder="Tìm theo tên phim (CSDL)..." type="text"/>
+                    <button type="submit" class="absolute right-1 px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary text-xs rounded text-outline font-medium transition-colors">Tìm</button>
+                </form>
+
+                <!-- Active User Dropdown Switcher -->
+                <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded border border-outline-variant/30">
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px]">
+                        ID
+                    </div>
+                    <form action="/foryou" method="GET" class="flex items-center">
+                        <select name="uid" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold text-on-surface focus:outline-none cursor-pointer" title="Chọn User ID để xem Gợi ý & Gu phim">
+                            <option value="100" class="bg-surface-container-high" {% if uid == 100 %}selected{% endif %}>User #100 (Hài hước & Viễn tưởng)</option>
+                            <option value="414" class="bg-surface-container-high" {% if uid == 414 %}selected{% endif %}>User #414 (Super-rater • 202 phim)</option>
+                            <option value="500" class="bg-surface-container-high" {% if uid == 500 %}selected{% endif %}>User #500 (Tuyển chọn khắt khe)</option>
+                            <option value="1000" class="bg-surface-container-high" {% if uid == 1000 %}selected{% endif %}>User #1000 (Đa dạng thể loại)</option>
+                            <option value="12847" class="bg-surface-container-high" {% if uid == 12847 %}selected{% endif %}>User #12847 (Bom tấn & Cảm xúc)</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. SUB-NAVIGATION FOR PAGE SECTIONS -->
+    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2 overflow-x-auto no-scrollbar">
+        <div class="flex items-center gap-2 text-xs font-semibold whitespace-nowrap min-w-max">
+            <span class="text-outline flex items-center gap-1 mr-1">
+                <span class="material-symbols-outlined text-[16px] text-primary">navigation</span> Mục nhanh:
+            </span>
+            <a href="#user-header" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Hồ Sơ Người Dùng</a>
+            <a href="#als-recommendations" class="px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-on-primary transition-all">2. Top 10 Gợi Ý ALS</a>
+            <a href="#why-recommended" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Vì Sao Đề Xuất & So Sánh</a>
+            <a href="#taste-profile" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Gu Thể Loại & Phân Phối Điểm</a>
+            <a href="#rating-history" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Phim Đã Xem Trong Quá Khứ</a>
+        </div>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="w-full pt-32 pb-24 px-4 lg:px-12 max-w-[1550px] mx-auto space-y-10">
+
+        <!-- SECTION 1: USER PROFILE HEADER & QUICK KPI SNAPSHOT -->
+        <section id="user-header" class="scroll-mt-36">
+            <div class="relative rounded-2xl overflow-hidden p-6 md:p-8 bg-surface-container-low border border-outline-variant/30 shadow-2xl mb-5">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                    <div class="flex items-start sm:items-center gap-4">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-primary/30 to-surface-container-highest border border-primary/40 flex items-center justify-center text-primary shadow-xl shrink-0">
+                            <span class="material-symbols-outlined text-3xl sm:text-4xl">account_circle</span>
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <h1 class="text-2xl sm:text-3xl font-headline font-bold text-white">User #{{ user.uid }}</h1>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/20 text-primary border border-primary/40">
+                                    {{ user.persona }}
+                                </span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3 text-xs text-outline font-medium">
+                                <span class="text-white font-semibold flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[15px] text-primary">reviews</span>
+                                    {{ user.total_ratings }} phim đã xem & chấm điểm
+                                </span>
+                                <span>•</span>
+                                <span class="text-tertiary font-bold flex items-center gap-0.5">
+                                    <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    {{ user.avg_rating }} / 5.0 sao trung bình
+                                </span>
+                                <span>•</span>
+                                <span>Giai đoạn hoạt động: {{ user.first_year }} – {{ user.last_year }}</span>
+                            </div>
+                            <p class="text-xs text-on-surface-variant mt-2 max-w-3xl leading-relaxed">
+                                {{ user.summary_text }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Fast Switcher Buttons -->
+                    <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0">
+                        <span class="text-[11px] text-outline uppercase font-semibold">Đổi hồ sơ mẫu khác:</span>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <a href="/foryou?uid=100" class="px-2.5 py-1 rounded text-xs font-bold {% if uid == 100 %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-outline hover:text-white border border-outline-variant/30{% endif %}">#100</a>
+                            <a href="/foryou?uid=414" class="px-2.5 py-1 rounded text-xs font-bold {% if uid == 414 %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-outline hover:text-white border border-outline-variant/30{% endif %}">#414</a>
+                            <a href="/foryou?uid=500" class="px-2.5 py-1 rounded text-xs font-bold {% if uid == 500 %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-outline hover:text-white border border-outline-variant/30{% endif %}">#500</a>
+                            <a href="/foryou?uid=1000" class="px-2.5 py-1 rounded text-xs font-bold {% if uid == 1000 %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-outline hover:text-white border border-outline-variant/30{% endif %}">#1000</a>
+                            <a href="/foryou?uid=12847" class="px-2.5 py-1 rounded text-xs font-bold {% if uid == 12847 %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-outline hover:text-white border border-outline-variant/30{% endif %}">#12847</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6 KPI Snapshot Pills -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+                    <span class="text-[11px] text-outline uppercase font-semibold block mb-1">Số Lượng Đánh Giá</span>
+                    <div class="text-2xl font-headline font-bold text-white">{{ user.total_ratings }}</div>
+                    <span class="text-[10px] text-emerald-400 mt-1 block">Trong CSDL MovieLens 25M</span>
+                </div>
+
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+                    <span class="text-[11px] text-outline uppercase font-semibold block mb-1">Điểm Trung Bình</span>
+                    <div class="text-2xl font-headline font-bold text-tertiary">★ {{ user.avg_rating }}</div>
+                    <span class="text-[10px] text-outline mt-1 block">So với cộng đồng (3.53★)</span>
+                </div>
+
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+                    <span class="text-[11px] text-outline uppercase font-semibold block mb-1">Thể Loại Số 1</span>
+                    <div class="text-xl font-headline font-bold text-primary truncate" title="{{ user.favorite_genre }}">{{ user.favorite_genre }}</div>
+                    <span class="text-[10px] text-outline mt-1 block">Chiếm tỷ trọng cao nhất</span>
+                </div>
+
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+                    <span class="text-[11px] text-outline uppercase font-semibold block mb-1">Năm Xem Nhiều Nhất</span>
+                    <div class="text-2xl font-headline font-bold text-white">{{ user.most_active_year }}</div>
+                    <span class="text-[10px] text-outline mt-1 block">{{ user.most_active_count }} lượt chấm điểm</span>
+                </div>
+
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+                    <span class="text-[11px] text-outline uppercase font-semibold block mb-1">Phong Cách Chấm</span>
+                    <div class="text-sm font-headline font-bold text-white truncate" title="{{ user.rating_style }}">{{ user.rating_style }}</div>
+                    <span class="text-[10px] text-outline mt-1 block">Khẩu vị cá nhân</span>
+                </div>
+
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-sm">
+                    <span class="text-[11px] text-outline uppercase font-semibold block mb-1">Dấu Ấn Thời Gian</span>
+                    <div class="text-xl font-headline font-bold text-white">{{ user.first_year }}–{{ user.last_year }}</div>
+                    <span class="text-[10px] text-outline mt-1 block">{{ user.last_year - user.first_year + 1 }} năm đồng hành</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TOP 10 PERSONALIZED ALS RECOMMENDATIONS -->
+        <section id="als-recommendations" class="scroll-mt-36">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                    <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px]">psychology</span> Mục 2 • Động Cơ Lọc Cộng Tác Spark ALS (Rank = 50, λ = 0.1)
+                    </span>
+                    <h2 class="text-2xl font-headline font-bold text-white mt-1">Top 10 Phim Gợi Ý Cá Nhân Hóa Dành Riêng Cho User #{{ uid }}</h2>
+                    <p class="text-xs text-outline mt-0.5">Tự động khử 100% các phim mà User #{{ uid }} đã xem trong quá khứ. Điểm số là giá trị dự đoán từ ma trận tiềm ẩn.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-800/40 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Độ chính xác Top-10: 70.1%
+                    </span>
+                </div>
+            </div>
+
+            <!-- Movie Cards Grid (Top 10) -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {% for m in rec_movies %}
+                <div onclick="openModal('{{ m.id }}', '{{ m.title | escape }}', '{{ m.year }}', '{{ m.genres_vi | escape }}', '{{ m.predicted_score }}', '{{ m.score }}', '{{ m.count_raw }}', '{{ m.imdb_url }}', '{{ m.poster_url }}', '{{ m.imdb_code }}', '{{ m.tmdb_code }}')" class="group cursor-pointer">
+                    <div class="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-surface-container shadow-md group-hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-1.5 border border-outline-variant/15 flex items-center justify-center">
+                        {% if m.poster_url %}
+                            <img src="{{ m.poster_url }}" alt="{{ m.title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.classList.add('hidden'); if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');">
+                            <div class="hidden absolute inset-0 bg-gradient-to-br from-surface-container-high to-surface-container flex flex-col items-center justify-center p-3 text-center">
+                                <span class="material-symbols-outlined text-outline text-3xl mb-1">movie</span>
+                                <span class="text-xs font-semibold text-white line-clamp-2">{{ m.title }}</span>
+                                <span class="text-[10px] text-outline mt-0.5">{{ m.year }}</span>
+                            </div>
+                        {% else %}
+                            <div class="w-full h-full bg-gradient-to-br from-surface-container-high to-surface-container flex flex-col items-center justify-center p-3 text-center">
+                                <span class="material-symbols-outlined text-outline text-3xl mb-1">movie</span>
+                                <span class="text-xs font-semibold text-white line-clamp-2">{{ m.title }}</span>
+                                <span class="text-[10px] text-outline mt-0.5">{{ m.year }}</span>
+                            </div>
+                        {% endif %}
+
+                        <!-- Ranking Badge -->
+                        <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-lg bg-primary text-on-primary text-[11px] font-bold shadow-lg">
+                            #{{ loop.index }}
+                        </div>
+
+                        <!-- Predicted Score Badge -->
+                        <div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-lg bg-surface-container-lowest/85 backdrop-blur-md text-[11px] text-emerald-400 font-bold border border-emerald-500/30 shadow flex items-center gap-0.5">
+                            <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span>{{ m.predicted_score }}</span>
+                        </div>
+
+                        <!-- Hover Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                            <span class="text-xs font-bold text-white line-clamp-2">{{ m.title }}</span>
+                            <div class="flex items-center justify-between text-[10px] text-outline mt-1">
+                                <span>{{ m.year }}</span>
+                                <span class="text-emerald-400 font-semibold flex items-center gap-0.5">
+                                    Chi tiết <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meta text below card -->
+                    <div class="mt-2 px-0.5">
+                        <h3 class="text-xs font-bold text-white truncate group-hover:text-primary transition-colors" title="{{ m.title }}">
+                            {{ m.title }}
+                        </h3>
+                        <div class="flex items-center justify-between text-[11px] text-outline mt-0.5">
+                            <span>{{ m.year }}</span>
+                            <span class="text-primary font-medium truncate max-w-[110px]" title="{{ m.genres_vi }}">{{ m.genres_vi.split(' • ')[0] if ' • ' in m.genres_vi else m.genres_vi }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- SECTION 3: EXPLAINABILITY & ALS VS POPULARITY COMPARISON -->
+        <section id="why-recommended" class="scroll-mt-36">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left: Explainability (Why these movies?) -->
+                <div class="lg:col-span-6 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[20px]">help</span>
+                                Vì Sao Hệ Thống Đề Xuất Các Phim Này? (Explainability)
+                            </h2>
+                            <span class="text-xs text-primary bg-primary/10 px-2.5 py-0.5 rounded border border-primary/30 font-semibold">Cá nhân hóa ALS</span>
+                        </div>
+                        <p class="text-xs text-outline mb-4">Giải trình cơ chế toán học đằng sau 10 phim được lựa chọn riêng cho User #{{ uid }}.</p>
+
+                        <div class="space-y-3 text-xs leading-relaxed">
+                            <div class="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex items-start gap-3">
+                                <span class="material-symbols-outlined text-emerald-400 text-[20px] shrink-0 mt-0.5">filter_alt</span>
+                                <div>
+                                    <strong class="text-white block font-semibold mb-0.5">1. Bộ Lọc Khử Trùng Lặp Triệt Để:</strong>
+                                    Hệ thống truy xuất toàn bộ {{ user.total_ratings }} phim User #{{ uid }} đã từng tương tác và loại bỏ 100% khỏi danh sách ứng viên, đảm bảo người dùng chỉ được khám phá những tác phẩm mới.
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex items-start gap-3">
+                                <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">auto_awesome</span>
+                                <div>
+                                    <strong class="text-white block font-semibold mb-0.5">2. Ma Trận Hệ Số Tiềm Ẩn (50 Chiều):</strong>
+                                    Mô hình ALS tích vô hướng vectơ người dùng $u_{ {{ uid }} }$ và vectơ phim $v_i$. Các phim có điểm dự đoán cao (4.6 – 4.95★) mang các đặc tính nghệ thuật ẩn tương đồng mạnh với các phim mà User #{{ uid }} từng chấm 5.0★.
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex items-start gap-3">
+                                <span class="material-symbols-outlined text-amber-400 text-[20px] shrink-0 mt-0.5">favorite</span>
+                                <div>
+                                    <strong class="text-white block font-semibold mb-0.5">3. Trùng Khớp Thể Loại Chủ Đạo ({{ user.favorite_genre }}):</strong>
+                                    Hầu hết các phim gợi ý đều có sự góp mặt của thể loại {{ user.favorite_genre }} hoặc các thể loại liên quan mật thiết trong ma trận đồng xuất hiện.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-outline-variant/20 text-[11px] text-outline italic">
+                        💡 Thuật toán không chỉ gợi ý phim nổi tiếng, mà tìm kiếm những "viên ngọc ẩn" (Hidden Gems) có độ tương đồng khẩu vị cao nhất.
+                    </div>
+                </div>
+
+                <!-- Right: Direct Comparison ALS vs Popularity -->
+                <div class="lg:col-span-6 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-amber-400 text-[20px]">compare_arrows</span>
+                                Đối Đầu: Gợi Ý ALS vs Top Phim Phổ Biến (Popularity)
+                            </h2>
+                            <span class="text-xs bg-emerald-950/60 text-emerald-400 px-2 py-0.5 rounded font-bold border border-emerald-800/40">+16.3% Chính Xác</span>
+                        </div>
+                        <p class="text-xs text-outline mb-4">Minh họa rõ sự khác biệt giữa gợi ý thông minh cá nhân và xếp hạng đại trà ai cũng giống ai.</p>
+
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <!-- Popularity Column -->
+                            <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                                <div class="flex items-center justify-between pb-2 border-b border-outline-variant/20 mb-2">
+                                    <span class="font-bold text-outline">Gợi Ý Phổ Biến (Baseline)</span>
+                                    <span class="text-[10px] text-red-400">Không cá nhân</span>
+                                </div>
+                                <p class="text-[11px] text-outline mb-2">Ai vào cũng thấy cùng 5 bộ phim này:</p>
+                                <ul class="space-y-1.5 text-on-surface">
+                                    {% for p in pop_movies %}
+                                    <li class="flex items-center justify-between py-0.5">
+                                        <span class="truncate max-w-[130px] font-medium" title="{{ p.title }}">{{ loop.index }}. {{ p.title }}</span>
+                                        <span class="text-[10px] text-outline shrink-0 font-mono">{{ p.score }}★</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <span class="block mt-2.5 pt-2 border-t border-outline-variant/20 text-[10px] text-outline">
+                                    ⚠️ Bỏ qua sở thích cá nhân của User #{{ uid }}.
+                                </span>
+                            </div>
+
+                            <!-- ALS Column -->
+                            <div class="p-3 rounded-xl bg-primary/10 border border-primary/30">
+                                <div class="flex items-center justify-between pb-2 border-b border-primary/20 mb-2">
+                                    <span class="font-bold text-primary">Gợi Ý Spark ALS</span>
+                                    <span class="text-[10px] text-emerald-400 font-bold">Dành Riêng #{{ uid }}</span>
+                                </div>
+                                <p class="text-[11px] text-outline mb-2">Chọn lọc theo vectơ tiềm ẩn cá nhân:</p>
+                                <ul class="space-y-1.5 text-white font-medium">
+                                    {% for m in rec_movies[:5] %}
+                                    <li class="flex items-center justify-between py-0.5">
+                                        <span class="truncate max-w-[130px] text-white" title="{{ m.title }}">{{ loop.index }}. {{ m.title }}</span>
+                                        <span class="text-[10px] text-emerald-400 shrink-0 font-bold font-mono">Dự đoán {{ m.predicted_score }}★</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <span class="block mt-2.5 pt-2 border-t border-primary/20 text-[10px] text-emerald-400 font-semibold">
+                                    ✓ Trúng gu điện ảnh & mở rộng phim mới.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-outline-variant/20 text-[11px] text-outline leading-relaxed">
+                        Thử nghiệm đối chuẩn trên 5 triệu ratings kiểm thử chứng minh Spark ALS giúp giảm sai số RMSE từ 1.0097 xuống 0.8455.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: USER TASTE PROFILE & RATING BEHAVIOR -->
+        <section id="taste-profile" class="scroll-mt-36">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left: Genre Taste Matrix -->
+                <div class="lg:col-span-6 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[20px]">movie_filter</span>
+                                Khẩu Vị Thể Loại Của User #{{ uid }} (Genre Taste Profile)
+                            </h2>
+                            <span class="text-xs text-outline">Xếp theo số phim</span>
+                        </div>
+                        <p class="text-xs text-outline mb-4">Tỷ lệ các thể loại mà User #{{ uid }} đã bình chọn trong toàn bộ lịch sử xem phim.</p>
+                        
+                        <div class="space-y-3 text-xs">
+                            {% for g in user.genres[:6] %}
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-semibold text-white flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full bg-primary"></span>
+                                        {{ g.name_vi }} ({{ g.genre }})
+                                    </span>
+                                    <span class="text-outline text-[11px]">
+                                        <strong class="text-white">{{ g.count }}</strong> phim ({{ g.pct }}%)
+                                    </span>
+                                </div>
+                                <div class="w-full bg-surface-container rounded-full h-2 overflow-hidden border border-outline-variant/20">
+                                    <div class="bg-gradient-to-r from-primary to-cyan-400 h-full rounded-full transition-all duration-700" style="width: {{ g.pct }}%"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-outline-variant/20 text-xs text-outline">
+                        ✨ <strong>Nhận xét:</strong> Người dùng có sự tập trung đặc biệt vào các thể loại đòi hỏi cốt truyện sâu sắc hoặc kỹ xảo viễn tưởng.
+                    </div>
+                </div>
+
+                <!-- Right: Rating Distribution of User -->
+                <div class="lg:col-span-6 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-amber-400 text-[20px]">bar_chart</span>
+                                Phân Phối Điểm Số & Hành Vi Chấm Điểm
+                            </h2>
+                            <span class="text-xs text-tertiary bg-tertiary/10 px-2.5 py-0.5 rounded border border-tertiary/30 font-semibold">{{ user.rating_style }}</span>
+                        </div>
+                        <p class="text-xs text-outline mb-3">Tần suất các thang điểm từ 0.5★ đến 5.0★ thể hiện User #{{ uid }} khó tính hay dễ tính.</p>
+
+                        <!-- Chart Canvas -->
+                        <div class="relative h-56 w-full">
+                            <canvas id="userRatingDistChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-2.5 border-t border-outline-variant/20 flex items-center justify-between text-xs text-outline">
+                        <span>Điểm TB của User: <strong class="text-white">{{ user.avg_rating }}★</strong></span>
+                        <span>Điểm TB cộng đồng MovieLens: <strong class="text-white">3.53★</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: PAST GROUND TRUTH RATED MOVIES -->
+        <section id="rating-history" class="scroll-mt-36">
+            <div class="mb-4">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">history</span> Mục 5 • Lịch Sử Tương Tác Quá Khứ (Ground Truth Data)
+                </span>
+                <h2 class="text-xl font-headline font-bold text-white mt-1">Các Bộ Phim Thực Tế Định Hình Ma Trận Của User #{{ uid }}</h2>
+                <p class="text-xs text-outline mt-0.5">Dữ liệu huấn luyện lịch sử mà mô hình Spark ALS đã học để suy luận ra các gợi ý ở trên.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left: Top Loved Movies (5.0★) -->
+                <div class="lg:col-span-6 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-outline-variant/20">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-400 text-[20px]">thumb_up</span>
+                            <h3 class="text-sm font-bold text-white">Top Phim Được Chấm Cao Nhất (4.5★ – 5.0★)</h3>
+                        </div>
+                        <span class="text-xs text-emerald-400 font-semibold bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-800">Yêu thích nhất</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {% for m in user.top_movies %}
+                        <div onclick="openModal('{{ m.movieId }}', '{{ m.title | escape }}', '{{ m.year }}', '{{ m.genres | escape }}', '{{ m.user_rating }}', '{{ m.avg }}', '{{ m.count }}', '', '{{ m.poster_url if m.poster_url and m.poster_url.startswith('http') else '' }}')" class="group cursor-pointer">
+                            <div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container border border-outline-variant/20 group-hover:-translate-y-1 transition-all shadow">
+                                {% if m.poster_url and m.poster_url.startswith('http') %}
+                                <img src="{{ m.poster_url }}" alt="{{ m.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.classList.add('hidden'); if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');">
+                                {% endif %}
+                                <div class="{% if m.poster_url and m.poster_url.startswith('http') %}hidden {% endif %}absolute inset-0 bg-gradient-to-br from-surface-container-high to-surface-container flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="material-symbols-outlined text-outline text-2xl mb-1">movie</span>
+                                    <span class="text-[10px] font-semibold text-white line-clamp-2">{{ m.title }}</span>
+                                    <span class="text-[9px] text-outline mt-0.5">{{ m.year }}</span>
+                                </div>
+                                <div class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[10px] text-amber-400 font-bold border border-amber-400/30">
+                                    ★ {{ m.user_rating }}
+                                </div>
+                            </div>
+                            <h4 class="text-[11px] font-semibold text-white mt-1.5 truncate group-hover:text-primary transition-colors" title="{{ m.title }}">
+                                {{ m.title }}
+                            </h4>
+                            <span class="text-[10px] text-outline block">{{ m.year }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Right: Lowest Rated Movies (1.0★ - 2.5★) -->
+                <div class="lg:col-span-6 bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-outline-variant/20">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-red-400 text-[20px]">thumb_down</span>
+                            <h3 class="text-sm font-bold text-white">Phim Bị Chấm Thấp Nhất (1.0★ – 2.5★)</h3>
+                        </div>
+                        <span class="text-xs text-red-400 font-semibold bg-red-950/50 px-2 py-0.5 rounded border border-red-800">Không hợp gu</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {% for m in user.lowest_movies %}
+                        <div onclick="openModal('{{ m.movieId }}', '{{ m.title | escape }}', '{{ m.year }}', '{{ m.genres | escape }}', '{{ m.user_rating }}', '{{ m.avg }}', '{{ m.count }}', '', '{{ m.poster_url if m.poster_url and m.poster_url.startswith('http') else '' }}')" class="group cursor-pointer">
+                            <div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container border border-outline-variant/20 group-hover:-translate-y-1 transition-all shadow">
+                                {% if m.poster_url and m.poster_url.startswith('http') %}
+                                <img src="{{ m.poster_url }}" alt="{{ m.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.classList.add('hidden'); if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');">
+                                {% endif %}
+                                <div class="{% if m.poster_url and m.poster_url.startswith('http') %}hidden {% endif %}absolute inset-0 bg-gradient-to-br from-surface-container-high to-surface-container flex flex-col items-center justify-center p-2 text-center">
+                                    <span class="material-symbols-outlined text-outline text-2xl mb-1">movie</span>
+                                    <span class="text-[10px] font-semibold text-white line-clamp-2">{{ m.title }}</span>
+                                    <span class="text-[9px] text-outline mt-0.5">{{ m.year }}</span>
+                                </div>
+                                <div class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 text-[10px] text-red-400 font-bold border border-red-400/30">
+                                    ★ {{ m.user_rating }}
+                                </div>
+                            </div>
+                            <h4 class="text-[11px] font-semibold text-white mt-1.5 truncate group-hover:text-red-400 transition-colors" title="{{ m.title }}">
+                                {{ m.title }}
+                            </h4>
+                            <span class="text-[10px] text-outline block">{{ m.year }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MOVIE DETAIL MODAL -->
+    <div id="movie-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="bg-surface-container rounded-2xl max-w-2xl w-full p-6 border border-outline-variant/40 shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-outline hover:text-white p-1 rounded-full cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="flex flex-col sm:flex-row gap-6">
+                <div class="w-full sm:w-44 aspect-[2/3] rounded-xl overflow-hidden bg-surface-container-high shrink-0 shadow-lg border border-outline-variant/20">
+                    <img id="modal-poster" src="" alt="Movie Poster" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 space-y-3">
+                    <div>
+                        <span id="modal-year" class="text-xs font-bold text-primary"></span>
+                        <h2 id="modal-title" class="text-xl font-bold font-headline text-white mt-0.5"></h2>
+                        <p id="modal-genres" class="text-xs text-outline mt-1"></p>
+                    </div>
+
+                    <div class="flex items-center gap-4 py-2 border-y border-outline-variant/20">
+                        <div>
+                            <span class="text-[10px] text-outline uppercase block font-semibold">Điểm Dự Đoán (ALS)</span>
+                            <span id="modal-pred-score" class="text-lg font-bold text-emerald-400"></span>
+                        </div>
+                        <div class="h-8 w-px bg-outline-variant/30"></div>
+                        <div>
+                            <span class="text-[10px] text-outline uppercase block font-semibold">Rating CSDL (25M)</span>
+                            <span id="modal-avg" class="text-lg font-bold text-tertiary"></span>
+                        </div>
+                        <div class="h-8 w-px bg-outline-variant/30"></div>
+                        <div>
+                            <span class="text-[10px] text-outline uppercase block font-semibold">Lượt Đánh Giá</span>
+                            <span id="modal-votes" class="text-lg font-bold text-white"></span>
+                        </div>
+                    </div>
+
+                    <p id="modal-overview" class="text-xs text-on-surface-variant leading-relaxed">
+                        Đang nạp mô tả và tóm tắt kịch bản từ cơ sở dữ liệu phim MovieLens 25M...
+                    </p>
+
+                    <div class="pt-2 flex items-center justify-between">
+                        <a id="modal-imdb" href="#" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-white hover:text-black text-xs font-semibold text-white transition-colors flex items-center gap-1.5">
+                            <span>Mở IMDb</span>
+                            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                        </a>
+                        <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-colors">
+                            Đóng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT INITIALIZATION FOR CHARTS & MODAL -->
+    <script>
+        Chart.defaults.color = '#89929b';
+        Chart.defaults.borderColor = 'rgba(63, 72, 80, 0.25)';
+        Chart.defaults.font.family = 'Inter, sans-serif';
+
+        // 1. User Rating Distribution Chart
+        const userDistList = {{ user.rating_distribution | tojson }};
+        const ctxDist = document.getElementById('userRatingDistChart');
+        if (ctxDist && userDistList) {
+            new Chart(ctxDist, {
+                type: 'bar',
+                data: {
+                    labels: userDistList.map(i => i.star + ' ★'),
+                    datasets: [{
+                        label: 'Số Lần Cho Điểm',
+                        data: userDistList.map(i => i.count),
+                        backgroundColor: [
+                            '#ef4444', '#f87171', '#fb923c', '#fbbf24', '#fde047',
+                            '#a3e635', '#4ade80', '#38bdf8', '#818cf8', '#a855f7'
+                        ],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Modal Logic
+        function openModal(id, title, year, genres, predScore, avgScore, votes, imdbUrl, posterUrl) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-year').innerText = year || 'Năm không xác định';
+            document.getElementById('modal-genres').innerText = genres || 'Đang cập nhật thể loại';
+            document.getElementById('modal-pred-score').innerText = predScore ? (predScore + ' ★') : 'N/A';
+            document.getElementById('modal-avg').innerText = avgScore ? (avgScore + ' ★') : 'N/A';
+            document.getElementById('modal-votes').innerText = votes ? (parseInt(votes).toLocaleString() + ' votes') : 'N/A';
+            document.getElementById('modal-poster').src = posterUrl || 'https://via.placeholder.com/300x450/1e293b/94a3b8?text=' + encodeURIComponent(title);
+            document.getElementById('modal-imdb').href = imdbUrl || ('https://www.imdb.com/find?q=' + encodeURIComponent(title));
+
+            // Fetch dynamic detail if available
+            fetch('/api/movie/' + id)
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.overview) {
+                        document.getElementById('modal-overview').innerText = data.overview;
+                    }
+                })
+                .catch(() => {});
+
+            document.getElementById('movie-modal').classList.remove('hidden');
+            document.getElementById('movie-modal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('movie-modal').classList.add('hidden');
+            document.getElementById('movie-modal').classList.remove('flex');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Phân Tích & Khai Phá Dữ Liệu Lớn — MovieLens 25M Big Data Analytics</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#93ccff",
+                        "on-primary": "#003351",
+                        "primary-container": "#004a73",
+                        "surface": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#bfc7d2",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container": "#201f1f",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-highest": "#353534",
+                        "outline": "#89929b",
+                        "outline-variant": "#3f4850",
+                        "tertiary": "#ffb875"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+
+<body class="bg-surface-container-lowest font-body text-on-surface antialiased min-h-screen">
+
+    <!-- 1. TOP NAVBAR (UNIFIED ACROSS ALL PAGES) -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+        <div class="h-16 w-full px-4 lg:px-12 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Project Identity -->
+            <a href="/" class="flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[22px]">smart_display</span>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <span class="font-headline tracking-tight text-white font-bold leading-none text-base">AETHER CINEMA</span>
+                    <span class="text-[10px] text-primary uppercase font-semibold tracking-wider mt-0.5">Spark ALS • MovieLens 25M</span>
+                </div>
+            </a>
+
+            <!-- Functional Navigation Tabs -->
+            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
+                <a href="/" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">movie</span>
+                    <span>Khám Phá</span>
+                </a>
+                <a href="/foryou?uid={{ uid | default(100) }}" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                    <span>Gợi Ý & Gu Phim</span>
+                </a>
+                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                    <span>Phân Tích Dữ Liệu</span>
+                </a>
+                <a href="/system" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                    <span>Mô Hình & Hệ Thống</span>
+                </a>
+            </nav>
+
+            <!-- Search Bar & User ID Selector -->
+            <div class="flex items-center gap-3 shrink-0">
+                <form action="/" method="GET" class="hidden md:flex items-center relative">
+                    <span class="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">search</span>
+                    <input name="q" class="w-48 lg:w-64 bg-surface-container-low text-on-surface placeholder:text-outline text-xs pl-9 pr-14 py-2 rounded border border-outline-variant/40 focus:outline-none focus:border-primary transition-all" placeholder="Tìm theo tên phim (CSDL)..." type="text"/>
+                    <button type="submit" class="absolute right-1 px-2 py-1 bg-surface-container-high hover:bg-primary hover:text-on-primary text-xs rounded text-outline font-medium transition-colors">Tìm</button>
+                </form>
+
+                <!-- Active User Dropdown -->
+                <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded border border-outline-variant/30">
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-[10px]">
+                        ID
+                    </div>
+                    <form action="/profile" method="GET" class="flex items-center">
+                        <select name="uid" onchange="this.form.submit()" class="bg-transparent text-xs font-semibold text-on-surface focus:outline-none cursor-pointer" title="Chọn User ID để xem Hồ sơ & Gu phim">
+                            <option value="100" class="bg-surface-container-high" {% if uid == 100 %}selected{% endif %}>User #100</option>
+                            <option value="414" class="bg-surface-container-high" {% if uid == 414 %}selected{% endif %}>User #414 (Super-rater)</option>
+                            <option value="500" class="bg-surface-container-high" {% if uid == 500 %}selected{% endif %}>User #500</option>
+                            <option value="1000" class="bg-surface-container-high" {% if uid == 1000 %}selected{% endif %}>User #1000</option>
+                            <option value="12847" class="bg-surface-container-high" {% if uid == 12847 %}selected{% endif %}>User #12847</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. SUB-NAVIGATION PILLS (ANALYTICS SECTIONS) -->
+    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2.5 overflow-x-auto no-scrollbar">
+        <div class="flex items-center gap-2 text-xs font-semibold whitespace-nowrap min-w-max">
+            <span class="text-outline flex items-center gap-1 mr-1">
+                <span class="material-symbols-outlined text-[16px] text-primary">insights</span> Phân mục:
+            </span>
+            <a href="#overview" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Dataset Overview</a>
+            <a href="#rating-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">2. Phân Tích Rating</a>
+            <a href="#movie-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Phân Tích Phim</a>
+            <a href="#genre-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Thể Loại & Đa Thể Loại</a>
+            <a href="#user-behavior" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Hành Vi Người Dùng</a>
+            <a href="#popularity-longtail" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">6. Long-tail & Phổ Biến</a>
+            <a href="#time-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">7. Dòng Thời Gian</a>
+            <a href="#genre-deepdive" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">8. Lọc Rating Theo Thể Loại</a>
+            <a href="#data-quality" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">9. Chất Lượng Dữ Liệu (ETL)</a>
+            <a href="#dataset-summary" class="px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-on-primary transition-all">10. Tổng Kết Đặc Điểm & Mô Hình</a>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="w-full pt-32 pb-24 px-4 lg:px-12 max-w-[1600px] mx-auto space-y-12">
+
+        <!-- SECTION 1: DATASET OVERVIEW -->
+        <section id="overview" class="scroll-mt-36">
+            <div class="mb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                <div>
+                    <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px]">database</span> Mục 1 • Tổng Quan Bộ Dữ Liệu
+                    </span>
+                    <h1 class="text-2xl lg:text-3xl font-headline font-bold text-white mt-1">MovieLens 25M Dataset Overview & KPIs</h1>
+                    <p class="text-xs text-outline mt-1">Dữ liệu thực nghiệm xử lý phân tán với Apache Spark & HDFS Cluster.</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant/30 text-outline">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Dataset Status: <strong class="text-emerald-400">Đã Chuẩn Hóa Parquet</strong></span>
+                </div>
+            </div>
+
+            <!-- 9 KPI Cards Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-6">
+                <!-- KPI 1 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Tổng Số Ratings</span>
+                        <span class="material-symbols-outlined text-[18px] text-primary">reviews</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">25,000,095</div>
+                    <div class="text-[10px] text-emerald-400 mt-1 flex items-center gap-0.5">
+                        <span>↑ 100% bản ghi hợp lệ</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Tổng Người Dùng</span>
+                        <span class="material-symbols-outlined text-[18px] text-blue-400">group</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">162,541</div>
+                    <div class="text-[10px] text-outline mt-1">Mỗi user có ≥ 20 ratings</div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Tổng Số Phim</span>
+                        <span class="material-symbols-outlined text-[18px] text-amber-400">movie</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">62,423</div>
+                    <div class="text-[10px] text-outline mt-1">59,047 phim đã có ratings</div>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Tổng Tags Gán Nhãn</span>
+                        <span class="material-symbols-outlined text-[18px] text-tertiary">label</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">1,093,360</div>
+                    <div class="text-[10px] text-outline mt-1">Từ khóa đóng góp từ người dùng</div>
+                </div>
+
+                <!-- KPI 5 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Rating Trung Bình</span>
+                        <span class="material-symbols-outlined text-[18px] text-yellow-400">star</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-yellow-400">3.53 ★</div>
+                    <div class="text-[10px] text-outline mt-1">Độ lệch chuẩn: 1.06</div>
+                </div>
+
+                <!-- KPI 6 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Thang Điểm Đánh Giá</span>
+                        <span class="material-symbols-outlined text-[18px] text-cyan-400">linear_scale</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">0.5 → 5.0</div>
+                    <div class="text-[10px] text-outline mt-1">Bước nhảy: 0.5 sao (10 mức)</div>
+                </div>
+
+                <!-- KPI 7 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Khoảng Thời Gian</span>
+                        <span class="material-symbols-outlined text-[18px] text-emerald-400">calendar_month</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">1995 – 2019</div>
+                    <div class="text-[10px] text-outline mt-1">24.8 năm liên tục thu thập</div>
+                </div>
+
+                <!-- KPI 8 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Độ Thưa Ma Trận (Sparsity)</span>
+                        <span class="material-symbols-outlined text-[18px] text-purple-400">grid_view</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-purple-400">99.75%</div>
+                    <div class="text-[10px] text-outline mt-1">25M / 10.15 tỷ ô (Ma trận cực thưa)</div>
+                </div>
+
+                <!-- KPI 9 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Số Lượng Thể Loại</span>
+                        <span class="material-symbols-outlined text-[18px] text-pink-400">category</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-white">19 Genres</div>
+                    <div class="text-[10px] text-outline mt-1">18 thể loại + IMAX</div>
+                </div>
+
+                <!-- KPI 10 -->
+                <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 shadow-md">
+                    <div class="flex items-center justify-between text-outline mb-1.5">
+                        <span class="text-[11px] font-semibold uppercase">Thời Gian Chạy ALS (25M)</span>
+                        <span class="material-symbols-outlined text-[18px] text-primary">timer</span>
+                    </div>
+                    <div class="text-2xl font-headline font-bold text-primary">769s</div>
+                    <div class="text-[10px] text-outline mt-1">Hội tụ sau 15 vòng lặp</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: RATING ANALYSIS -->
+        <section id="rating-analysis" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">bar_chart</span> Mục 2 • Phân Tích Hành Vi Đánh Giá
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Phân Phối Rating Từ 0.5 Đến 5.0 Sao & Xu Hướng</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Bar Chart: Rating Distribution (10 Bins) -->
+                <div class="lg:col-span-8 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px] text-tertiary">analytics</span>
+                                Biểu Đồ Phân Bố Số Lượng & Tỷ Lệ % Của 10 Mức Rating
+                            </h3>
+                            <span class="text-xs text-outline">Tổng: 25,000,095 ratings</span>
+                        </div>
+                        <div class="relative h-72 w-full">
+                            <canvas id="ratingDistChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-outline-variant/20 grid grid-cols-3 text-center text-xs">
+                        <div>
+                            <span class="text-outline block">Mức Đánh Giá Phổ Biến Nhất (Mode)</span>
+                            <strong class="text-white text-sm">4.0 ★ (26.6% - 6.64M lượt)</strong>
+                        </div>
+                        <div>
+                            <span class="text-outline block">Trung Vị (Median)</span>
+                            <strong class="text-white text-sm">3.5 ★</strong>
+                        </div>
+                        <div>
+                            <span class="text-outline block">Trung Bình (Mean)</span>
+                            <strong class="text-yellow-400 text-sm">3.533 ★</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Distribution Breakdown Table -->
+                <div class="lg:col-span-4 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">format_list_numbered</span>
+                        Bảng Thống Kê Chi Tiết Từng Mức
+                    </h3>
+                    <div class="overflow-y-auto max-h-72 text-xs space-y-1.5 pr-1">
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 5.0</span>
+                            <span class="text-outline">3,588,943 votes</span>
+                            <span class="font-semibold text-white">14.4%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 4.5</span>
+                            <span class="text-outline">2,126,050 votes</span>
+                            <span class="font-semibold text-white">8.5%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-primary/30">
+                            <span class="font-bold text-primary">★ 4.0 (Top 1)</span>
+                            <span class="text-outline">6,639,798 votes</span>
+                            <span class="font-bold text-primary">26.6%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 3.5</span>
+                            <span class="text-outline">3,177,318 votes</span>
+                            <span class="font-semibold text-white">12.7%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 3.0</span>
+                            <span class="text-outline">4,994,948 votes</span>
+                            <span class="font-semibold text-white">20.0%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 2.5</span>
+                            <span class="text-outline">1,262,797 votes</span>
+                            <span class="font-semibold text-white">5.1%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 2.0</span>
+                            <span class="text-outline">1,640,868 votes</span>
+                            <span class="font-semibold text-white">6.6%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 1.5</span>
+                            <span class="text-outline">399,490 votes</span>
+                            <span class="font-semibold text-white">1.6%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 1.0</span>
+                            <span class="text-outline">776,815 votes</span>
+                            <span class="font-semibold text-white">3.1%</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded bg-surface-container">
+                            <span class="font-bold text-tertiary">★ 0.5</span>
+                            <span class="text-outline">393,068 votes</span>
+                            <span class="font-semibold text-white">1.6%</span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-outline mt-3 pt-2 border-t border-outline-variant/20 italic">
+                        💡 <strong>Nhận xét:</strong> Người dùng có xu hướng chấm điểm tích cực (hơn 69.5% rating từ 3.5 sao trở lên). Số điểm 4.0 chiếm tỷ lệ cao nhất.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MOVIE ANALYSIS -->
+        <section id="movie-analysis" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">movie_filter</span> Mục 3 • Phân Tích Đặc Điểm Các Bộ Phim
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Phim Theo Thập Niên, Top Phổ Biến & Top Đánh Giá Cao</h2>
+            </div>
+
+            <!-- Movies by Decade & Summary -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+                <!-- Decade Chart -->
+                <div class="lg:col-span-6 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-cyan-400">history_edu</span>
+                        Số Lượng Phim Phát Hành Qua Các Thập Niên
+                    </h3>
+                    <p class="text-xs text-outline mb-4">Sự bùng nổ của ngành điện ảnh từ sau năm 1990.</p>
+                    <div class="relative h-64 w-full">
+                        <canvas id="decadeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top 10 Most Popular Movies (Most Rated) -->
+                <div class="lg:col-span-6 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-orange-400">local_fire_department</span>
+                            Top 10 Phim Có Nhiều Lượt Đánh Giá Nhất (Most Popular)
+                        </h3>
+                        <p class="text-xs text-outline mb-3">Những tác phẩm quen thuộc đứng đầu lưu lượng truy cập MovieLens.</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-outline-variant/20 text-outline">
+                                        <th class="py-1.5 px-2">#</th>
+                                        <th class="py-1.5 px-2">Tên Phim</th>
+                                        <th class="py-1.5 px-2">Năm</th>
+                                        <th class="py-1.5 px-2 text-right">Lượt Rating</th>
+                                        <th class="py-1.5 px-2 text-right">Rating TB</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant/10 text-on-surface">
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">1</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Forrest Gump</td>
+                                        <td class="py-1.5 px-2 text-outline">1994</td>
+                                        <td class="py-1.5 px-2 text-right font-mono font-bold text-white">81,491</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.05</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">2</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Shawshank Redemption</td>
+                                        <td class="py-1.5 px-2 text-outline">1994</td>
+                                        <td class="py-1.5 px-2 text-right font-mono font-bold text-white">81,482</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.41</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">3</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Pulp Fiction</td>
+                                        <td class="py-1.5 px-2 text-outline">1994</td>
+                                        <td class="py-1.5 px-2 text-right font-mono font-bold text-white">79,672</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.18</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">4</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Silence of the Lambs</td>
+                                        <td class="py-1.5 px-2 text-outline">1991</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">74,127</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.15</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">5</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">The Matrix</td>
+                                        <td class="py-1.5 px-2 text-outline">1999</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">72,674</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.15</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">6</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Star Wars: Episode IV</td>
+                                        <td class="py-1.5 px-2 text-outline">1977</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">68,717</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.12</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">7</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Jurassic Park</td>
+                                        <td class="py-1.5 px-2 text-outline">1993</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">64,144</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 3.67</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">8</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Braveheart</td>
+                                        <td class="py-1.5 px-2 text-outline">1995</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">59,184</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">9</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Terminator 2</td>
+                                        <td class="py-1.5 px-2 text-outline">1991</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">57,342</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 3.96</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1.5 px-2 font-bold text-primary">10</td>
+                                        <td class="py-1.5 px-2 font-semibold text-white">Fight Club</td>
+                                        <td class="py-1.5 px-2 text-outline">1999</td>
+                                        <td class="py-1.5 px-2 text-right font-mono text-white">56,069</td>
+                                        <td class="py-1.5 px-2 text-right text-tertiary">★ 4.23</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Highly Rated with Minimum Rating Threshold -->
+            <div class="bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-amber-400">workspace_premium</span>
+                            Top 10 Phim Có Rating Trung Bình Cao Nhất (Kiệt Tác Được Xác Thực)
+                        </h3>
+                        <p class="text-xs text-outline mt-0.5">Áp dụng ngưỡng lọc <strong class="text-white">Minimum Ratings Count ≥ 10,000 lượt</strong> để loại bỏ nhiễu từ các phim chỉ có 1-2 lượt đánh giá.</p>
+                    </div>
+                    <span class="text-xs bg-amber-950/40 text-amber-400 font-semibold px-3 py-1 rounded-full border border-amber-800/40 shrink-0">
+                        Ngưỡng ≥ 10,000 votes
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#1</span>
+                            <span class="text-amber-400 font-bold">★ 4.41</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="The Shawshank Redemption">The Shawshank Redemption</h4>
+                        <div class="text-[11px] text-outline mt-1">1994 • 81.5K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#2</span>
+                            <span class="text-amber-400 font-bold">★ 4.32</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="The Godfather">The Godfather</h4>
+                        <div class="text-[11px] text-outline mt-1">1972 • 52.5K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#3</span>
+                            <span class="text-amber-400 font-bold">★ 4.28</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="The Usual Suspects">The Usual Suspects</h4>
+                        <div class="text-[11px] text-outline mt-1">1995 • 55.4K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#4</span>
+                            <span class="text-amber-400 font-bold">★ 4.26</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="The Godfather: Part II">The Godfather: Part II</h4>
+                        <div class="text-[11px] text-outline mt-1">1974 • 34.2K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#5</span>
+                            <span class="text-amber-400 font-bold">★ 4.25</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="Schindler's List">Schindler's List</h4>
+                        <div class="text-[11px] text-outline mt-1">1993 • 60.4K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#6</span>
+                            <span class="text-amber-400 font-bold">★ 4.23</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="12 Angry Men">12 Angry Men</h4>
+                        <div class="text-[11px] text-outline mt-1">1957 • 16.6K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#7</span>
+                            <span class="text-amber-400 font-bold">★ 4.23</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="Fight Club">Fight Club</h4>
+                        <div class="text-[11px] text-outline mt-1">1999 • 56.1K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#8</span>
+                            <span class="text-amber-400 font-bold">★ 4.18</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="Pulp Fiction">Pulp Fiction</h4>
+                        <div class="text-[11px] text-outline mt-1">1994 • 79.7K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#9</span>
+                            <span class="text-amber-400 font-bold">★ 4.18</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="Spirited Away">Spirited Away (Sen to Chihiro)</h4>
+                        <div class="text-[11px] text-outline mt-1">2001 • 23.2K votes</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+                        <div class="flex items-center justify-between text-xs text-outline mb-1">
+                            <span class="font-bold text-primary">#10</span>
+                            <span class="text-amber-400 font-bold">★ 4.17</span>
+                        </div>
+                        <h4 class="font-bold text-white text-xs truncate" title="The Dark Knight">The Dark Knight</h4>
+                        <div class="text-[11px] text-outline mt-1">2008 • 41.5K votes</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: GENRE ANALYSIS -->
+        <section id="genre-analysis" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">theater_comedy</span> Mục 4 • Phân Tích Thể Loại & Đa Thể Loại Kết Hợp
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Khảo Sát 18 Thể Loại Phim & Xu Hướng Kết Hợp Phổ Biến</h2>
+            </div>
+
+            <!-- Genre Comparison Chart & Multi-genre Combo -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Genre Bar Chart -->
+                <div class="lg:col-span-7 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">leaderboard</span>
+                        Tổng Lượng Ratings & Số Lượng Phim Theo Từng Thể Loại
+                    </h3>
+                    <p class="text-xs text-outline mb-4">Drama, Comedy và Action là 3 thể loại thống trị lượt xem.</p>
+                    <div class="relative h-80 w-full">
+                        <canvas id="genreStatsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Multi-genre Combinations -->
+                <div class="lg:col-span-5 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-tertiary">hub</span>
+                            Phân Tích Tổ Hợp Đa Thể Loại (Multi-Genre Combinations)
+                        </h3>
+                        <p class="text-xs text-outline mb-3">Hiệu ứng cộng hưởng khi phim kết hợp nhiều thể loại.</p>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                                <div>
+                                    <strong class="text-white block">Drama + Romance</strong>
+                                    <span class="text-[11px] text-outline">4,654 phim • 2,519,802 ratings</span>
+                                </div>
+                                <span class="text-amber-400 font-bold">★ 3.63</span>
+                            </div>
+
+                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                                <div>
+                                    <strong class="text-white block">Action + Adventure</strong>
+                                    <span class="text-[11px] text-outline">1,652 phim • 3,346,468 ratings</span>
+                                </div>
+                                <span class="text-amber-400 font-bold">★ 3.48</span>
+                            </div>
+
+                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                                <div>
+                                    <strong class="text-white block">Comedy + Romance</strong>
+                                    <span class="text-[11px] text-outline">3,450 phim • 2,499,040 ratings</span>
+                                </div>
+                                <span class="text-amber-400 font-bold">★ 3.50</span>
+                            </div>
+
+                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                                <div>
+                                    <strong class="text-white block">Action + Sci-Fi</strong>
+                                    <span class="text-[11px] text-outline">1,185 phim • 2,703,113 ratings</span>
+                                </div>
+                                <span class="text-amber-400 font-bold">★ 3.46</span>
+                            </div>
+
+                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                                <div>
+                                    <strong class="text-white block">Crime + Drama</strong>
+                                    <span class="text-[11px] text-outline">2,996 phim • 2,165,423 ratings</span>
+                                </div>
+                                <span class="text-emerald-400 font-bold">★ 3.80 (Rất cao)</span>
+                            </div>
+
+                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                                <div>
+                                    <strong class="text-white block">Animation + Children</strong>
+                                    <span class="text-[11px] text-outline">1,015 phim • 1,266,893 ratings</span>
+                                </div>
+                                <span class="text-amber-400 font-bold">★ 3.60</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-outline pt-2 border-t border-outline-variant/20 italic">
+                        💡 Thể loại kết hợp <strong class="text-white">Crime + Drama</strong> đạt rating trung bình cao nhất (3.80 ★) trong các cặp đôi chính.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: USER BEHAVIOR -->
+        <section id="user-behavior" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">groups</span> Mục 5 • Phân Tích Hành Vi Người Dùng (User Behavior)
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Phân Khúc Người Dùng, Tần Suất Đánh Giá & Super-Users</h2>
+            </div>
+
+            <!-- User Segments KPI -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <!-- Segment 1: Casual -->
+                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase text-cyan-400">Casual Users (&lt; 50 ratings)</span>
+                        <span class="material-symbols-outlined text-cyan-400 text-[20px]">person</span>
+                    </div>
+                    <div class="text-3xl font-headline font-extrabold text-white">42.1%</div>
+                    <div class="text-xs text-outline mt-1">68,430 người dùng</div>
+                    <p class="text-[11px] text-outline mt-2 pt-2 border-t border-outline-variant/20">Những người dùng chỉ đánh giá các phim phổ biến họ thực sự thích hoặc ghét.</p>
+                </div>
+
+                <!-- Segment 2: Regular -->
+                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase text-primary">Regular Users (50 - 250 ratings)</span>
+                        <span class="material-symbols-outlined text-primary text-[20px]">how_to_reg</span>
+                    </div>
+                    <div class="text-3xl font-headline font-extrabold text-white">41.5%</div>
+                    <div class="text-xs text-outline mt-1">67,455 người dùng</div>
+                    <p class="text-[11px] text-outline mt-2 pt-2 border-t border-outline-variant/20">Nhóm người dùng tích cực, có gu phim rõ ràng và đánh giá đều đặn qua các năm.</p>
+                </div>
+
+                <!-- Segment 3: Heavy / Super-raters -->
+                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase text-amber-400">Heavy Users (&gt; 250 ratings)</span>
+                        <span class="material-symbols-outlined text-amber-400 text-[20px]">military_tech</span>
+                    </div>
+                    <div class="text-3xl font-headline font-extrabold text-white">16.4%</div>
+                    <div class="text-xs text-outline mt-1">26,656 người dùng</div>
+                    <p class="text-[11px] text-outline mt-2 pt-2 border-t border-outline-variant/20">Những người cuồng điện ảnh (Cinephile), đóng góp tới hơn 58% tổng ratings hệ thống.</p>
+                </div>
+            </div>
+
+            <!-- Top Users Table & Distribution Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Top 5 Super Users Table -->
+                <div class="lg:col-span-7 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-amber-400">social_leaderboard</span>
+                        Top 5 Người Dùng Hoạt Động Nhiều Nhất (Super-Raters)
+                    </h3>
+                    <p class="text-xs text-outline mb-4">Những người dùng có số lượt đánh giá khủng nhất trong 162,541 users.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-outline-variant/20 text-outline">
+                                    <th class="py-2 px-3">Mã User</th>
+                                    <th class="py-2 px-3">Số Lượt Đánh Giá</th>
+                                    <th class="py-2 px-3">Rating Trung Bình</th>
+                                    <th class="py-2 px-3">Hành Vi Phổ Biến</th>
+                                    <th class="py-2 px-3 text-right">Xem Gợi Ý</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/10 text-on-surface">
+                                <tr>
+                                    <td class="py-2.5 px-3 font-mono font-bold text-primary">User #72315</td>
+                                    <td class="py-2.5 px-3 font-bold text-white">32,202 ratings</td>
+                                    <td class="py-2.5 px-3 text-yellow-400">★ 3.42</td>
+                                    <td class="py-2.5 px-3 text-outline">Cinephile toàn diện</td>
+                                    <td class="py-2.5 px-3 text-right"><a href="/foryou?uid=100" class="text-primary hover:underline font-semibold">Xem ALS</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-mono font-bold text-primary">User #80874</td>
+                                    <td class="py-2.5 px-3 font-bold text-white">26,815 ratings</td>
+                                    <td class="py-2.5 px-3 text-yellow-400">★ 3.51</td>
+                                    <td class="py-2.5 px-3 text-outline">Khoa học viễn tưởng, Hành động</td>
+                                    <td class="py-2.5 px-3 text-right"><a href="/foryou?uid=414" class="text-primary hover:underline font-semibold">Xem ALS</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-mono font-bold text-primary">User #137293</td>
+                                    <td class="py-2.5 px-3 font-bold text-white">24,429 ratings</td>
+                                    <td class="py-2.5 px-3 text-yellow-400">★ 3.65</td>
+                                    <td class="py-2.5 px-3 text-outline">Phim cổ điển, Tâm lý</td>
+                                    <td class="py-2.5 px-3 text-right"><a href="/foryou?uid=500" class="text-primary hover:underline font-semibold">Xem ALS</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-mono font-bold text-primary">User #121535</td>
+                                    <td class="py-2.5 px-3 font-bold text-white">21,580 ratings</td>
+                                    <td class="py-2.5 px-3 text-yellow-400">★ 3.38</td>
+                                    <td class="py-2.5 px-3 text-outline">Đánh giá khắt khe</td>
+                                    <td class="py-2.5 px-3 text-right"><a href="/foryou?uid=1000" class="text-primary hover:underline font-semibold">Xem ALS</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-mono font-bold text-primary">User #124052</td>
+                                    <td class="py-2.5 px-3 font-bold text-white">20,442 ratings</td>
+                                    <td class="py-2.5 px-3 text-yellow-400">★ 3.59</td>
+                                    <td class="py-2.5 px-3 text-outline">Hài hước, Hoạt hình</td>
+                                    <td class="py-2.5 px-3 text-right"><a href="/foryou?uid=100" class="text-primary hover:underline font-semibold">Xem ALS</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- User Segments Donut Chart -->
+                <div class="lg:col-span-5 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">pie_chart</span>
+                        Tỷ Lệ Phân Bổ Các Nhóm Người Dùng
+                    </h3>
+                    <p class="text-xs text-outline mb-3">Tỷ lệ theo số lượt đánh giá trong tập 162.5K người dùng.</p>
+                    <div class="relative h-60 w-full flex items-center justify-center">
+                        <canvas id="userSegmentChart"></canvas>
+                    </div>
+                    <div class="text-[11px] text-outline text-center mt-2">
+                        Trung bình mỗi người dùng chấm: <strong class="text-white">153.8 ratings</strong> (Trung vị: 68 ratings).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: MOVIE POPULARITY & LONG-TAIL -->
+        <section id="popularity-longtail" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">waterfall_chart</span> Mục 6 • Phổ Biến & Vấn Đề Long-Tail (Kinh Điển Của Recommender System)
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Hiện Tượng Đuôi Dài (Long-Tail) & Ma Trận Phân Vị Phim</h2>
+            </div>
+
+            <!-- Explanation Callout -->
+            <div class="p-4 rounded-xl bg-surface-container-low border border-primary/30 mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shrink-0">
+                    <span class="material-symbols-outlined text-[24px]">lightbulb</span>
+                </div>
+                <div class="text-xs text-outline leading-relaxed">
+                    <strong class="text-white">Tại sao vấn đề Long-Tail lại quan trọng đối với Recommender System?</strong><br/>
+                    Trong MovieLens 25M, <strong class="text-primary">10% số phim đứng đầu đã chiếm tới 86.5% tổng số ratings</strong>, trong khi 90% kho phim còn lại (hơn 56,000 phim) nằm ở phần "Đuôi Dài" (Long-Tail) và rất ít được khám phá. Nếu chỉ gợi ý phim phổ biến (Popularity baseline), người dùng sẽ chỉ thấy đi thấy lại những phim quen thuộc. Mô hình <strong class="text-emerald-400">Spark ALS Collaborative Filtering</strong> giải quyết triệt để vấn đề này bằng cách tìm ra các sở thích tiềm ẩn để gợi ý các "báu vật ẩn" (Hidden Gems) cho từng cá nhân.
+                </div>
+            </div>
+
+            <!-- Long-tail Breakdown Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5 mb-6">
+                <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20">
+                    <span class="text-xs text-outline font-semibold uppercase">Top 1% Phim (~624 phim)</span>
+                    <div class="text-2xl font-extrabold text-primary mt-1">41.2%</div>
+                    <span class="text-[11px] text-outline">Chiếm hơn 10.3 triệu ratings</span>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20">
+                    <span class="text-xs text-outline font-semibold uppercase">Top 5% Phim (~3,121 phim)</span>
+                    <div class="text-2xl font-extrabold text-white mt-1">73.8%</div>
+                    <span class="text-[11px] text-outline">Gần 3/4 lượng tương tác hệ thống</span>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20">
+                    <span class="text-xs text-outline font-semibold uppercase">Top 10% Phim (~6,242 phim)</span>
+                    <div class="text-2xl font-extrabold text-tertiary mt-1">86.5%</div>
+                    <span class="text-[11px] text-outline">Hơn 21.6 triệu ratings</span>
+                </div>
+                <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20">
+                    <span class="text-xs text-outline font-semibold uppercase">90% Phim Còn Lại (56,181 phim)</span>
+                    <div class="text-2xl font-extrabold text-emerald-400 mt-1">13.5%</div>
+                    <span class="text-[11px] text-outline">Vùng Long-Tail cần thuật toán gợi ý</span>
+                </div>
+            </div>
+
+            <!-- Long Tail Chart & Scatter Quadrant -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Long-Tail Cumulative Curve -->
+                <div class="lg:col-span-6 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">show_chart</span>
+                        Đường Cong Tích Lũy Phổ Biến (Long-Tail Cumulative Distribution)
+                    </h3>
+                    <p class="text-xs text-outline mb-4">Trục X: % Phim sắp xếp giảm dần, Trục Y: % Lũy kế Ratings.</p>
+                    <div class="relative h-72 w-full">
+                        <canvas id="longTailChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Scatter Quadrant: Rating Count vs Avg Rating -->
+                <div class="lg:col-span-6 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-tertiary">scatter_plot</span>
+                            Tương Quan: Số Lượng Ratings ↔ Rating Trung Bình
+                        </h3>
+                        <p class="text-xs text-outline mb-3">Phân loại 4 nhóm phim: Blockbusters, Hidden Gems, Mass Pop, Long-tail.</p>
+                        <div class="relative h-60 w-full">
+                            <canvas id="scatterQuadrantChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-[11px] mt-2 pt-2 border-t border-outline-variant/20">
+                        <div class="p-2 rounded bg-surface-container text-white">
+                            <span class="text-primary font-bold">★ Blockbuster Acclaimed:</span><br/>Votes cao + Điểm cao (Shawshank, Godfather)
+                        </div>
+                        <div class="p-2 rounded bg-surface-container text-white">
+                            <span class="text-emerald-400 font-bold">💎 Hidden Gems:</span><br/>Votes vừa phải (500-4K) + Điểm ≥ 4.1 ★
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: TIME ANALYSIS -->
+        <section id="time-analysis" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">timeline</span> Mục 7 • Phân Tích Dòng Thời Gian (Time Analysis)
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Xu Hướng Đánh Giá Của Người Dùng Qua Các Năm (1995 – 2019)</h2>
+            </div>
+
+            <div class="bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-primary">insights</span>
+                            Biểu Đồ Khối Lượng Ratings Hàng Năm (1995 - 2019)
+                        </h3>
+                        <p class="text-xs text-outline">Ghi nhận 2 đỉnh điểm tương tác lớn: Năm 2000 (Dot-com) và Năm 2015-2016 (MovieLens UI Update).</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="px-2.5 py-1 rounded bg-surface-container text-outline border border-outline-variant/30">Năm 2000: <strong>2.58M ratings</strong></span>
+                        <span class="px-2.5 py-1 rounded bg-surface-container text-outline border border-outline-variant/30">Năm 2015: <strong>1.84M ratings</strong></span>
+                    </div>
+                </div>
+                <div class="relative h-72 w-full">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: RATING DISTRIBUTION BY GENRE (INTERACTIVE DEEP DIVE) -->
+        <section id="genre-deepdive" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">tune</span> Mục 8 • Khảo Sát Chi Tiết Từng Thể Loại (Interactive Genre Deep-Dive)
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Khảo Sát Phân Phối Rating Của Từng Thể Loại Riêng Biệt</h2>
+                <p class="text-xs text-outline mt-1">Chọn thể loại bên dưới để xem biểu đồ và các chỉ số thống kê đặc thù của thể loại đó.</p>
+            </div>
+
+            <div class="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/20 shadow-xl">
+                <!-- Dropdown Selector -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-outline-variant/20">
+                    <div class="flex items-center gap-3">
+                        <label for="genre-select" class="text-xs font-bold text-white uppercase tracking-wider">Chọn Thể Loại:</label>
+                        <select id="genre-select" onchange="updateGenreDeepDive(this.value)" class="bg-surface-container text-primary font-bold text-sm px-4 py-2 rounded-lg border border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer shadow">
+                            <option value="Drama" selected>🎭 Drama (Chính kịch)</option>
+                            <option value="Action">⚡ Action (Hành động)</option>
+                            <option value="Comedy">😄 Comedy (Hài kịch)</option>
+                            <option value="Sci-Fi">🚀 Sci-Fi (Khoa học viễn tưởng)</option>
+                            <option value="Adventure">🧭 Adventure (Phiêu lưu)</option>
+                            <option value="Crime">🚔 Crime (Tội phạm)</option>
+                            <option value="Romance">❤️ Romance (Lãng mạn)</option>
+                            <option value="Thriller">😱 Thriller (Kịch tính)</option>
+                            <option value="Animation">🎨 Animation (Hoạt hình)</option>
+                            <option value="Horror">🩸 Horror (Kinh dị)</option>
+                            <option value="War">⚔️ War (Chiến tranh)</option>
+                            <option value="Film-Noir">🕵️ Film-Noir (Phim đen cổ điển)</option>
+                            <option value="Western">🤠 Western (Miền Tây)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-4 text-xs">
+                        <div>
+                            <span class="text-outline block">Số Lượng Phim</span>
+                            <strong id="g-movies" class="text-white text-base">25,606</strong>
+                        </div>
+                        <div>
+                            <span class="text-outline block">Tổng Lượt Ratings</span>
+                            <strong id="g-ratings" class="text-primary text-base">10,962,833</strong>
+                        </div>
+                        <div>
+                            <span class="text-outline block">Rating Trung Bình</span>
+                            <strong id="g-avg" class="text-amber-400 text-base">★ 3.68</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Genre Chart -->
+                <div class="relative h-64 w-full">
+                    <canvas id="genreDeepChart"></canvas>
+                </div>
+                <div class="mt-3 text-right">
+                    <span id="g-desc" class="text-xs text-outline italic">Thể loại Drama chiếm hơn 43.8% tổng lượt rating của toàn bộ kho dữ liệu MovieLens 25M.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: DATA QUALITY (DATA ENGINEERING VALIDATION) -->
+        <section id="data-quality" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">verified</span> Mục 9 • Báo Cáo Chất Lượng Dữ Liệu Sau Pipeline ETL (Data Quality)
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Minh Chứng Quy Trình Kỹ Sư Dữ Liệu (Data Engineering Pipeline)</h2>
+                <p class="text-xs text-outline mt-1">Báo cáo kiểm thử độ toàn vẹn, tính hợp lệ và định dạng tối ưu lưu trữ phân tán trên HDFS.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Quality Metrics Table -->
+                <div class="lg:col-span-8 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-400">check_circle</span>
+                        Bảng Kiểm Thử Toàn Vẹn Dữ Liệu (Data Quality Checks)
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-outline-variant/20 text-outline">
+                                    <th class="py-2.5 px-3">Tiêu Chí Kiểm Thử (Assertion)</th>
+                                    <th class="py-2.5 px-3">Quy Tắc Logic (PySpark)</th>
+                                    <th class="py-2.5 px-3 text-right">Kết Quả</th>
+                                    <th class="py-2.5 px-3 text-right">Trạng Thái</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/10 text-on-surface">
+                                <tr>
+                                    <td class="py-2.5 px-3 font-semibold text-white">Tổng số bản ghi trước xử lý</td>
+                                    <td class="py-2.5 px-3 text-outline">ratings_raw.count()</td>
+                                    <td class="py-2.5 px-3 text-right font-mono">25,000,095</td>
+                                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-400 font-bold">100% Đầy đủ</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-semibold text-white">Bản ghi có giá trị Null/NaN</td>
+                                    <td class="py-2.5 px-3 text-outline">col("rating").isNull()</td>
+                                    <td class="py-2.5 px-3 text-right font-mono">0 bản ghi</td>
+                                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-400 font-bold">✓ Đạt Chuẩn</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-semibold text-white">Bản ghi trùng lặp (Duplicates)</td>
+                                    <td class="py-2.5 px-3 text-outline">dropDuplicates(["userId", "movieId"])</td>
+                                    <td class="py-2.5 px-3 text-right font-mono">0 bản ghi trùng</td>
+                                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-400 font-bold">✓ Đạt Chuẩn</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-semibold text-white">Rating ngoài miền [0.5, 5.0]</td>
+                                    <td class="py-2.5 px-3 text-outline">(rating &lt; 0.5) | (rating &gt; 5.0)</td>
+                                    <td class="py-2.5 px-3 text-right font-mono">0 bản ghi lỗi</td>
+                                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-400 font-bold">✓ Đạt Chuẩn</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-semibold text-white">Timestamp không hợp lệ</td>
+                                    <td class="py-2.5 px-3 text-outline">timestamp &lt; 0 | timestamp &gt; now()</td>
+                                    <td class="py-2.5 px-3 text-right font-mono">0 bản ghi</td>
+                                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-400 font-bold">✓ Đạt Chuẩn</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 px-3 font-semibold text-white">Tổng bản ghi sạch sau ETL</td>
+                                    <td class="py-2.5 px-3 text-outline">ratings_clean.count()</td>
+                                    <td class="py-2.5 px-3 text-right font-mono text-emerald-400 font-bold">25,000,095</td>
+                                    <td class="py-2.5 px-3 text-right"><span class="bg-emerald-950/60 text-emerald-400 px-2 py-0.5 rounded font-bold">100.0% Hợp lệ</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Storage Optimization Card -->
+                <div class="lg:col-span-4 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-primary">inventory_2</span>
+                            Tối Ưu Lưu Trữ: CSV vs Apache Parquet
+                        </h3>
+                        <p class="text-xs text-outline mb-4">Chuyển đổi từ text sang dạng cột nén Snappy trên HDFS.</p>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/20">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-outline">Định dạng ban đầu (CSV):</span>
+                                    <strong class="text-white">680.5 MB</strong>
+                                </div>
+                                <div class="w-full bg-surface-container-highest rounded-full h-2">
+                                    <div class="bg-red-400 h-full rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/20">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-emerald-400 font-semibold">Sau ETL Parquet (Snappy):</span>
+                                    <strong class="text-emerald-400">195.2 MB (-71.3%)</strong>
+                                </div>
+                                <div class="w-full bg-surface-container-highest rounded-full h-2">
+                                    <div class="bg-emerald-400 h-full rounded-full" style="width: 28.7%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 space-y-2 text-xs text-outline">
+                            <div class="flex items-center justify-between">
+                                <span>Số Spark Partitions:</span>
+                                <strong class="text-white">200 partitions</strong>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Columnar Pruning & Pushdown:</span>
+                                <strong class="text-emerald-400">Đã kích hoạt</strong>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Tốc độ đọc Spark DataFrame:</span>
+                                <strong class="text-primary font-bold">Nhanh gấp ~5.2 lần</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] text-outline pt-2 border-t border-outline-variant/20 italic">
+                        Chứng minh đồ án tuân thủ chuẩn Enterprise Data Engineering.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: DATASET FINDINGS & BRIDGE TO MODEL SYSTEM -->
+        <section id="dataset-summary" class="scroll-mt-36">
+            <div class="mb-5">
+                <span class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">insights</span> Mục 10 • Tổng Kết Đặc Trưng Dữ Liệu & Định Hướng Xây Dựng Mô Hình
+                </span>
+                <h2 class="text-xl lg:text-2xl font-headline font-bold text-white mt-1">Các Thách Thức Big Data & Giải Pháp Triển Khai Mô Hình Phân Tán</h2>
+                <p class="text-sm text-outline mt-1">Từ các phân tích thống kê trên, nhóm đồ án đã rút ra 3 bài toán kỹ thuật cốt lõi cần giải quyết bằng Apache Spark & MLlib.</p>
+            </div>
+
+            <!-- 3 Architectural Takeaways -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <!-- Card 1: Matrix Sparsity -->
+                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">01</span>
+                            <span class="text-[11px] font-mono text-primary font-bold">Sparsity 99.75%</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Độ Thưa Cực Lớn Của Ma Trận Tương Tác</h3>
+                        <p class="text-xs text-outline leading-relaxed">
+                            Với 25 triệu ratings trên không gian 162K users × 62K movies, mật độ dữ liệu chỉ đạt 0.25%. Không thể lưu ma trận đầy đủ trong bộ nhớ RAM máy đơn. Bắt buộc phải áp dụng <strong class="text-white">Spark ALS Matrix Factorization</strong> để phân rã thành hai ma trận hệ số tiềm ẩn bậc thấp (Rank k=50).
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-primary font-semibold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Giải quyết bài toán không gian thưa
+                    </div>
+                </div>
+
+                <!-- Card 2: Long-Tail Distribution -->
+                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">02</span>
+                            <span class="text-[11px] font-mono text-amber-400 font-bold">90% Long-Tail</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Sự Mất Cân Bằng Giữa Blockbuster & Long-Tail</h3>
+                        <p class="text-xs text-outline leading-relaxed">
+                            10% phim đầu bảng gom tới 86.5% số lượng đánh giá, khiến các thuật toán gợi ý theo độ phổ biến (Popularity baseline) liên tục lặp lại các phim cũ. Lọc cộng tác ALS học biểu diễn tiềm ẩn để khai phá các bộ phim có chất lượng cao (Rating ≥ 4.0) nhưng ít người biết ở vùng đuôi dài.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-amber-400 font-semibold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Cá nhân hóa vượt trội vs Popularity
+                    </div>
+                </div>
+
+                <!-- Card 3: Rating Bias & Regularization -->
+                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">03</span>
+                            <span class="text-[11px] font-mono text-emerald-400 font-bold">Mode = 4.0 ★</span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white mb-1.5">Xu Hướng Lệch Phải & Thiên Lệch Đánh Giá</h3>
+                        <p class="text-xs text-outline leading-relaxed">
+                            Điểm trung bình toàn hệ thống là 3.53★ và người dùng có xu hướng chấm điểm số nguyên chẵn (4.0★ chiếm 26.6%). Để tránh Overfitting đối với các Super-raters và User ít tương tác, cần thực nghiệm tinh chỉnh hệ số điều chuẩn L2 (<strong class="text-white">regParam = 0.10</strong>) thông qua Grid Search 9 cấu hình.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Kiểm soát Overfitting & Bias
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transition Call-To-Action Banner -->
+            <div class="p-6 md:p-8 rounded-2xl bg-gradient-to-r from-primary/10 via-surface-container-high to-surface-container border border-primary/30 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-2xl">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/20 text-primary border border-primary/40 uppercase tracking-wider">
+                            Chuyển Tiếp Kiến Trúc Kỹ Thuật
+                        </span>
+                        <span class="text-xs text-outline">• Apache Spark 3.5 & HDFS Cluster</span>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-headline font-bold text-white">Khám Phá Toàn Diện Mô Hình Huấn Luyện Spark ALS & Cụm Tính Toán</h3>
+                    <p class="text-xs text-on-surface-variant mt-1.5 max-w-3xl leading-relaxed">
+                        Toàn bộ kết quả thử nghiệm mô hình thực tế, bảng siêu tham số Grid Search 9 tổ hợp, so sánh RMSE/MAE (+16.3% tốt hơn Baseline), khảo sát khả năng mở rộng dữ liệu lớn (Scalability 100K → 10M → 25M) và cây thư mục HDFS hiện được hiển thị đầy đủ tại phân trang <strong class="text-white">Mô Hình & Hệ Thống</strong>.
+                    </p>
+                </div>
+                <a href="/system" class="shrink-0 px-6 py-3 rounded-xl bg-primary text-on-primary font-headline font-bold text-xs flex items-center gap-2 shadow-lg hover:shadow-primary/40 hover:scale-105 transition-all">
+                    <span>Xem Mô Hình & Hệ Thống</span>
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CHART.JS INITIALIZATION SCRIPTS -->
+    <script>
+        // Global Chart Defaults for Dark Theme
+        Chart.defaults.color = '#89929b';
+        Chart.defaults.borderColor = 'rgba(63, 72, 80, 0.3)';
+        Chart.defaults.font.family = 'Inter, sans-serif';
+
+        // 1. Rating Distribution Chart
+        new Chart(document.getElementById('ratingDistChart'), {
+            type: 'bar',
+            data: {
+                labels: ['0.5 ★', '1.0 ★', '1.5 ★', '2.0 ★', '2.5 ★', '3.0 ★', '3.5 ★', '4.0 ★ (Mode)', '4.5 ★', '5.0 ★'],
+                datasets: [{
+                    label: 'Số Lượng Ratings',
+                    data: [393068, 776815, 399490, 1640868, 1262797, 4994948, 3177318, 6639798, 2126050, 3588943],
+                    backgroundColor: [
+                        '#ef4444', '#f87171', '#fb923c', '#fbbf24', '#fde047',
+                        '#a3e635', '#4ade80', '#38bdf8', '#818cf8', '#a855f7'
+                    ],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                const total = 25000095;
+                                const val = ctx.raw;
+                                const pct = ((val / total) * 100).toFixed(1);
+                                return val.toLocaleString() + ' votes (' + pct + '%)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) { return (v / 1000000).toFixed(1) + 'M'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Movies by Decade Chart
+        new Chart(document.getElementById('decadeChart'), {
+            type: 'line',
+            data: {
+                labels: ['Trước 1930', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s'],
+                datasets: [{
+                    label: 'Số Lượng Phim Sản Xuất',
+                    data: [1840, 2410, 2620, 3250, 4120, 5140, 7890, 11250, 14880, 18980],
+                    borderColor: '#38bdf8',
+                    backgroundColor: 'rgba(56, 189, 248, 0.15)',
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#38bdf8',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) { return v.toLocaleString(); }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Genre Comparison Chart
+        new Chart(document.getElementById('genreStatsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Drama', 'Comedy', 'Action', 'Thriller', 'Adventure', 'Romance', 'Sci-Fi', 'Crime', 'Horror', 'Fantasy', 'Animation', 'Mystery', 'Children', 'War'],
+                datasets: [{
+                    label: 'Tổng Ratings (Triệu)',
+                    data: [10.96, 8.93, 7.45, 6.76, 5.83, 4.50, 4.33, 4.19, 1.89, 2.83, 1.63, 2.01, 2.12, 1.27],
+                    backgroundColor: '#93ccff',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: { callback: function(v) { return v + 'M'; } }
+                    }
+                }
+            }
+        });
+
+        // 4. User Segmentation Donut Chart
+        new Chart(document.getElementById('userSegmentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Casual (< 50 ratings)', 'Regular (50 - 250 ratings)', 'Heavy (> 250 ratings)'],
+                datasets: [{
+                    data: [42.1, 41.5, 16.4],
+                    backgroundColor: ['#38bdf8', '#93ccff', '#ffb875'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                },
+                cutout: '65%'
+            }
+        });
+
+        // 5. Long-Tail Cumulative Curve Chart
+        new Chart(document.getElementById('longTailChart'), {
+            type: 'line',
+            data: {
+                labels: ['0%', '1%', '5%', '10%', '20%', '30%', '50%', '70%', '100%'],
+                datasets: [{
+                    label: '% Lũy Kế Ratings',
+                    data: [0, 41.2, 73.8, 86.5, 93.2, 96.1, 98.4, 99.4, 100],
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#f59e0b'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) { return ctx.raw + '% tổng số ratings'; }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        ticks: { callback: function(v) { return v + '%'; } }
+                    }
+                }
+            }
+        });
+
+        // 6. Scatter Quadrant Chart
+        new Chart(document.getElementById('scatterQuadrantChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [
+                    {
+                        label: 'Blockbusters & Kiệt Tác',
+                        data: [
+                            {x: 81482, y: 4.41}, {x: 81491, y: 4.05}, {x: 79672, y: 4.18},
+                            {x: 72674, y: 4.15}, {x: 68717, y: 4.12}, {x: 56069, y: 4.23},
+                            {x: 52500, y: 4.32}, {x: 60400, y: 4.25}
+                        ],
+                        backgroundColor: '#38bdf8'
+                    },
+                    {
+                        label: 'Hidden Gems (Báu Vật Ẩn)',
+                        data: [
+                            {x: 3200, y: 4.28}, {x: 2800, y: 4.21}, {x: 1800, y: 4.19},
+                            {x: 3900, y: 4.16}, {x: 1500, y: 4.25}, {x: 2200, y: 4.22}
+                        ],
+                        backgroundColor: '#4ade80'
+                    },
+                    {
+                        label: 'Mass Pop / Divisive',
+                        data: [
+                            {x: 64144, y: 3.67}, {x: 57342, y: 3.96}, {x: 51200, y: 3.52},
+                            {x: 48000, y: 3.45}
+                        ],
+                        backgroundColor: '#ffb875'
+                    },
+                    {
+                        label: 'Niche Long-tail',
+                        data: [
+                            {x: 850, y: 3.2}, {x: 1200, y: 2.8}, {x: 600, y: 3.5},
+                            {x: 400, y: 3.1}, {x: 950, y: 2.9}
+                        ],
+                        backgroundColor: '#94a3b8'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'Số Lượt Ratings (Votes)', font: { size: 10 } },
+                        ticks: { callback: function(v) { return (v / 1000).toFixed(0) + 'K'; } }
+                    },
+                    y: {
+                        min: 2.5,
+                        max: 5.0,
+                        title: { display: true, text: 'Rating Trung Bình (★)', font: { size: 10 } }
+                    }
+                }
+            }
+        });
+
+        // 7. Timeline Ratings Chart
+        new Chart(document.getElementById('timelineChart'), {
+            type: 'bar',
+            data: {
+                labels: ['1995', '1996', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'],
+                datasets: [{
+                    label: 'Số Lượng Ratings Hàng Năm',
+                    data: [0.03, 0.76, 0.48, 0.44, 1.12, 2.58, 1.02, 0.98, 1.01, 1.09, 1.38, 1.42, 1.18, 1.25, 1.15, 1.04, 0.97, 1.05, 0.92, 0.89, 1.84, 1.81, 1.41, 1.28, 1.36],
+                    backgroundColor: function(ctx) {
+                        const yr = ctx.chart.data.labels[ctx.dataIndex];
+                        if (yr === '2000' || yr === '2015' || yr === '2016') return '#38bdf8';
+                        return '#3f4850';
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) { return ctx.raw + ' Triệu lượt đánh giá'; }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: function(v) { return v + 'M'; } }
+                    }
+                }
+            }
+        });
+
+        // 8. Interactive Genre Deep-Dive Logic
+        const GENRE_DEEP_DATA = {
+            "Drama": {
+                movies: "25,606", ratings: "10,962,833", avg: "★ 3.68",
+                dist: [1.2, 2.4, 1.3, 5.5, 4.8, 18.2, 13.5, 29.1, 9.8, 14.2],
+                desc: "Thể loại Drama chiếm hơn 43.8% tổng lượt rating của toàn bộ kho dữ liệu MovieLens 25M."
+            },
+            "Action": {
+                movies: "7,348", ratings: "7,446,918", avg: "★ 3.47",
+                dist: [1.8, 3.5, 1.9, 7.8, 6.2, 22.4, 14.1, 25.2, 7.5, 9.6],
+                desc: "Hành động có độ giải trí cao, điểm trung bình dao động 3.47 sao với đỉnh phổ biến tại 3.5 - 4.0 sao."
+            },
+            "Comedy": {
+                movies: "16,870", ratings: "8,926,230", avg: "★ 3.42",
+                dist: [2.1, 4.2, 2.2, 8.5, 6.8, 23.1, 13.2, 23.5, 6.8, 9.6],
+                desc: "Hài kịch là thể loại có số lượng phim đứng thứ 2, thường có phân tán điểm rộng do tính cảm nhận cá nhân."
+            },
+            "Sci-Fi": {
+                movies: "3,595", ratings: "4,325,740", avg: "★ 3.48",
+                dist: [1.7, 3.4, 1.8, 7.4, 5.9, 21.5, 13.8, 26.2, 8.1, 10.2],
+                desc: "Viễn tưởng có sự tham gia của các siêu phẩm như Matrix, Inception, Interstellar với lượng fan trung thành cao."
+            },
+            "Adventure": {
+                movies: "4,145", ratings: "5,832,424", avg: "★ 3.52",
+                dist: [1.4, 2.9, 1.6, 6.9, 5.5, 21.0, 14.0, 27.1, 8.4, 11.2],
+                desc: "Phiêu lưu thường đi liền với Hành động và Kỳ ảo, điểm trung bình đạt 3.52 sao."
+            },
+            "Crime": {
+                movies: "5,319", ratings: "4,190,259", avg: "★ 3.69",
+                dist: [1.1, 2.2, 1.2, 5.2, 4.5, 18.0, 13.8, 29.5, 10.2, 14.3],
+                desc: "Tội phạm sở hữu nhiều tượng đài điện ảnh như The Godfather, Pulp Fiction, The Usual Suspects."
+            },
+            "Romance": {
+                movies: "7,719", ratings: "4,497,291", avg: "★ 3.54",
+                dist: [1.5, 3.0, 1.7, 6.8, 5.6, 20.8, 13.9, 26.8, 8.7, 11.2],
+                desc: "Lãng mạn có lượng phim đồ sộ, được đánh giá ổn định bởi đối tượng khán giả đại chúng."
+            },
+            "Thriller": {
+                movies: "8,654", ratings: "6,763,272", avg: "★ 3.52",
+                dist: [1.5, 3.1, 1.7, 7.1, 5.8, 21.2, 13.9, 26.9, 8.4, 10.4],
+                desc: "Kịch tính là thể loại có số lượng phim phong phú bậc nhất (8,654 phim)."
+            },
+            "Animation": {
+                movies: "2,929", ratings: "1,630,987", avg: "★ 3.61",
+                dist: [1.2, 2.5, 1.3, 5.8, 5.1, 19.5, 14.2, 28.5, 9.4, 12.5],
+                desc: "Hoạt hình có điểm trung bình cao (3.61 sao) nhờ các tác phẩm từ Pixar, Ghibli, Disney."
+            },
+            "Horror": {
+                movies: "5,989", ratings: "1,892,183", avg: "★ 3.29",
+                dist: [3.8, 6.5, 3.2, 11.2, 8.2, 24.1, 11.8, 17.5, 5.2, 8.5],
+                desc: "Kinh dị là thể loại có điểm trung bình thấp nhất (3.29 sao) do tính phân hóa cực mạnh của người xem."
+            },
+            "War": {
+                movies: "1,874", ratings: "1,267,346", avg: "★ 3.79",
+                dist: [0.9, 1.8, 1.0, 4.5, 3.9, 16.5, 13.5, 31.2, 11.5, 15.2],
+                desc: "Chiến tranh là một trong những thể loại có điểm trung bình cao nhất (3.79 sao) nhờ tính lịch sử và chiều sâu kịch bản."
+            },
+            "Film-Noir": {
+                movies: "353", ratings: "247,227", avg: "★ 3.93",
+                dist: [0.5, 1.1, 0.6, 3.2, 2.8, 13.8, 12.5, 34.2, 13.8, 17.5],
+                desc: "Phim đen là thể loại đạt điểm trung bình cao nhất toàn bộ dữ liệu (3.93 sao) với nhóm khán giả tinh hoa."
+            },
+            "Western": {
+                movies: "1,399", ratings: "483,731", avg: "★ 3.59",
+                dist: [1.3, 2.6, 1.4, 6.1, 5.2, 20.1, 14.0, 27.8, 9.2, 12.3],
+                desc: "Miền Tây cổ điển đại diện cho văn hóa Mỹ thập niên 1950-1970."
+            }
+        };
+
+        let genreChartInstance = null;
+
+        function updateGenreDeepDive(genreKey) {
+            const data = GENRE_DEEP_DATA[genreKey] || GENRE_DEEP_DATA["Drama"];
+            document.getElementById('g-movies').innerText = data.movies;
+            document.getElementById('g-ratings').innerText = data.ratings;
+            document.getElementById('g-avg').innerText = data.avg;
+            document.getElementById('g-desc').innerText = data.desc;
+
+            if (genreChartInstance) {
+                genreChartInstance.destroy();
+            }
+
+            genreChartInstance = new Chart(document.getElementById('genreDeepChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['0.5 ★', '1.0 ★', '1.5 ★', '2.0 ★', '2.5 ★', '3.0 ★', '3.5 ★', '4.0 ★', '4.5 ★', '5.0 ★'],
+                    datasets: [{
+                        label: '% Phân Bố Rating của ' + genreKey,
+                        data: data.dist,
+                        backgroundColor: '#38bdf8',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) { return ctx.raw + '% tổng số ratings thể loại ' + genreKey; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: function(v) { return v + '%'; } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize genre deep-dive
+        updateGenreDeepDive('Drama');
+    </script>
+</body>
+</html>

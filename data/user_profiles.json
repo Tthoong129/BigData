@@ -1,0 +1,2981 @@
+{
+  "100": {
+    "uid": 100,
+    "persona": "Người Thích Giải Trí Hài Hước (Comedy Buff)",
+    "total_ratings": 61,
+    "avg_rating": 3.51,
+    "movies_rated_count": 61,
+    "favorite_genre": "Chính kịch",
+    "first_year": 1997,
+    "last_year": 1997,
+    "most_active_year": 1997,
+    "most_active_count": 61,
+    "rating_style": "Cân bằng (Balanced)",
+    "rating_desc": "Người dùng có xu hướng đánh giá cân bằng theo gu thực tế (TB: 3.51★).",
+    "summary_text": "User #100 là người thích giải trí hài hước (comedy buff), đã thực hiện 61 lượt đánh giá thực tế trong CSDL MovieLens 25M từ năm 1997 đến 1997. Người dùng có phong cách chấm điểm cân bằng (balanced), điểm trung bình đạt 3.51/5.0 sao. Sở thích nổi trội tập trung vào các thể loại Chính kịch, Hài hước, Kịch tính. Thời kỳ hoạt động mạnh mẽ nhất của user là năm 1997 với 61 lượt xem và bình chọn.",
+    "rating_distribution": [
+      {
+        "star": 0.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 1.0,
+        "count": 3,
+        "pct": 4.9
+      },
+      {
+        "star": 1.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 2.0,
+        "count": 3,
+        "pct": 4.9
+      },
+      {
+        "star": 2.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 3.0,
+        "count": 22,
+        "pct": 36.1
+      },
+      {
+        "star": 3.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 4.0,
+        "count": 26,
+        "pct": 42.6
+      },
+      {
+        "star": 4.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 5.0,
+        "count": 7,
+        "pct": 11.5
+      }
+    ],
+    "genres": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "count": 42,
+        "pct": 68.9,
+        "user_avg": 3.79
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "count": 18,
+        "pct": 29.5,
+        "user_avg": 3.0
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "count": 13,
+        "pct": 21.3,
+        "user_avg": 2.92
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "count": 13,
+        "pct": 21.3,
+        "user_avg": 3.23
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "count": 11,
+        "pct": 18.0,
+        "user_avg": 3.73
+      },
+      {
+        "genre": "Crime",
+        "name_vi": "Tội phạm",
+        "count": 11,
+        "pct": 18.0,
+        "user_avg": 3.55
+      },
+      {
+        "genre": "Sci-Fi",
+        "name_vi": "Khoa học viễn tưởng",
+        "count": 9,
+        "pct": 14.8,
+        "user_avg": 2.89
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "count": 9,
+        "pct": 14.8,
+        "user_avg": 3.11
+      },
+      {
+        "genre": "Mystery",
+        "name_vi": "Bí ẩn",
+        "count": 6,
+        "pct": 9.8,
+        "user_avg": 3.83
+      },
+      {
+        "genre": "War",
+        "name_vi": "Chiến tranh",
+        "count": 4,
+        "pct": 6.6,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "Western",
+        "name_vi": "Miền Tây",
+        "count": 3,
+        "pct": 4.9,
+        "user_avg": 4.33
+      },
+      {
+        "genre": "Fantasy",
+        "name_vi": "Kỳ ảo",
+        "count": 2,
+        "pct": 3.3,
+        "user_avg": 3.0
+      },
+      {
+        "genre": "Film-Noir",
+        "name_vi": "Phim đen",
+        "count": 1,
+        "pct": 1.6,
+        "user_avg": 3.0
+      }
+    ],
+    "taste_vs_community": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "user_avg": 3.79,
+        "community_avg": 3.68,
+        "diff": 0.11,
+        "higher": true
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "user_avg": 3.0,
+        "community_avg": 3.42,
+        "diff": -0.42,
+        "higher": false
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "user_avg": 2.92,
+        "community_avg": 3.52,
+        "diff": -0.6,
+        "higher": false
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "user_avg": 3.23,
+        "community_avg": 3.47,
+        "diff": -0.24,
+        "higher": false
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "user_avg": 3.73,
+        "community_avg": 3.54,
+        "diff": 0.19,
+        "higher": true
+      }
+    ],
+    "timeline_activity": [
+      {
+        "year": 1997,
+        "count": 61
+      }
+    ],
+    "top_movies": [
+      {
+        "movieId": 714,
+        "title": "Dead Man (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|Mystery|Western",
+        "comm_avg": 3.89,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 781,
+        "title": "Stealing Beauty (1996)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 3.42,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 1193,
+        "title": "One Flew Over the Cuckoo's Nest (1975)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 4.22,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 1233,
+        "title": "Boot, Das (Boat, The) (1981)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.13,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 1354,
+        "title": "Breaking the Waves (1996)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|Mystery",
+        "comm_avg": 3.84,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 1358,
+        "title": "Sling Blade (1996)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 4.0,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 1466,
+        "title": "Donnie Brasco (1997)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.81,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 17,
+        "title": "Sense and Sensibility (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.95,
+        "date": "1997-04-27"
+      }
+    ],
+    "lowest_movies": [
+      {
+        "movieId": 780,
+        "title": "Independence Day (a.k.a. ID4) (1996)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Sci-Fi|Thriller",
+        "comm_avg": 3.37,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 880,
+        "title": "Island of Dr. Moreau, The (1996)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Sci-Fi|Thriller",
+        "comm_avg": 2.47,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 1060,
+        "title": "Swingers (1996)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.84,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 5,
+        "title": "Father of the Bride Part II (1995)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy",
+        "comm_avg": 3.06,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 765,
+        "title": "Jack (1996)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.02,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 778,
+        "title": "Trainspotting (1996)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy|Crime|Drama",
+        "comm_avg": 4.01,
+        "date": "1997-04-27"
+      }
+    ],
+    "recent_ratings": [
+      {
+        "movieId": 5,
+        "title": "Father of the Bride Part II (1995)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy",
+        "comm_avg": 3.06,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 17,
+        "title": "Sense and Sensibility (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.95,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 25,
+        "title": "Leaving Las Vegas (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.68,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 26,
+        "title": "Othello (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 3.61,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 32,
+        "title": "Twelve Monkeys (a.k.a. 12 Monkeys) (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Mystery|Sci-Fi|Thriller",
+        "comm_avg": 3.91,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 36,
+        "title": "Dead Man Walking (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.92,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 52,
+        "title": "Mighty Aphrodite (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.53,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 58,
+        "title": "Postman, The (Postino, Il) (1994)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.97,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 78,
+        "title": "Crossing Guard, The (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Crime|Drama|Thriller",
+        "comm_avg": 3.15,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 82,
+        "title": "Antonia's Line (Antonia) (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.99,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 85,
+        "title": "Angels and Insects (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.53,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 141,
+        "title": "Birdcage, The (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy",
+        "comm_avg": 3.51,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 213,
+        "title": "Burnt by the Sun (Utomlyonnye solntsem) (1994)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 4.02,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 260,
+        "title": "Star Wars: Episode IV - A New Hope (1977)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Sci-Fi",
+        "comm_avg": 4.12,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 290,
+        "title": "Once Were Warriors (1994)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.97,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 527,
+        "title": "Schindler's List (1993)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama|War",
+        "comm_avg": 4.25,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 541,
+        "title": "Blade Runner (1982)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Action|Sci-Fi|Thriller",
+        "comm_avg": 4.12,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 590,
+        "title": "Dances with Wolves (1990)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Adventure|Drama|Western",
+        "comm_avg": 3.73,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 608,
+        "title": "Fargo (1996)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Comedy|Crime|Drama|Thriller",
+        "comm_avg": 4.11,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 640,
+        "title": "Diabolique (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Drama|Thriller",
+        "comm_avg": 2.97,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 647,
+        "title": "Courage Under Fire (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Crime|Drama|War",
+        "comm_avg": 3.54,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 648,
+        "title": "Mission: Impossible (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Mystery|Thriller",
+        "comm_avg": 3.4,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 653,
+        "title": "Dragonheart (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Fantasy",
+        "comm_avg": 3.22,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 671,
+        "title": "Mystery Science Theater 3000: The Movie (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy|Sci-Fi",
+        "comm_avg": 3.67,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 707,
+        "title": "Mulholland Falls (1996)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Crime|Drama|Thriller",
+        "comm_avg": 3.07,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 708,
+        "title": "Truth About Cats & Dogs, The (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.39,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 714,
+        "title": "Dead Man (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|Mystery|Western",
+        "comm_avg": 3.89,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 733,
+        "title": "Rock, The (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Thriller",
+        "comm_avg": 3.67,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 743,
+        "title": "Spy Hard (1996)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy",
+        "comm_avg": 2.73,
+        "date": "1997-04-27"
+      },
+      {
+        "movieId": 765,
+        "title": "Jack (1996)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.02,
+        "date": "1997-04-27"
+      }
+    ]
+  },
+  "414": {
+    "uid": 414,
+    "persona": "Người Khám Phá Cảm Xúc (Emotional Drama Explorer)",
+    "total_ratings": 202,
+    "avg_rating": 3.82,
+    "movies_rated_count": 202,
+    "favorite_genre": "Chính kịch",
+    "first_year": 1997,
+    "last_year": 1997,
+    "most_active_year": 1997,
+    "most_active_count": 202,
+    "rating_style": "Cân bằng (Balanced)",
+    "rating_desc": "Người dùng có xu hướng đánh giá cân bằng theo gu thực tế (TB: 3.82★).",
+    "summary_text": "User #414 là người khám phá cảm xúc (emotional drama explorer), đã thực hiện 202 lượt đánh giá thực tế trong CSDL MovieLens 25M từ năm 1997 đến 1997. Người dùng có phong cách chấm điểm cân bằng (balanced), điểm trung bình đạt 3.82/5.0 sao. Sở thích nổi trội tập trung vào các thể loại Chính kịch, Hài hước, Lãng mạn. Thời kỳ hoạt động mạnh mẽ nhất của user là năm 1997 với 202 lượt xem và bình chọn.",
+    "rating_distribution": [
+      {
+        "star": 0.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 1.0,
+        "count": 2,
+        "pct": 1.0
+      },
+      {
+        "star": 1.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 2.0,
+        "count": 5,
+        "pct": 2.5
+      },
+      {
+        "star": 2.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 3.0,
+        "count": 74,
+        "pct": 36.6
+      },
+      {
+        "star": 3.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 4.0,
+        "count": 68,
+        "pct": 33.7
+      },
+      {
+        "star": 4.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 5.0,
+        "count": 53,
+        "pct": 26.2
+      }
+    ],
+    "genres": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "count": 123,
+        "pct": 60.9,
+        "user_avg": 3.89
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "count": 80,
+        "pct": 39.6,
+        "user_avg": 3.75
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "count": 64,
+        "pct": 31.7,
+        "user_avg": 3.52
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "count": 38,
+        "pct": 18.8,
+        "user_avg": 3.79
+      },
+      {
+        "genre": "Crime",
+        "name_vi": "Tội phạm",
+        "count": 36,
+        "pct": 17.8,
+        "user_avg": 3.78
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "count": 28,
+        "pct": 13.9,
+        "user_avg": 3.46
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "count": 21,
+        "pct": 10.4,
+        "user_avg": 3.38
+      },
+      {
+        "genre": "Mystery",
+        "name_vi": "Bí ẩn",
+        "count": 16,
+        "pct": 7.9,
+        "user_avg": 4.06
+      },
+      {
+        "genre": "Sci-Fi",
+        "name_vi": "Khoa học viễn tưởng",
+        "count": 15,
+        "pct": 7.4,
+        "user_avg": 3.67
+      },
+      {
+        "genre": "Fantasy",
+        "name_vi": "Kỳ ảo",
+        "count": 14,
+        "pct": 6.9,
+        "user_avg": 3.93
+      },
+      {
+        "genre": "War",
+        "name_vi": "Chiến tranh",
+        "count": 9,
+        "pct": 4.5,
+        "user_avg": 4.22
+      },
+      {
+        "genre": "Horror",
+        "name_vi": "Kinh dị",
+        "count": 6,
+        "pct": 3.0,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "Children",
+        "name_vi": "Gia đình",
+        "count": 5,
+        "pct": 2.5,
+        "user_avg": 4.4
+      },
+      {
+        "genre": "Western",
+        "name_vi": "Miền Tây",
+        "count": 4,
+        "pct": 2.0,
+        "user_avg": 4.25
+      },
+      {
+        "genre": "Documentary",
+        "name_vi": "Tài liệu",
+        "count": 3,
+        "pct": 1.5,
+        "user_avg": 4.67
+      },
+      {
+        "genre": "Musical",
+        "name_vi": "Ca nhạc",
+        "count": 3,
+        "pct": 1.5,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "Film-Noir",
+        "name_vi": "Phim đen",
+        "count": 2,
+        "pct": 1.0,
+        "user_avg": 3.0
+      },
+      {
+        "genre": "Animation",
+        "name_vi": "Hoạt hình",
+        "count": 1,
+        "pct": 0.5,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "IMAX",
+        "name_vi": "IMAX",
+        "count": 1,
+        "pct": 0.5,
+        "user_avg": 5.0
+      }
+    ],
+    "taste_vs_community": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "user_avg": 3.89,
+        "community_avg": 3.68,
+        "diff": 0.21,
+        "higher": true
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "user_avg": 3.75,
+        "community_avg": 3.42,
+        "diff": 0.33,
+        "higher": true
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "user_avg": 3.52,
+        "community_avg": 3.54,
+        "diff": -0.02,
+        "higher": false
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "user_avg": 3.79,
+        "community_avg": 3.52,
+        "diff": 0.27,
+        "higher": true
+      },
+      {
+        "genre": "Crime",
+        "name_vi": "Tội phạm",
+        "user_avg": 3.78,
+        "community_avg": 3.69,
+        "diff": 0.09,
+        "higher": true
+      }
+    ],
+    "timeline_activity": [
+      {
+        "year": 1997,
+        "count": 202
+      }
+    ],
+    "top_movies": [
+      {
+        "movieId": 25,
+        "title": "Leaving Las Vegas (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.68,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 36,
+        "title": "Dead Man Walking (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.92,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 39,
+        "title": "Clueless (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.42,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 41,
+        "title": "Richard III (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|War",
+        "comm_avg": 3.84,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 47,
+        "title": "Seven (a.k.a. Se7en) (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Mystery|Thriller",
+        "comm_avg": 4.08,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 50,
+        "title": "Usual Suspects, The (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Crime|Mystery|Thriller",
+        "comm_avg": 4.28,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 58,
+        "title": "Postman, The (Postino, Il) (1994)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.97,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 82,
+        "title": "Antonia's Line (Antonia) (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.99,
+        "date": "1997-04-16"
+      }
+    ],
+    "lowest_movies": [
+      {
+        "movieId": 52,
+        "title": "Mighty Aphrodite (1995)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.53,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 81,
+        "title": "Things to Do in Denver When You're Dead (1995)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Crime|Drama|Romance",
+        "comm_avg": 3.25,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 249,
+        "title": "Immortal Beloved (1994)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.68,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 372,
+        "title": "Reality Bites (1994)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.25,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 648,
+        "title": "Mission: Impossible (1996)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Mystery|Thriller",
+        "comm_avg": 3.4,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 691,
+        "title": "Mrs. Winterbourne (1996)",
+        "rating": 2.0,
+        "year": 1997,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.06,
+        "date": "1997-04-16"
+      }
+    ],
+    "recent_ratings": [
+      {
+        "movieId": 1,
+        "title": "Toy Story (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Adventure|Animation|Children|Comedy|Fantasy",
+        "comm_avg": 3.89,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 6,
+        "title": "Heat (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Crime|Thriller",
+        "comm_avg": 3.85,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 7,
+        "title": "Sabrina (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.36,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 11,
+        "title": "American President, The (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.66,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 17,
+        "title": "Sense and Sensibility (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.95,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 21,
+        "title": "Get Shorty (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy|Crime|Thriller",
+        "comm_avg": 3.57,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 22,
+        "title": "Copycat (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Crime|Drama|Horror|Mystery|Thriller",
+        "comm_avg": 3.32,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 25,
+        "title": "Leaving Las Vegas (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.68,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 28,
+        "title": "Persuasion (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Drama|Romance",
+        "comm_avg": 4.03,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 29,
+        "title": "City of Lost Children, The (CitĂ© des enfants perdus, La) (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Adventure|Drama|Fantasy|Mystery|Sci-Fi",
+        "comm_avg": 3.94,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 32,
+        "title": "Twelve Monkeys (a.k.a. 12 Monkeys) (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Mystery|Sci-Fi|Thriller",
+        "comm_avg": 3.91,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 34,
+        "title": "Babe (1995)",
+        "rating": 4.0,
+        "year": 1997,
+        "genres": "Children|Drama",
+        "comm_avg": 3.6,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 36,
+        "title": "Dead Man Walking (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.92,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 39,
+        "title": "Clueless (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.42,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 41,
+        "title": "Richard III (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama|War",
+        "comm_avg": 3.84,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 45,
+        "title": "To Die For (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Thriller",
+        "comm_avg": 3.38,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 47,
+        "title": "Seven (a.k.a. Se7en) (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Mystery|Thriller",
+        "comm_avg": 4.08,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 50,
+        "title": "Usual Suspects, The (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Crime|Mystery|Thriller",
+        "comm_avg": 4.28,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 52,
+        "title": "Mighty Aphrodite (1995)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.53,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 55,
+        "title": "Georgia (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 3.22,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 57,
+        "title": "Home for the Holidays (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 3.32,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 58,
+        "title": "Postman, The (Postino, Il) (1994)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.97,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 78,
+        "title": "Crossing Guard, The (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Crime|Drama|Thriller",
+        "comm_avg": 3.15,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 81,
+        "title": "Things to Do in Denver When You're Dead (1995)",
+        "rating": 1.0,
+        "year": 1997,
+        "genres": "Crime|Drama|Romance",
+        "comm_avg": 3.25,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 82,
+        "title": "Antonia's Line (Antonia) (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.99,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 90,
+        "title": "The Journey of August King (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Drama",
+        "comm_avg": 3.33,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 110,
+        "title": "Braveheart (1995)",
+        "rating": 5.0,
+        "year": 1997,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.0,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 111,
+        "title": "Taxi Driver (1976)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Crime|Drama|Thriller",
+        "comm_avg": 4.08,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 112,
+        "title": "Rumble in the Bronx (Hont faan kui) (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Action|Adventure|Comedy|Crime",
+        "comm_avg": 3.41,
+        "date": "1997-04-16"
+      },
+      {
+        "movieId": 117,
+        "title": "Young Poisoner's Handbook, The (1995)",
+        "rating": 3.0,
+        "year": 1997,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.57,
+        "date": "1997-04-16"
+      }
+    ]
+  },
+  "500": {
+    "uid": 500,
+    "persona": "Người Khám Phá Cảm Xúc (Emotional Drama Explorer)",
+    "total_ratings": 22,
+    "avg_rating": 3.2,
+    "movies_rated_count": 22,
+    "favorite_genre": "Chính kịch",
+    "first_year": 2006,
+    "last_year": 2006,
+    "most_active_year": 2006,
+    "most_active_count": 22,
+    "rating_style": "Khắt khe (Selective / Critical)",
+    "rating_desc": "Người dùng có tiêu chuẩn tuyển chọn cao, thường chấm khắt khe (TB: 3.2★).",
+    "summary_text": "User #500 là người khám phá cảm xúc (emotional drama explorer), đã thực hiện 22 lượt đánh giá thực tế trong CSDL MovieLens 25M từ năm 2006 đến 2006. Người dùng có phong cách chấm điểm khắt khe (selective / critical), điểm trung bình đạt 3.2/5.0 sao. Sở thích nổi trội tập trung vào các thể loại Chính kịch, Hài hước, Lãng mạn. Thời kỳ hoạt động mạnh mẽ nhất của user là năm 2006 với 22 lượt xem và bình chọn.",
+    "rating_distribution": [
+      {
+        "star": 0.5,
+        "count": 2,
+        "pct": 9.1
+      },
+      {
+        "star": 1.0,
+        "count": 2,
+        "pct": 9.1
+      },
+      {
+        "star": 1.5,
+        "count": 1,
+        "pct": 4.5
+      },
+      {
+        "star": 2.0,
+        "count": 2,
+        "pct": 9.1
+      },
+      {
+        "star": 2.5,
+        "count": 2,
+        "pct": 9.1
+      },
+      {
+        "star": 3.0,
+        "count": 1,
+        "pct": 4.5
+      },
+      {
+        "star": 3.5,
+        "count": 1,
+        "pct": 4.5
+      },
+      {
+        "star": 4.0,
+        "count": 4,
+        "pct": 18.2
+      },
+      {
+        "star": 4.5,
+        "count": 1,
+        "pct": 4.5
+      },
+      {
+        "star": 5.0,
+        "count": 6,
+        "pct": 27.3
+      }
+    ],
+    "genres": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "count": 13,
+        "pct": 59.1,
+        "user_avg": 4.12
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "count": 10,
+        "pct": 45.5,
+        "user_avg": 2.5
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "count": 7,
+        "pct": 31.8,
+        "user_avg": 3.36
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "count": 6,
+        "pct": 27.3,
+        "user_avg": 2.33
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "count": 6,
+        "pct": 27.3,
+        "user_avg": 1.83
+      },
+      {
+        "genre": "Crime",
+        "name_vi": "Tội phạm",
+        "count": 3,
+        "pct": 13.6,
+        "user_avg": 3.67
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "count": 3,
+        "pct": 13.6,
+        "user_avg": 3.67
+      },
+      {
+        "genre": "Animation",
+        "name_vi": "Hoạt hình",
+        "count": 3,
+        "pct": 13.6,
+        "user_avg": 2.5
+      },
+      {
+        "genre": "Children",
+        "name_vi": "Gia đình",
+        "count": 3,
+        "pct": 13.6,
+        "user_avg": 2.5
+      },
+      {
+        "genre": "War",
+        "name_vi": "Chiến tranh",
+        "count": 2,
+        "pct": 9.1,
+        "user_avg": 3.5
+      },
+      {
+        "genre": "Sci-Fi",
+        "name_vi": "Khoa học viễn tưởng",
+        "count": 2,
+        "pct": 9.1,
+        "user_avg": 1.0
+      },
+      {
+        "genre": "Fantasy",
+        "name_vi": "Kỳ ảo",
+        "count": 2,
+        "pct": 9.1,
+        "user_avg": 3.25
+      },
+      {
+        "genre": "Western",
+        "name_vi": "Miền Tây",
+        "count": 1,
+        "pct": 4.5,
+        "user_avg": 2.0
+      },
+      {
+        "genre": "Musical",
+        "name_vi": "Ca nhạc",
+        "count": 1,
+        "pct": 4.5,
+        "user_avg": 5.0
+      },
+      {
+        "genre": "Film-Noir",
+        "name_vi": "Phim đen",
+        "count": 1,
+        "pct": 4.5,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "Mystery",
+        "name_vi": "Bí ẩn",
+        "count": 1,
+        "pct": 4.5,
+        "user_avg": 4.0
+      }
+    ],
+    "taste_vs_community": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "user_avg": 4.12,
+        "community_avg": 3.68,
+        "diff": 0.44,
+        "higher": true
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "user_avg": 2.5,
+        "community_avg": 3.42,
+        "diff": -0.92,
+        "higher": false
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "user_avg": 3.36,
+        "community_avg": 3.54,
+        "diff": -0.18,
+        "higher": false
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "user_avg": 2.33,
+        "community_avg": 3.47,
+        "diff": -1.14,
+        "higher": false
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "user_avg": 1.83,
+        "community_avg": 3.52,
+        "diff": -1.69,
+        "higher": false
+      }
+    ],
+    "timeline_activity": [
+      {
+        "year": 2006,
+        "count": 22
+      }
+    ],
+    "top_movies": [
+      {
+        "movieId": 912,
+        "title": "Casablanca (1942)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama|Romance",
+        "comm_avg": 4.21,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1208,
+        "title": "Apocalypse Now (1979)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.11,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2360,
+        "title": "Celebration, The (Festen) (1998)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama",
+        "comm_avg": 4.09,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3083,
+        "title": "All About My Mother (Todo sobre mi madre) (1999)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama",
+        "comm_avg": 3.98,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3910,
+        "title": "Dancer in the Dark (2000)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama|Musical",
+        "comm_avg": 3.84,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 7323,
+        "title": "Good bye, Lenin! (2003)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.88,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 5791,
+        "title": "Frida (2002)",
+        "rating": 4.5,
+        "year": 2006,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.74,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1230,
+        "title": "Annie Hall (1977)",
+        "rating": 4.0,
+        "year": 2006,
+        "genres": "Comedy|Romance",
+        "comm_avg": 4.04,
+        "date": "2006-02-01"
+      }
+    ],
+    "lowest_movies": [
+      {
+        "movieId": 2706,
+        "title": "American Pie (1999)",
+        "rating": 0.5,
+        "year": 2006,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.28,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3793,
+        "title": "X-Men (2000)",
+        "rating": 0.5,
+        "year": 2006,
+        "genres": "Action|Adventure|Sci-Fi",
+        "comm_avg": 3.56,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1517,
+        "title": "Austin Powers: International Man of Mystery (1997)",
+        "rating": 1.0,
+        "year": 2006,
+        "genres": "Action|Adventure|Comedy",
+        "comm_avg": 3.41,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2355,
+        "title": "Bug's Life, A (1998)",
+        "rating": 1.0,
+        "year": 2006,
+        "genres": "Adventure|Animation|Children|Comedy",
+        "comm_avg": 3.57,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2716,
+        "title": "Ghostbusters (a.k.a. Ghost Busters) (1984)",
+        "rating": 1.5,
+        "year": 2006,
+        "genres": "Action|Comedy|Sci-Fi",
+        "comm_avg": 3.76,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 266,
+        "title": "Legends of the Fall (1994)",
+        "rating": 2.0,
+        "year": 2006,
+        "genres": "Drama|Romance|War|Western",
+        "comm_avg": 3.5,
+        "date": "2006-02-01"
+      }
+    ],
+    "recent_ratings": [
+      {
+        "movieId": 111,
+        "title": "Taxi Driver (1976)",
+        "rating": 3.0,
+        "year": 2006,
+        "genres": "Crime|Drama|Thriller",
+        "comm_avg": 4.08,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 266,
+        "title": "Legends of the Fall (1994)",
+        "rating": 2.0,
+        "year": 2006,
+        "genres": "Drama|Romance|War|Western",
+        "comm_avg": 3.5,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 508,
+        "title": "Philadelphia (1993)",
+        "rating": 2.5,
+        "year": 2006,
+        "genres": "Drama",
+        "comm_avg": 3.8,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 912,
+        "title": "Casablanca (1942)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama|Romance",
+        "comm_avg": 4.21,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1208,
+        "title": "Apocalypse Now (1979)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.11,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1230,
+        "title": "Annie Hall (1977)",
+        "rating": 4.0,
+        "year": 2006,
+        "genres": "Comedy|Romance",
+        "comm_avg": 4.04,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1517,
+        "title": "Austin Powers: International Man of Mystery (1997)",
+        "rating": 1.0,
+        "year": 2006,
+        "genres": "Action|Adventure|Comedy",
+        "comm_avg": 3.41,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 1784,
+        "title": "As Good as It Gets (1997)",
+        "rating": 3.5,
+        "year": 2006,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.77,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2355,
+        "title": "Bug's Life, A (1998)",
+        "rating": 1.0,
+        "year": 2006,
+        "genres": "Adventure|Animation|Children|Comedy",
+        "comm_avg": 3.57,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2360,
+        "title": "Celebration, The (Festen) (1998)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama",
+        "comm_avg": 4.09,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2683,
+        "title": "Austin Powers: The Spy Who Shagged Me (1999)",
+        "rating": 2.0,
+        "year": 2006,
+        "genres": "Action|Adventure|Comedy",
+        "comm_avg": 3.19,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2706,
+        "title": "American Pie (1999)",
+        "rating": 0.5,
+        "year": 2006,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.28,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2716,
+        "title": "Ghostbusters (a.k.a. Ghost Busters) (1984)",
+        "rating": 1.5,
+        "year": 2006,
+        "genres": "Action|Comedy|Sci-Fi",
+        "comm_avg": 3.76,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 2959,
+        "title": "Fight Club (1999)",
+        "rating": 4.0,
+        "year": 2006,
+        "genres": "Action|Crime|Drama|Thriller",
+        "comm_avg": 4.23,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3083,
+        "title": "All About My Mother (Todo sobre mi madre) (1999)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama",
+        "comm_avg": 3.98,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3114,
+        "title": "Toy Story 2 (1999)",
+        "rating": 2.5,
+        "year": 2006,
+        "genres": "Adventure|Animation|Children|Comedy|Fantasy",
+        "comm_avg": 3.81,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3793,
+        "title": "X-Men (2000)",
+        "rating": 0.5,
+        "year": 2006,
+        "genres": "Action|Adventure|Sci-Fi",
+        "comm_avg": 3.56,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 3910,
+        "title": "Dancer in the Dark (2000)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Drama|Musical",
+        "comm_avg": 3.84,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 4306,
+        "title": "Shrek (2001)",
+        "rating": 4.0,
+        "year": 2006,
+        "genres": "Adventure|Animation|Children|Comedy|Fantasy|Romance",
+        "comm_avg": 3.75,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 4848,
+        "title": "Mulholland Drive (2001)",
+        "rating": 4.0,
+        "year": 2006,
+        "genres": "Crime|Drama|Film-Noir|Mystery|Thriller",
+        "comm_avg": 3.84,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 5791,
+        "title": "Frida (2002)",
+        "rating": 4.5,
+        "year": 2006,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.74,
+        "date": "2006-02-01"
+      },
+      {
+        "movieId": 7323,
+        "title": "Good bye, Lenin! (2003)",
+        "rating": 5.0,
+        "year": 2006,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.88,
+        "date": "2006-02-01"
+      }
+    ]
+  },
+  "1000": {
+    "uid": 1000,
+    "persona": "Người Khám Phá Cảm Xúc (Emotional Drama Explorer)",
+    "total_ratings": 169,
+    "avg_rating": 3.52,
+    "movies_rated_count": 169,
+    "favorite_genre": "Hài hước",
+    "first_year": 2005,
+    "last_year": 2005,
+    "most_active_year": 2005,
+    "most_active_count": 169,
+    "rating_style": "Cân bằng (Balanced)",
+    "rating_desc": "Người dùng có xu hướng đánh giá cân bằng theo gu thực tế (TB: 3.52★).",
+    "summary_text": "User #1000 là người khám phá cảm xúc (emotional drama explorer), đã thực hiện 169 lượt đánh giá thực tế trong CSDL MovieLens 25M từ năm 2005 đến 2005. Người dùng có phong cách chấm điểm cân bằng (balanced), điểm trung bình đạt 3.52/5.0 sao. Sở thích nổi trội tập trung vào các thể loại Hài hước, Chính kịch, Lãng mạn. Thời kỳ hoạt động mạnh mẽ nhất của user là năm 2005 với 169 lượt xem và bình chọn.",
+    "rating_distribution": [
+      {
+        "star": 0.5,
+        "count": 5,
+        "pct": 3.0
+      },
+      {
+        "star": 1.0,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 1.5,
+        "count": 2,
+        "pct": 1.2
+      },
+      {
+        "star": 2.0,
+        "count": 7,
+        "pct": 4.1
+      },
+      {
+        "star": 2.5,
+        "count": 12,
+        "pct": 7.1
+      },
+      {
+        "star": 3.0,
+        "count": 20,
+        "pct": 11.8
+      },
+      {
+        "star": 3.5,
+        "count": 42,
+        "pct": 24.9
+      },
+      {
+        "star": 4.0,
+        "count": 59,
+        "pct": 34.9
+      },
+      {
+        "star": 4.5,
+        "count": 14,
+        "pct": 8.3
+      },
+      {
+        "star": 5.0,
+        "count": 8,
+        "pct": 4.7
+      }
+    ],
+    "genres": [
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "count": 81,
+        "pct": 47.9,
+        "user_avg": 3.27
+      },
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "count": 80,
+        "pct": 47.3,
+        "user_avg": 3.87
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "count": 44,
+        "pct": 26.0,
+        "user_avg": 3.4
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "count": 38,
+        "pct": 22.5,
+        "user_avg": 3.57
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "count": 34,
+        "pct": 20.1,
+        "user_avg": 3.85
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "count": 33,
+        "pct": 19.5,
+        "user_avg": 3.56
+      },
+      {
+        "genre": "Sci-Fi",
+        "name_vi": "Khoa học viễn tưởng",
+        "count": 27,
+        "pct": 16.0,
+        "user_avg": 3.22
+      },
+      {
+        "genre": "Crime",
+        "name_vi": "Tội phạm",
+        "count": 23,
+        "pct": 13.6,
+        "user_avg": 3.93
+      },
+      {
+        "genre": "Fantasy",
+        "name_vi": "Kỳ ảo",
+        "count": 22,
+        "pct": 13.0,
+        "user_avg": 3.34
+      },
+      {
+        "genre": "Mystery",
+        "name_vi": "Bí ẩn",
+        "count": 14,
+        "pct": 8.3,
+        "user_avg": 4.14
+      },
+      {
+        "genre": "Horror",
+        "name_vi": "Kinh dị",
+        "count": 13,
+        "pct": 7.7,
+        "user_avg": 3.46
+      },
+      {
+        "genre": "Musical",
+        "name_vi": "Ca nhạc",
+        "count": 10,
+        "pct": 5.9,
+        "user_avg": 3.0
+      },
+      {
+        "genre": "Children",
+        "name_vi": "Gia đình",
+        "count": 9,
+        "pct": 5.3,
+        "user_avg": 2.28
+      },
+      {
+        "genre": "War",
+        "name_vi": "Chiến tranh",
+        "count": 8,
+        "pct": 4.7,
+        "user_avg": 3.88
+      },
+      {
+        "genre": "Western",
+        "name_vi": "Miền Tây",
+        "count": 5,
+        "pct": 3.0,
+        "user_avg": 3.3
+      },
+      {
+        "genre": "Animation",
+        "name_vi": "Hoạt hình",
+        "count": 4,
+        "pct": 2.4,
+        "user_avg": 3.5
+      },
+      {
+        "genre": "Film-Noir",
+        "name_vi": "Phim đen",
+        "count": 1,
+        "pct": 0.6,
+        "user_avg": 5.0
+      },
+      {
+        "genre": "IMAX",
+        "name_vi": "IMAX",
+        "count": 1,
+        "pct": 0.6,
+        "user_avg": 3.0
+      }
+    ],
+    "taste_vs_community": [
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "user_avg": 3.27,
+        "community_avg": 3.42,
+        "diff": -0.15,
+        "higher": false
+      },
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "user_avg": 3.87,
+        "community_avg": 3.68,
+        "diff": 0.19,
+        "higher": true
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "user_avg": 3.4,
+        "community_avg": 3.54,
+        "diff": -0.14,
+        "higher": false
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "user_avg": 3.57,
+        "community_avg": 3.47,
+        "diff": 0.1,
+        "higher": true
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "user_avg": 3.85,
+        "community_avg": 3.52,
+        "diff": 0.33,
+        "higher": true
+      }
+    ],
+    "timeline_activity": [
+      {
+        "year": 2005,
+        "count": 169
+      }
+    ],
+    "top_movies": [
+      {
+        "movieId": 29,
+        "title": "City of Lost Children, The (CitĂ© des enfants perdus, La) (1995)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Adventure|Drama|Fantasy|Mystery|Sci-Fi",
+        "comm_avg": 3.94,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 527,
+        "title": "Schindler's List (1993)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Drama|War",
+        "comm_avg": 4.25,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 1464,
+        "title": "Lost Highway (1997)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Crime|Drama|Fantasy|Film-Noir|Mystery|Romance",
+        "comm_avg": 3.72,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 2959,
+        "title": "Fight Club (1999)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Action|Crime|Drama|Thriller",
+        "comm_avg": 4.23,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 4878,
+        "title": "Donnie Darko (2001)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Drama|Mystery|Sci-Fi|Thriller",
+        "comm_avg": 3.95,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 6874,
+        "title": "Kill Bill: Vol. 1 (2003)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Action|Crime|Thriller",
+        "comm_avg": 3.86,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 7361,
+        "title": "Eternal Sunshine of the Spotless Mind (2004)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Drama|Romance|Sci-Fi",
+        "comm_avg": 4.07,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 7438,
+        "title": "Kill Bill: Vol. 2 (2004)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Action|Drama|Thriller",
+        "comm_avg": 3.82,
+        "date": "2005-03-23"
+      }
+    ],
+    "lowest_movies": [
+      {
+        "movieId": 480,
+        "title": "Jurassic Park (1993)",
+        "rating": 0.5,
+        "year": 2005,
+        "genres": "Action|Adventure|Sci-Fi|Thriller",
+        "comm_avg": 3.68,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 1057,
+        "title": "Everyone Says I Love You (1996)",
+        "rating": 0.5,
+        "year": 2005,
+        "genres": "Comedy|Musical|Romance",
+        "comm_avg": 3.44,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 2053,
+        "title": "Honey, I Blew Up the Kid (1992)",
+        "rating": 0.5,
+        "year": 2005,
+        "genres": "Children|Comedy|Sci-Fi",
+        "comm_avg": 2.13,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 2054,
+        "title": "Honey, I Shrunk the Kids (1989)",
+        "rating": 0.5,
+        "year": 2005,
+        "genres": "Adventure|Children|Comedy|Fantasy|Sci-Fi",
+        "comm_avg": 2.72,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 6936,
+        "title": "Elf (2003)",
+        "rating": 0.5,
+        "year": 2005,
+        "genres": "Children|Comedy|Fantasy",
+        "comm_avg": 3.35,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 2699,
+        "title": "Arachnophobia (1990)",
+        "rating": 1.5,
+        "year": 2005,
+        "genres": "Comedy|Horror",
+        "comm_avg": 2.79,
+        "date": "2005-03-23"
+      }
+    ],
+    "recent_ratings": [
+      {
+        "movieId": 29,
+        "title": "City of Lost Children, The (CitĂ© des enfants perdus, La) (1995)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Adventure|Drama|Fantasy|Mystery|Sci-Fi",
+        "comm_avg": 3.94,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 39,
+        "title": "Clueless (1995)",
+        "rating": 3.0,
+        "year": 2005,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.42,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 47,
+        "title": "Seven (a.k.a. Se7en) (1995)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Mystery|Thriller",
+        "comm_avg": 4.08,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 104,
+        "title": "Happy Gilmore (1996)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Comedy",
+        "comm_avg": 3.39,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 110,
+        "title": "Braveheart (1995)",
+        "rating": 3.5,
+        "year": 2005,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.0,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 168,
+        "title": "First Knight (1995)",
+        "rating": 3.0,
+        "year": 2005,
+        "genres": "Action|Drama|Romance",
+        "comm_avg": 3.08,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 215,
+        "title": "Before Sunrise (1995)",
+        "rating": 3.5,
+        "year": 2005,
+        "genres": "Drama|Romance",
+        "comm_avg": 3.91,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 223,
+        "title": "Clerks (1994)",
+        "rating": 4.5,
+        "year": 2005,
+        "genres": "Comedy",
+        "comm_avg": 3.85,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 247,
+        "title": "Heavenly Creatures (1994)",
+        "rating": 3.0,
+        "year": 2005,
+        "genres": "Crime|Drama",
+        "comm_avg": 3.82,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 253,
+        "title": "Interview with the Vampire: The Vampire Chronicles (1994)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Drama|Horror",
+        "comm_avg": 3.51,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 265,
+        "title": "Like Water for Chocolate (Como agua para chocolate) (1992)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Drama|Fantasy|Romance",
+        "comm_avg": 3.92,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 266,
+        "title": "Legends of the Fall (1994)",
+        "rating": 3.5,
+        "year": 2005,
+        "genres": "Drama|Romance|War|Western",
+        "comm_avg": 3.5,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 296,
+        "title": "Pulp Fiction (1994)",
+        "rating": 4.5,
+        "year": 2005,
+        "genres": "Comedy|Crime|Drama|Thriller",
+        "comm_avg": 4.19,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 316,
+        "title": "Stargate (1994)",
+        "rating": 2.5,
+        "year": 2005,
+        "genres": "Action|Adventure|Sci-Fi",
+        "comm_avg": 3.37,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 319,
+        "title": "Shallow Grave (1994)",
+        "rating": 3.5,
+        "year": 2005,
+        "genres": "Comedy|Drama|Thriller",
+        "comm_avg": 3.78,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 327,
+        "title": "Tank Girl (1995)",
+        "rating": 3.0,
+        "year": 2005,
+        "genres": "Action|Comedy|Sci-Fi",
+        "comm_avg": 2.82,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 342,
+        "title": "Muriel's Wedding (1994)",
+        "rating": 3.5,
+        "year": 2005,
+        "genres": "Comedy",
+        "comm_avg": 3.51,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 345,
+        "title": "Adventures of Priscilla, Queen of the Desert, The (1994)",
+        "rating": 2.5,
+        "year": 2005,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.64,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 356,
+        "title": "Forrest Gump (1994)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Comedy|Drama|Romance|War",
+        "comm_avg": 4.05,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 367,
+        "title": "Mask, The (1994)",
+        "rating": 2.5,
+        "year": 2005,
+        "genres": "Action|Comedy|Crime|Fantasy",
+        "comm_avg": 3.18,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 377,
+        "title": "Speed (1994)",
+        "rating": 2.5,
+        "year": 2005,
+        "genres": "Action|Romance|Thriller",
+        "comm_avg": 3.48,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 380,
+        "title": "True Lies (1994)",
+        "rating": 3.0,
+        "year": 2005,
+        "genres": "Action|Adventure|Comedy|Romance|Thriller",
+        "comm_avg": 3.49,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 480,
+        "title": "Jurassic Park (1993)",
+        "rating": 0.5,
+        "year": 2005,
+        "genres": "Action|Adventure|Sci-Fi|Thriller",
+        "comm_avg": 3.68,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 482,
+        "title": "Killing Zoe (1994)",
+        "rating": 4.5,
+        "year": 2005,
+        "genres": "Crime|Drama|Thriller",
+        "comm_avg": 3.42,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 500,
+        "title": "Mrs. Doubtfire (1993)",
+        "rating": 2.0,
+        "year": 2005,
+        "genres": "Comedy|Drama",
+        "comm_avg": 3.39,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 520,
+        "title": "Robin Hood: Men in Tights (1993)",
+        "rating": 2.0,
+        "year": 2005,
+        "genres": "Comedy",
+        "comm_avg": 3.07,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 527,
+        "title": "Schindler's List (1993)",
+        "rating": 5.0,
+        "year": 2005,
+        "genres": "Drama|War",
+        "comm_avg": 4.25,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 593,
+        "title": "Silence of the Lambs, The (1991)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Crime|Horror|Thriller",
+        "comm_avg": 4.15,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 597,
+        "title": "Pretty Woman (1990)",
+        "rating": 3.0,
+        "year": 2005,
+        "genres": "Comedy|Romance",
+        "comm_avg": 3.43,
+        "date": "2005-03-23"
+      },
+      {
+        "movieId": 648,
+        "title": "Mission: Impossible (1996)",
+        "rating": 4.0,
+        "year": 2005,
+        "genres": "Action|Adventure|Mystery|Thriller",
+        "comm_avg": 3.4,
+        "date": "2005-03-23"
+      }
+    ]
+  },
+  "12847": {
+    "uid": 12847,
+    "persona": "Tín Đồ Bom Tấn & Viễn Tưởng (Sci-Fi & Action Enthusiast)",
+    "total_ratings": 20,
+    "avg_rating": 3.55,
+    "movies_rated_count": 20,
+    "favorite_genre": "Chính kịch",
+    "first_year": 2001,
+    "last_year": 2001,
+    "most_active_year": 2001,
+    "most_active_count": 20,
+    "rating_style": "Cân bằng (Balanced)",
+    "rating_desc": "Người dùng có xu hướng đánh giá cân bằng theo gu thực tế (TB: 3.55★).",
+    "summary_text": "User #12847 là tín đồ bom tấn & viễn tưởng (sci-fi & action enthusiast), đã thực hiện 20 lượt đánh giá thực tế trong CSDL MovieLens 25M từ năm 2001 đến 2001. Người dùng có phong cách chấm điểm cân bằng (balanced), điểm trung bình đạt 3.55/5.0 sao. Sở thích nổi trội tập trung vào các thể loại Chính kịch, Hài hước, Hành động. Thời kỳ hoạt động mạnh mẽ nhất của user là năm 2001 với 20 lượt xem và bình chọn.",
+    "rating_distribution": [
+      {
+        "star": 0.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 1.0,
+        "count": 2,
+        "pct": 10.0
+      },
+      {
+        "star": 1.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 2.0,
+        "count": 4,
+        "pct": 20.0
+      },
+      {
+        "star": 2.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 3.0,
+        "count": 3,
+        "pct": 15.0
+      },
+      {
+        "star": 3.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 4.0,
+        "count": 3,
+        "pct": 15.0
+      },
+      {
+        "star": 4.5,
+        "count": 0,
+        "pct": 0.0
+      },
+      {
+        "star": 5.0,
+        "count": 8,
+        "pct": 40.0
+      }
+    ],
+    "genres": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "count": 9,
+        "pct": 45.0,
+        "user_avg": 3.78
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "count": 8,
+        "pct": 40.0,
+        "user_avg": 3.0
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "count": 7,
+        "pct": 35.0,
+        "user_avg": 2.86
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "count": 7,
+        "pct": 35.0,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "count": 6,
+        "pct": 30.0,
+        "user_avg": 3.17
+      },
+      {
+        "genre": "Romance",
+        "name_vi": "Lãng mạn",
+        "count": 3,
+        "pct": 15.0,
+        "user_avg": 2.33
+      },
+      {
+        "genre": "Sci-Fi",
+        "name_vi": "Khoa học viễn tưởng",
+        "count": 3,
+        "pct": 15.0,
+        "user_avg": 2.67
+      },
+      {
+        "genre": "War",
+        "name_vi": "Chiến tranh",
+        "count": 3,
+        "pct": 15.0,
+        "user_avg": 5.0
+      },
+      {
+        "genre": "Mystery",
+        "name_vi": "Bí ẩn",
+        "count": 2,
+        "pct": 10.0,
+        "user_avg": 3.0
+      },
+      {
+        "genre": "Crime",
+        "name_vi": "Tội phạm",
+        "count": 2,
+        "pct": 10.0,
+        "user_avg": 4.0
+      },
+      {
+        "genre": "Horror",
+        "name_vi": "Kinh dị",
+        "count": 2,
+        "pct": 10.0,
+        "user_avg": 5.0
+      },
+      {
+        "genre": "Western",
+        "name_vi": "Miền Tây",
+        "count": 1,
+        "pct": 5.0,
+        "user_avg": 5.0
+      }
+    ],
+    "taste_vs_community": [
+      {
+        "genre": "Drama",
+        "name_vi": "Chính kịch",
+        "user_avg": 3.78,
+        "community_avg": 3.68,
+        "diff": 0.1,
+        "higher": true
+      },
+      {
+        "genre": "Comedy",
+        "name_vi": "Hài hước",
+        "user_avg": 3.0,
+        "community_avg": 3.42,
+        "diff": -0.42,
+        "higher": false
+      },
+      {
+        "genre": "Action",
+        "name_vi": "Hành động",
+        "user_avg": 2.86,
+        "community_avg": 3.47,
+        "diff": -0.61,
+        "higher": false
+      },
+      {
+        "genre": "Thriller",
+        "name_vi": "Kịch tính",
+        "user_avg": 4.0,
+        "community_avg": 3.52,
+        "diff": 0.48,
+        "higher": true
+      },
+      {
+        "genre": "Adventure",
+        "name_vi": "Phiêu lưu",
+        "user_avg": 3.17,
+        "community_avg": 3.52,
+        "diff": -0.35,
+        "higher": false
+      }
+    ],
+    "timeline_activity": [
+      {
+        "year": 2001,
+        "count": 20
+      }
+    ],
+    "top_movies": [
+      {
+        "movieId": 487,
+        "title": "Lightning Jack (1994)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Comedy|Western",
+        "comm_avg": 2.57,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 2028,
+        "title": "Saving Private Ryan (1998)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.04,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 3168,
+        "title": "Easy Rider (1969)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Adventure|Drama",
+        "comm_avg": 3.69,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 3301,
+        "title": "Whole Nine Yards, The (2000)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Comedy|Crime",
+        "comm_avg": 3.35,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4033,
+        "title": "Thirteen Days (2000)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Drama|Thriller|War",
+        "comm_avg": 3.68,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4148,
+        "title": "Hannibal (2001)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Horror|Thriller",
+        "comm_avg": 3.22,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4223,
+        "title": "Enemy at the Gates (2001)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Drama|War",
+        "comm_avg": 3.71,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4720,
+        "title": "Others, The (2001)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Drama|Horror|Mystery|Thriller",
+        "comm_avg": 3.72,
+        "date": "2001-10-09"
+      }
+    ],
+    "lowest_movies": [
+      {
+        "movieId": 113,
+        "title": "Before and After (1996)",
+        "rating": 1.0,
+        "year": 2001,
+        "genres": "Drama|Mystery",
+        "comm_avg": 3.1,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4299,
+        "title": "Knight's Tale, A (2001)",
+        "rating": 1.0,
+        "year": 2001,
+        "genres": "Action|Comedy|Romance",
+        "comm_avg": 3.33,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 11,
+        "title": "American President, The (1995)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.66,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4270,
+        "title": "Mummy Returns, The (2001)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Comedy|Thriller",
+        "comm_avg": 2.96,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4643,
+        "title": "Planet of the Apes (2001)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Drama|Sci-Fi",
+        "comm_avg": 2.75,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4816,
+        "title": "Zoolander (2001)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Comedy",
+        "comm_avg": 3.22,
+        "date": "2001-10-09"
+      }
+    ],
+    "recent_ratings": [
+      {
+        "movieId": 11,
+        "title": "American President, The (1995)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.66,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 113,
+        "title": "Before and After (1996)",
+        "rating": 1.0,
+        "year": 2001,
+        "genres": "Drama|Mystery",
+        "comm_avg": 3.1,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 260,
+        "title": "Star Wars: Episode IV - A New Hope (1977)",
+        "rating": 3.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Sci-Fi",
+        "comm_avg": 4.12,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 480,
+        "title": "Jurassic Park (1993)",
+        "rating": 3.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Sci-Fi|Thriller",
+        "comm_avg": 3.68,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 487,
+        "title": "Lightning Jack (1994)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Comedy|Western",
+        "comm_avg": 2.57,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 494,
+        "title": "Executive Decision (1996)",
+        "rating": 4.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Thriller",
+        "comm_avg": 3.35,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 2028,
+        "title": "Saving Private Ryan (1998)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Action|Drama|War",
+        "comm_avg": 4.04,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 2380,
+        "title": "Police Academy 3: Back in Training (1986)",
+        "rating": 3.0,
+        "year": 2001,
+        "genres": "Comedy|Crime",
+        "comm_avg": 2.22,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 3168,
+        "title": "Easy Rider (1969)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Adventure|Drama",
+        "comm_avg": 3.69,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 3301,
+        "title": "Whole Nine Yards, The (2000)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Comedy|Crime",
+        "comm_avg": 3.35,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4020,
+        "title": "Gift, The (2000)",
+        "rating": 4.0,
+        "year": 2001,
+        "genres": "Thriller",
+        "comm_avg": 3.39,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4023,
+        "title": "Family Man, The (2000)",
+        "rating": 4.0,
+        "year": 2001,
+        "genres": "Comedy|Drama|Romance",
+        "comm_avg": 3.35,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4033,
+        "title": "Thirteen Days (2000)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Drama|Thriller|War",
+        "comm_avg": 3.68,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4148,
+        "title": "Hannibal (2001)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Horror|Thriller",
+        "comm_avg": 3.22,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4223,
+        "title": "Enemy at the Gates (2001)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Drama|War",
+        "comm_avg": 3.71,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4270,
+        "title": "Mummy Returns, The (2001)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Comedy|Thriller",
+        "comm_avg": 2.96,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4299,
+        "title": "Knight's Tale, A (2001)",
+        "rating": 1.0,
+        "year": 2001,
+        "genres": "Action|Comedy|Romance",
+        "comm_avg": 3.33,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4643,
+        "title": "Planet of the Apes (2001)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Action|Adventure|Drama|Sci-Fi",
+        "comm_avg": 2.75,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4720,
+        "title": "Others, The (2001)",
+        "rating": 5.0,
+        "year": 2001,
+        "genres": "Drama|Horror|Mystery|Thriller",
+        "comm_avg": 3.72,
+        "date": "2001-10-09"
+      },
+      {
+        "movieId": 4816,
+        "title": "Zoolander (2001)",
+        "rating": 2.0,
+        "year": 2001,
+        "genres": "Comedy",
+        "comm_avg": 3.22,
+        "date": "2001-10-09"
+      }
+    ]
+  }
+}

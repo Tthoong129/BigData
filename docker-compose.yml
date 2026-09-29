@@ -1,0 +1,149 @@
+networks:
+  bigdata-net:
+    driver: bridge
+
+volumes:
+  namenode-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${NAMENODE_DATA:-./volumes/namenode}
+  datanode-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATANODE_DATA:-./volumes/datanode}
+  spark-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${SPARK_LOG:-./volumes/spark-logs}
+
+services:
+  # HDFS NameNode
+  hadoop-namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: hadoop-namenode
+    restart: unless-stopped
+    hostname: namenode
+    networks:
+      - bigdata-net
+    ports:
+      - "${NAMENODE_PORT:-9870}:9870"
+      - "${NAMENODE_IPC_PORT:-9000}:9000"
+    volumes:
+      - namenode-data:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=${CLUSTER_NAME:-hadoop-cluster}
+      - HDFS_CONF_dfs_replication=1
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - CORE_CONF_hadoop_http_staticuser_user=root
+      - HDFS_CONF_dfs_webhdfs_enabled=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9870"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # HDFS DataNode
+  hadoop-datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: hadoop-datanode
+    restart: unless-stopped
+    hostname: datanode
+    networks:
+      - bigdata-net
+    ports:
+      - "${DATANODE_PORT:-9864}:9864"
+      - "${DATANODE_IPC_PORT:-9866}:9866"
+    volumes:
+      - datanode-data:/hadoop/dfs/data
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - HDFS_CONF_dfs_replication=1
+      - HDFS_CONF_dfs_datanode_data_dir=/hadoop/dfs/data
+      - HDFS_CONF_dfs_webhdfs_enabled=true
+      - SERVICE_PRECONDITION=hadoop-namenode:9870
+    depends_on:
+      hadoop-namenode:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9864"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Spark Master
+  spark-master:
+    image: apache/spark:3.5.3
+    container_name: spark-master
+    restart: unless-stopped
+    hostname: spark-master
+    user: root
+    networks:
+      - bigdata-net
+    ports:
+      - "${SPARK_MASTER_WEBUI_PORT:-8080}:8080"
+      - "${SPARK_MASTER_PORT:-7077}:7077"
+      - "${SPARK_DRIVER_PORT:-4040}:4040"
+      - "${STREAMLIT_PORT:-8501}:8501"
+    volumes:
+      - spark-logs:/opt/spark/logs
+      - ${PROJECT_DIR:-.}:/opt/project
+    environment:
+      - SPARK_NO_DAEMONIZE=true
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_DRIVER_MEMORY=${SPARK_DRIVER_MEMORY:-2g}
+      - HADOOP_CONF_DIR=/opt/spark/conf
+      - SPARK_HADOOP_FS_DEFAULTFS=hdfs://namenode:9000
+      - SPARK_DIST_CLASSPATH=/opt/spark/jars/*
+      - PYTHONPATH=/opt/spark/python:/opt/spark/python/lib/py4j-0.10.9.7-src.zip
+    command: >
+      bash -c "pip install -r /opt/project/requirements.txt --quiet &&
+      /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
+    depends_on:
+      hadoop-namenode:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Spark Worker
+  spark-worker:
+    image: apache/spark:3.5.3
+    container_name: spark-worker
+    restart: unless-stopped
+    hostname: spark-worker
+    user: root
+    networks:
+      - bigdata-net
+    ports:
+      - "${SPARK_WORKER_WEBUI_PORT:-8081}:8081"
+    volumes:
+      - spark-logs:/opt/spark/logs
+      - ${PROJECT_DIR:-.}:/opt/project
+    environment:
+      - SPARK_NO_DAEMONIZE=true
+      - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_WORKER_MEMORY=${SPARK_WORKER_MEMORY:-4g}
+      - SPARK_WORKER_CORES=${SPARK_WORKER_CORES:-2}
+      - SPARK_EXECUTOR_MEMORY=${SPARK_EXECUTOR_MEMORY:-2g}
+      - HADOOP_CONF_DIR=/opt/spark/conf
+      - SPARK_HADOOP_FS_DEFAULTFS=hdfs://namenode:9000
+    command: >
+      bash -c "pip install numpy --quiet &&
+      /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
+    depends_on:
+      spark-master:
+        condition: service_healthy

@@ -1,0 +1,7 @@
+{
+  "dataset_size": "10m",
+  "num_ratings": 10000054,
+  "train_time_sec": 60.74,
+  "rmse": 0.7847,
+  "mae": 0.5992
+}

@@ -1,0 +1,12 @@
+{
+  "dataset_size": "25m",
+  "train_count": 19967306,
+  "test_count": 5032789,
+  "best_rank": 50,
+  "best_reg_param": 0.1,
+  "final_max_iter": 15,
+  "final_rmse": 0.84555,
+  "final_mae": 0.633326,
+  "train_time_sec": 769.13,
+  "timestamp_utc": "2026-09-25T09:05:34Z"
+}
