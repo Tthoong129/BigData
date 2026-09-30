@@ -54,7 +54,7 @@
             
             <!-- Logo & Project Identity -->
             <a href="/" class="flex items-center gap-3 shrink-0">
-                <div class="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+                <div class="w-9 h-9 rounded-full px-4 bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
                     <span class="material-symbols-outlined text-[22px]">smart_display</span>
                 </div>
                 <div class="flex flex-col justify-center">
@@ -64,21 +64,17 @@
             </a>
 
             <!-- Functional Navigation Tabs -->
-            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
-                <a href="/" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">movie</span>
+            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-full px-4 border border-outline-variant/20">
+                <a href="/" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Khám Phá</span>
                 </a>
-                <a href="/foryou?uid={{ uid | default(100) }}" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                <a href="/foryou?uid={{ uid | default(100) }}" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Gợi Ý & Gu Phim</span>
                 </a>
-                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                <a href="/analytics" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Phân Tích Dữ Liệu</span>
                 </a>
-                <a href="/system" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                <a href="/system" class="px-4 py-1.5 rounded-full transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center">
                     <span>Mô Hình & Hệ Thống</span>
                 </a>
             </nav>
@@ -111,26 +107,26 @@
     </header>
 
     <!-- 2. SUB-NAVIGATION FOR SYSTEM AREAS -->
-    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2.5 overflow-x-auto no-scrollbar">
-        <div class="flex items-center gap-2 text-xs font-semibold whitespace-nowrap min-w-max">
+    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2.5 overflow-hidden">
+        <div class="flex items-center flex-wrap gap-2 text-xs font-semibold ">
             <span class="text-outline flex items-center gap-1 mr-1">
                 <span class="material-symbols-outlined text-[16px] text-primary">memory</span> Điều hướng:
             </span>
-            <a href="#model-overview" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Tổng Quan Model</a>
-            <a href="#rec-pipeline" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">2. Luồng Pipeline</a>
-            <a href="#hdfs-storage" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Cấu Trúc HDFS</a>
-            <a href="#spark-cluster" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Cụm Spark Cluster</a>
-            <a href="#als-config" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Cấu Hình ALS</a>
-            <a href="#model-perf" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">6. Hiệu Năng & K-Metrics</a>
-            <a href="#model-tuning" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">7. Tinh Chỉnh Grid Search</a>
-            <a href="#scalability" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">8. Khả Năng Mở Rộng</a>
-            <a href="#system-health" class="px-3 py-1 rounded-md bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 hover:bg-emerald-900/50 transition-colors">9. Live Health Check</a>
-            <a href="#artifacts" class="px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-on-primary transition-all">10. Tệp Dữ Liệu & Nghiệm Thu</a>
+            <a href="#model-overview" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Tổng Quan Model</a>
+            <a href="#rec-pipeline" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">2. Luồng Pipeline</a>
+            <a href="#hdfs-storage" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Cấu Trúc HDFS</a>
+            <a href="#spark-cluster" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Cụm Spark Cluster</a>
+            <a href="#als-config" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Cấu Hình ALS</a>
+            <a href="#model-perf" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">6. Hiệu Năng & K-Metrics</a>
+            <a href="#model-tuning" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">7. Tinh Chỉnh Grid Search</a>
+            <a href="#scalability" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">8. Khả Năng Mở Rộng</a>
+            <a href="#system-health" class="px-4 py-1 rounded-full bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 hover:bg-emerald-900/50 transition-colors">9. Live Health Check</a>
+            <a href="#artifacts" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">10. Tệp Dữ Liệu & Nghiệm Thu</a>
         </div>
     </div>
 
     <!-- MAIN BODY -->
-    <main class="w-full pt-32 pb-24 px-4 lg:px-12 max-w-[1600px] mx-auto space-y-12">
+    <main class="w-full pt-40 pb-24 px-4 lg:px-12 max-w-[1600px] mx-auto space-y-12">
 
         <!-- SECTION 1: MODEL OVERVIEW & LIVE HEALTH STATUS -->
         <section id="model-overview" class="scroll-mt-36">
@@ -353,7 +349,7 @@
                         <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 mb-4">
                             <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20 mb-3">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-bold text-xs">M</div>
+                                    <div class="w-8 h-8 rounded-full px-4 bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-bold text-xs">M</div>
                                     <div>
                                         <h4 class="text-xs font-bold text-white">Spark Master (Master Node)</h4>
                                         <span class="text-[11px] text-outline font-mono">spark-master:7077 • Web UI :8080</span>
@@ -364,7 +360,7 @@
 
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-900/30 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-bold text-xs">W1</div>
+                                    <div class="w-8 h-8 rounded-full px-4 bg-cyan-900/30 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-bold text-xs">W1</div>
                                     <div>
                                         <h4 class="text-xs font-bold text-white">Spark Worker (Worker Node #1)</h4>
                                         <span class="text-[11px] text-outline font-mono">spark-worker:8081 • Executor Runner</span>
@@ -1070,7 +1066,7 @@
                 </div>
                 <p class="text-xs text-on-surface-variant leading-relaxed mb-4">${data.desc}</p>
                 <div class="text-right">
-                    <button onclick="closePipelineModal()" class="px-4 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-white text-xs font-semibold">Đóng</button>
+                    <button onclick="closePipelineModal()" class="px-4 py-1.5 rounded-full px-4 bg-surface-container-high hover:bg-surface-container-highest text-white text-xs font-semibold">Đóng</button>
                 </div>
             `;
             document.getElementById('pipeline-modal').classList.remove('hidden');

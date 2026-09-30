@@ -54,7 +54,7 @@
             
             <!-- Logo & Project Identity -->
             <a href="/" class="flex items-center gap-3 shrink-0">
-                <div class="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+                <div class="w-9 h-9 rounded-full px-4 bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
                     <span class="material-symbols-outlined text-[22px]">smart_display</span>
                 </div>
                 <div class="flex flex-col justify-center">
@@ -64,21 +64,17 @@
             </a>
 
             <!-- Functional Navigation Tabs -->
-            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
-                <a href="/" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">movie</span>
+            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-full px-4 border border-outline-variant/20">
+                <a href="/" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Khám Phá</span>
                 </a>
-                <a href="/foryou?uid={{ uid | default(100) }}" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                <a href="/foryou?uid={{ uid | default(100) }}" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Gợi Ý & Gu Phim</span>
                 </a>
-                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                <a href="/analytics" class="px-4 py-1.5 rounded-full transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center">
                     <span>Phân Tích Dữ Liệu</span>
                 </a>
-                <a href="/system" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                <a href="/system" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Mô Hình & Hệ Thống</span>
                 </a>
             </nav>
@@ -111,26 +107,26 @@
     </header>
 
     <!-- 2. SUB-NAVIGATION PILLS (ANALYTICS SECTIONS) -->
-    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2.5 overflow-x-auto no-scrollbar">
-        <div class="flex items-center gap-2 text-xs font-semibold whitespace-nowrap min-w-max">
+    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2.5 overflow-hidden">
+        <div class="flex items-center flex-wrap gap-2 text-xs font-semibold ">
             <span class="text-outline flex items-center gap-1 mr-1">
                 <span class="material-symbols-outlined text-[16px] text-primary">insights</span> Phân mục:
             </span>
-            <a href="#overview" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Dataset Overview</a>
-            <a href="#rating-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">2. Phân Tích Rating</a>
-            <a href="#movie-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Phân Tích Phim</a>
-            <a href="#genre-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Thể Loại & Đa Thể Loại</a>
-            <a href="#user-behavior" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Hành Vi Người Dùng</a>
-            <a href="#popularity-longtail" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">6. Long-tail & Phổ Biến</a>
-            <a href="#time-analysis" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">7. Dòng Thời Gian</a>
-            <a href="#genre-deepdive" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">8. Lọc Rating Theo Thể Loại</a>
-            <a href="#data-quality" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">9. Chất Lượng Dữ Liệu (ETL)</a>
-            <a href="#dataset-summary" class="px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-on-primary transition-all">10. Tổng Kết Đặc Điểm & Mô Hình</a>
+            <a href="#overview" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Dataset Overview</a>
+            <a href="#rating-analysis" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">2. Phân Tích Rating</a>
+            <a href="#movie-analysis" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Phân Tích Phim</a>
+            <a href="#genre-analysis" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Thể Loại & Đa Thể Loại</a>
+            <a href="#user-behavior" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Hành Vi Người Dùng</a>
+            <a href="#popularity-longtail" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">6. Long-tail & Phổ Biến</a>
+            <a href="#time-analysis" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">7. Dòng Thời Gian</a>
+            <a href="#genre-deepdive" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">8. Lọc Rating Theo Thể Loại</a>
+            <a href="#data-quality" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">9. Chất Lượng Dữ Liệu (ETL)</a>
+            <a href="#dataset-summary" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">10. Tổng Kết Đặc Điểm & Mô Hình</a>
         </div>
     </div>
 
     <!-- MAIN DASHBOARD CONTENT -->
-    <main class="w-full pt-32 pb-24 px-4 lg:px-12 max-w-[1600px] mx-auto space-y-12">
+    <main class="w-full pt-40 pb-24 px-4 lg:px-12 max-w-[1600px] mx-auto space-y-12">
 
         <!-- SECTION 1: DATASET OVERVIEW -->
         <section id="overview" class="scroll-mt-36">
@@ -142,7 +138,7 @@
                     <h1 class="text-2xl lg:text-3xl font-headline font-bold text-white mt-1">MovieLens 25M Dataset Overview & KPIs</h1>
                     <p class="text-xs text-outline mt-1">Dữ liệu thực nghiệm xử lý phân tán với Apache Spark & HDFS Cluster.</p>
                 </div>
-                <div class="flex items-center gap-2 text-xs bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant/30 text-outline">
+                <div class="flex items-center gap-2 text-xs bg-surface-container px-4 py-1.5 rounded-full border border-outline-variant/30 text-outline">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                     <span>Dataset Status: <strong class="text-emerald-400">Đã Chuẩn Hóa Parquet</strong></span>
                 </div>
@@ -621,7 +617,7 @@
                         <p class="text-xs text-outline mb-3">Hiệu ứng cộng hưởng khi phim kết hợp nhiều thể loại.</p>
 
                         <div class="space-y-2 text-xs">
-                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                            <div class="p-2.5 rounded-full px-4 bg-surface-container flex items-center justify-between border border-outline-variant/20">
                                 <div>
                                     <strong class="text-white block">Drama + Romance</strong>
                                     <span class="text-[11px] text-outline">4,654 phim • 2,519,802 ratings</span>
@@ -629,7 +625,7 @@
                                 <span class="text-amber-400 font-bold">★ 3.63</span>
                             </div>
 
-                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                            <div class="p-2.5 rounded-full px-4 bg-surface-container flex items-center justify-between border border-outline-variant/20">
                                 <div>
                                     <strong class="text-white block">Action + Adventure</strong>
                                     <span class="text-[11px] text-outline">1,652 phim • 3,346,468 ratings</span>
@@ -637,7 +633,7 @@
                                 <span class="text-amber-400 font-bold">★ 3.48</span>
                             </div>
 
-                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                            <div class="p-2.5 rounded-full px-4 bg-surface-container flex items-center justify-between border border-outline-variant/20">
                                 <div>
                                     <strong class="text-white block">Comedy + Romance</strong>
                                     <span class="text-[11px] text-outline">3,450 phim • 2,499,040 ratings</span>
@@ -645,7 +641,7 @@
                                 <span class="text-amber-400 font-bold">★ 3.50</span>
                             </div>
 
-                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                            <div class="p-2.5 rounded-full px-4 bg-surface-container flex items-center justify-between border border-outline-variant/20">
                                 <div>
                                     <strong class="text-white block">Action + Sci-Fi</strong>
                                     <span class="text-[11px] text-outline">1,185 phim • 2,703,113 ratings</span>
@@ -653,7 +649,7 @@
                                 <span class="text-amber-400 font-bold">★ 3.46</span>
                             </div>
 
-                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                            <div class="p-2.5 rounded-full px-4 bg-surface-container flex items-center justify-between border border-outline-variant/20">
                                 <div>
                                     <strong class="text-white block">Crime + Drama</strong>
                                     <span class="text-[11px] text-outline">2,996 phim • 2,165,423 ratings</span>
@@ -661,7 +657,7 @@
                                 <span class="text-emerald-400 font-bold">★ 3.80 (Rất cao)</span>
                             </div>
 
-                            <div class="p-2.5 rounded-lg bg-surface-container flex items-center justify-between border border-outline-variant/20">
+                            <div class="p-2.5 rounded-full px-4 bg-surface-container flex items-center justify-between border border-outline-variant/20">
                                 <div>
                                     <strong class="text-white block">Animation + Children</strong>
                                     <span class="text-[11px] text-outline">1,015 phim • 1,266,893 ratings</span>
@@ -811,7 +807,7 @@
 
             <!-- Explanation Callout -->
             <div class="p-4 rounded-xl bg-surface-container-low border border-primary/30 mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shrink-0">
+                <div class="w-10 h-10 rounded-full px-4 bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shrink-0">
                     <span class="material-symbols-outlined text-[24px]">lightbulb</span>
                 </div>
                 <div class="text-xs text-outline leading-relaxed">
@@ -926,7 +922,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-outline-variant/20">
                     <div class="flex items-center gap-3">
                         <label for="genre-select" class="text-xs font-bold text-white uppercase tracking-wider">Chọn Thể Loại:</label>
-                        <select id="genre-select" onchange="updateGenreDeepDive(this.value)" class="bg-surface-container text-primary font-bold text-sm px-4 py-2 rounded-lg border border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer shadow">
+                        <select id="genre-select" onchange="updateGenreDeepDive(this.value)" class="bg-surface-container text-primary font-bold text-sm px-4 py-2 rounded-full px-4 border border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer shadow">
                             <option value="Drama" selected>🎭 Drama (Chính kịch)</option>
                             <option value="Action">⚡ Action (Hành động)</option>
                             <option value="Comedy">😄 Comedy (Hài kịch)</option>
@@ -1048,7 +1044,7 @@
                         <p class="text-xs text-outline mb-4">Chuyển đổi từ text sang dạng cột nén Snappy trên HDFS.</p>
 
                         <div class="space-y-3 text-xs">
-                            <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/20">
+                            <div class="p-3 rounded-full px-4 bg-surface-container border border-outline-variant/20">
                                 <div class="flex justify-between mb-1">
                                     <span class="text-outline">Định dạng ban đầu (CSV):</span>
                                     <strong class="text-white">680.5 MB</strong>
@@ -1058,7 +1054,7 @@
                                 </div>
                             </div>
 
-                            <div class="p-3 rounded-lg bg-surface-container border border-outline-variant/20">
+                            <div class="p-3 rounded-full px-4 bg-surface-container border border-outline-variant/20">
                                 <div class="flex justify-between mb-1">
                                     <span class="text-emerald-400 font-semibold">Sau ETL Parquet (Snappy):</span>
                                     <strong class="text-emerald-400">195.2 MB (-71.3%)</strong>
@@ -1105,53 +1101,53 @@
             <!-- 3 Architectural Takeaways -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <!-- Card 1: Matrix Sparsity -->
-                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                <div class="p-6 rounded-3xl bg-surface-container-low border border-outline-variant/20 shadow-lg flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">01</span>
-                            <span class="text-[11px] font-mono text-primary font-bold">Sparsity 99.75%</span>
+                            <span class="w-8 h-8 rounded-full bg-surface-container-high text-white flex items-center justify-center font-bold text-sm">1</span>
+                            <span class="text-[11px] font-mono text-outline font-bold">Sparsity 99.75%</span>
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1.5">Độ Thưa Cực Lớn Của Ma Trận Tương Tác</h3>
                         <p class="text-xs text-outline leading-relaxed">
                             Với 25 triệu ratings trên không gian 162K users × 62K movies, mật độ dữ liệu chỉ đạt 0.25%. Không thể lưu ma trận đầy đủ trong bộ nhớ RAM máy đơn. Bắt buộc phải áp dụng <strong class="text-white">Spark ALS Matrix Factorization</strong> để phân rã thành hai ma trận hệ số tiềm ẩn bậc thấp (Rank k=50).
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-primary font-semibold flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Giải quyết bài toán không gian thưa
+                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-white font-semibold">
+                        Giải quyết bài toán không gian thưa
                     </div>
                 </div>
 
                 <!-- Card 2: Long-Tail Distribution -->
-                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                <div class="p-6 rounded-3xl bg-surface-container-low border border-outline-variant/20 shadow-lg flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">02</span>
-                            <span class="text-[11px] font-mono text-amber-400 font-bold">90% Long-Tail</span>
+                            <span class="w-8 h-8 rounded-full bg-surface-container-high text-white flex items-center justify-center font-bold text-sm">2</span>
+                            <span class="text-[11px] font-mono text-outline font-bold">90% Long-Tail</span>
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1.5">Sự Mất Cân Bằng Giữa Blockbuster & Long-Tail</h3>
                         <p class="text-xs text-outline leading-relaxed">
                             10% phim đầu bảng gom tới 86.5% số lượng đánh giá, khiến các thuật toán gợi ý theo độ phổ biến (Popularity baseline) liên tục lặp lại các phim cũ. Lọc cộng tác ALS học biểu diễn tiềm ẩn để khai phá các bộ phim có chất lượng cao (Rating ≥ 4.0) nhưng ít người biết ở vùng đuôi dài.
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-amber-400 font-semibold flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Cá nhân hóa vượt trội vs Popularity
+                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-white font-semibold">
+                        Cá nhân hóa vượt trội vs Popularity
                     </div>
                 </div>
 
                 <!-- Card 3: Rating Bias & Regularization -->
-                <div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/20 shadow-xl flex flex-col justify-between">
+                <div class="p-6 rounded-3xl bg-surface-container-low border border-outline-variant/20 shadow-lg flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">03</span>
-                            <span class="text-[11px] font-mono text-emerald-400 font-bold">Mode = 4.0 ★</span>
+                            <span class="w-8 h-8 rounded-full bg-surface-container-high text-white flex items-center justify-center font-bold text-sm">3</span>
+                            <span class="text-[11px] font-mono text-outline font-bold">Mode = 4.0 ★</span>
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1.5">Xu Hướng Lệch Phải & Thiên Lệch Đánh Giá</h3>
                         <p class="text-xs text-outline leading-relaxed">
                             Điểm trung bình toàn hệ thống là 3.53★ và người dùng có xu hướng chấm điểm số nguyên chẵn (4.0★ chiếm 26.6%). Để tránh Overfitting đối với các Super-raters và User ít tương tác, cần thực nghiệm tinh chỉnh hệ số điều chuẩn L2 (<strong class="text-white">regParam = 0.10</strong>) thông qua Grid Search 9 cấu hình.
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">check_circle</span> Kiểm soát Overfitting & Bias
+                    <div class="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-white font-semibold">
+                        Kiểm soát Overfitting & Bias
                     </div>
                 </div>
             </div>

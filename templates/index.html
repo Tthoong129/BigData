@@ -82,20 +82,16 @@
 
             <!-- Functional Navigation Tabs -->
             <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
-                <a href="/" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">movie</span>
+                <a href="/" class="px-4 py-1.5 rounded-full transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center">
                     <span>Khám Phá</span>
                 </a>
-                <a href="/foryou?uid={{ active_uid | default(100) }}" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                <a href="/foryou?uid={{ active_uid | default(100) }}" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Gợi Ý & Gu Phim</span>
                 </a>
-                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                <a href="/analytics" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Phân Tích Dữ Liệu</span>
                 </a>
-                <a href="/system" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                <a href="/system" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Mô Hình & Hệ Thống</span>
                 </a>
             </nav>
@@ -203,29 +199,23 @@
 
             <!-- 2. CÁC NHÓM PHIM ĐỂ KHÁM PHÁ (COLLECTIONS NAV) -->
             <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
-                <a href="/?collection=all" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'all' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[16px]">explore</span>
+                <a href="/?collection=all" class="flex items-center px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'all' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
                     <span>Tất Cả Kho Phim</span>
                 </a>
-                <a href="/?collection=popular" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'popular' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[16px] text-orange-400">local_fire_department</span>
-                    <span>🔥 Phổ Biến Nhất (Most Popular)</span>
+                <a href="/?collection=popular" class="flex items-center px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'popular' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span>Phổ Biến Nhất</span>
                 </a>
-                <a href="/?collection=high_rated" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'high_rated' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[16px] text-amber-400">star</span>
-                    <span>⭐ Đánh Giá Cao (Highly Rated)</span>
+                <a href="/?collection=high_rated" class="flex items-center px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'high_rated' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span>Đánh Giá Cao</span>
                 </a>
-                <a href="/?collection=recent" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'recent' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[16px] text-cyan-400">fiber_new</span>
-                    <span>🆕 Phim Mới (2015-2019)</span>
+                <a href="/?collection=recent" class="flex items-center px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'recent' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span>Phim Mới (2015-2019)</span>
                 </a>
-                <a href="/?collection=classic" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'classic' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[16px] text-amber-500">movie</span>
-                    <span>🎬 Phim Kinh Điển (Classic)</span>
+                <a href="/?collection=classic" class="flex items-center px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'classic' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span>Phim Kinh Điển</span>
                 </a>
-                <a href="/?collection=hidden_gems" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'hidden_gems' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[16px] text-emerald-400">diamond</span>
-                    <span>💎 Báu Vật Ẩn (Hidden Gems)</span>
+                <a href="/?collection=hidden_gems" class="flex items-center px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all {% if active_collection == 'hidden_gems' %}bg-primary text-on-primary shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white{% endif %}">
+                    <span>Báu Vật Ẩn</span>
                 </a>
             </div>
 
@@ -235,8 +225,7 @@
                     <span class="material-symbols-outlined text-[15px]">filter_alt</span> Thể loại:
                 </span>
                 {% for g in genres_list %}
-                    <a href="/?genre={{ g.key }}&collection={{ active_collection }}&sort={{ active_sort }}" class="flex items-center gap-1 px-3 py-1 rounded text-xs font-medium whitespace-nowrap transition-all {% if active_genre == g.key %}bg-primary text-on-primary font-bold shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white border border-outline-variant/15{% endif %}">
-                        <span class="material-symbols-outlined text-[14px]">{{ g.icon }}</span>
+                    <a href="/?genre={{ g.key }}&collection={{ active_collection }}&sort={{ active_sort }}" class="flex items-center px-4 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all {% if active_genre == g.key %}bg-primary text-on-primary font-bold shadow{% else %}bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-white border border-outline-variant/15{% endif %}">
                         <span>{{ g.name }}</span>
                     </a>
                 {% endfor %}
@@ -406,22 +395,47 @@
 
             <!-- 7. PHÂN TRANG (PAGINATION) -->
             {% if total_pages > 1 %}
-                <div class="flex items-center justify-center gap-2 mb-12 text-xs">
+                {% set base_url = "/?q=" ~ query ~ "&genre=" ~ active_genre ~ "&collection=" ~ active_collection ~ "&year_range=" ~ active_year_range ~ "&min_rating=" ~ active_min_rating ~ "&min_votes=" ~ active_min_votes ~ "&sort=" ~ active_sort ~ "&tag=" ~ active_tag ~ "&page=" %}
+                <div class="flex flex-wrap items-center justify-center gap-2 mb-12 text-xs">
                     {% if current_page > 1 %}
-                        <a href="/?page={{ current_page - 1 }}&q={{ query }}&genre={{ active_genre }}&collection={{ active_collection }}&year_range={{ active_year_range }}&min_rating={{ active_min_rating }}&min_votes={{ active_min_votes }}&sort={{ active_sort }}&tag={{ active_tag }}" class="px-3 py-2 rounded bg-surface-container hover:bg-surface-container-high text-white transition-colors flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[15px]">arrow_back</span> Trước
+                        <a href="{{ base_url }}{{ current_page - 1 }}" class="px-3 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">arrow_back</span>
                         </a>
                     {% endif %}
                     
-                    <span class="px-4 py-2 rounded bg-surface-container-high text-primary font-bold border border-primary/30">
-                        Trang {{ current_page }} / {{ total_pages }}
-                    </span>
+                    {% set window = 2 %}
+                    {% for p in range(1, total_pages + 1) %}
+                        {% if p == 1 or p == total_pages or (p >= current_page - window and p <= current_page + window) %}
+                            {% if p == current_page %}
+                                <span class="px-3 py-2 rounded-full bg-primary text-on-primary font-bold shadow border border-primary/30">{{ p }}</span>
+                            {% else %}
+                                <a href="{{ base_url }}{{ p }}" class="px-3 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors">{{ p }}</a>
+                            {% endif %}
+                        {% elif p == current_page - window - 1 or p == current_page + window + 1 %}
+                            <span class="px-2 py-2 text-outline">...</span>
+                        {% endif %}
+                    {% endfor %}
 
                     {% if current_page < total_pages %}
-                        <a href="/?page={{ current_page + 1 }}&q={{ query }}&genre={{ active_genre }}&collection={{ active_collection }}&year_range={{ active_year_range }}&min_rating={{ active_min_rating }}&min_votes={{ active_min_votes }}&sort={{ active_sort }}&tag={{ active_tag }}" class="px-3 py-2 rounded bg-surface-container hover:bg-surface-container-high text-white transition-colors flex items-center gap-1">
-                            Sau <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+                        <a href="{{ base_url }}{{ current_page + 1 }}" class="px-3 py-2 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
                         </a>
                     {% endif %}
+
+                    <!-- Nhập trang -->
+                    <form action="/" method="GET" class="flex items-center gap-2 ml-4">
+                        <input type="hidden" name="q" value="{{ query }}">
+                        <input type="hidden" name="genre" value="{{ active_genre }}">
+                        <input type="hidden" name="collection" value="{{ active_collection }}">
+                        <input type="hidden" name="year_range" value="{{ active_year_range }}">
+                        <input type="hidden" name="min_rating" value="{{ active_min_rating }}">
+                        <input type="hidden" name="min_votes" value="{{ active_min_votes }}">
+                        <input type="hidden" name="sort" value="{{ active_sort }}">
+                        <input type="hidden" name="tag" value="{{ active_tag }}">
+                        <span class="text-outline">Đến trang:</span>
+                        <input type="number" name="page" min="1" max="{{ total_pages }}" class="w-16 bg-surface-container text-white px-3 py-1.5 rounded-full border border-outline-variant/30 focus:outline-none focus:border-primary text-center" placeholder="{{ current_page }}">
+                        <button type="submit" class="px-4 py-1.5 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-white transition-colors border border-outline-variant/30 font-bold">Go</button>
+                    </form>
                 </div>
             {% endif %}
 

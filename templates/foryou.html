@@ -54,7 +54,7 @@
             
             <!-- Logo & Project Identity -->
             <a href="/" class="flex items-center gap-3 shrink-0">
-                <div class="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+                <div class="w-9 h-9 rounded-full px-4 bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
                     <span class="material-symbols-outlined text-[22px]">smart_display</span>
                 </div>
                 <div class="flex flex-col justify-center">
@@ -64,21 +64,17 @@
             </a>
 
             <!-- Functional Navigation Tabs (4 Core Pillars) -->
-            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-lg border border-outline-variant/20">
-                <a href="/" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">movie</span>
+            <nav class="hidden md:flex items-center gap-1 p-1 bg-surface-container-low/60 rounded-full px-4 border border-outline-variant/20">
+                <a href="/" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Khám Phá</span>
                 </a>
-                <a href="/foryou?uid={{ uid }}" class="px-3.5 py-1.5 rounded transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">person_heart</span>
+                <a href="/foryou?uid={{ uid }}" class="px-4 py-1.5 rounded-full transition-all bg-surface-container text-primary font-bold shadow text-xs flex items-center">
                     <span>Gợi Ý & Gu Phim</span>
                 </a>
-                <a href="/analytics" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">bar_chart</span>
+                <a href="/analytics" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Phân Tích Dữ Liệu</span>
                 </a>
-                <a href="/system" class="px-3.5 py-1.5 rounded transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">settings_suggest</span>
+                <a href="/system" class="px-4 py-1.5 rounded-full transition-all text-on-surface-variant hover:text-white hover:bg-surface-container-high text-xs flex items-center">
                     <span>Mô Hình & Hệ Thống</span>
                 </a>
             </nav>
@@ -111,21 +107,21 @@
     </header>
 
     <!-- 2. SUB-NAVIGATION FOR PAGE SECTIONS -->
-    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2 overflow-x-auto no-scrollbar">
-        <div class="flex items-center gap-2 text-xs font-semibold whitespace-nowrap min-w-max">
+    <div class="fixed top-16 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/20 px-4 lg:px-12 py-2 overflow-hidden">
+        <div class="flex items-center flex-wrap gap-2 text-xs font-semibold ">
             <span class="text-outline flex items-center gap-1 mr-1">
                 <span class="material-symbols-outlined text-[16px] text-primary">navigation</span> Mục nhanh:
             </span>
-            <a href="#user-header" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Hồ Sơ Người Dùng</a>
-            <a href="#als-recommendations" class="px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-on-primary transition-all">2. Top 10 Gợi Ý ALS</a>
-            <a href="#why-recommended" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Vì Sao Đề Xuất & So Sánh</a>
-            <a href="#taste-profile" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Gu Thể Loại & Phân Phối Điểm</a>
-            <a href="#rating-history" class="px-3 py-1 rounded-md bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Phim Đã Xem Trong Quá Khứ</a>
+            <a href="#user-header" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">1. Hồ Sơ Người Dùng</a>
+            <a href="#als-recommendations" class="px-4 py-1 rounded-full bg-primary/20 text-primary border border-primary/40 hover:bg-primary hover:text-on-primary transition-all">2. Top 10 Gợi Ý ALS</a>
+            <a href="#why-recommended" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">3. Vì Sao Đề Xuất & So Sánh</a>
+            <a href="#taste-profile" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">4. Gu Thể Loại & Phân Phối Điểm</a>
+            <a href="#rating-history" class="px-4 py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-white transition-colors border border-outline-variant/20">5. Phim Đã Xem Trong Quá Khứ</a>
         </div>
     </div>
 
     <!-- MAIN BODY -->
-    <main class="w-full pt-32 pb-24 px-4 lg:px-12 max-w-[1550px] mx-auto space-y-10">
+    <main class="w-full pt-40 pb-24 px-4 lg:px-12 max-w-[1550px] mx-auto space-y-10">
 
         <!-- SECTION 1: USER PROFILE HEADER & QUICK KPI SNAPSHOT -->
         <section id="user-header" class="scroll-mt-36">
@@ -254,12 +250,12 @@
                         {% endif %}
 
                         <!-- Ranking Badge -->
-                        <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-lg bg-primary text-on-primary text-[11px] font-bold shadow-lg">
+                        <div class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full px-4 bg-primary text-on-primary text-[11px] font-bold shadow-lg">
                             #{{ loop.index }}
                         </div>
 
                         <!-- Predicted Score Badge -->
-                        <div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-lg bg-surface-container-lowest/85 backdrop-blur-md text-[11px] text-emerald-400 font-bold border border-emerald-500/30 shadow flex items-center gap-0.5">
+                        <div class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full px-4 bg-surface-container-lowest/85 backdrop-blur-md text-[11px] text-emerald-400 font-bold border border-emerald-500/30 shadow flex items-center gap-0.5">
                             <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
                             <span>{{ m.predicted_score }}</span>
                         </div>
@@ -493,7 +489,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {% for m in user.top_movies %}
                         <div onclick="openModal('{{ m.movieId }}', '{{ m.title | escape }}', '{{ m.year }}', '{{ m.genres | escape }}', '{{ m.user_rating }}', '{{ m.avg }}', '{{ m.count }}', '', '{{ m.poster_url if m.poster_url and m.poster_url.startswith('http') else '' }}')" class="group cursor-pointer">
-                            <div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container border border-outline-variant/20 group-hover:-translate-y-1 transition-all shadow">
+                            <div class="relative aspect-[2/3] rounded-full px-4 overflow-hidden bg-surface-container border border-outline-variant/20 group-hover:-translate-y-1 transition-all shadow">
                                 {% if m.poster_url and m.poster_url.startswith('http') %}
                                 <img src="{{ m.poster_url }}" alt="{{ m.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.classList.add('hidden'); if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');">
                                 {% endif %}
@@ -528,7 +524,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {% for m in user.lowest_movies %}
                         <div onclick="openModal('{{ m.movieId }}', '{{ m.title | escape }}', '{{ m.year }}', '{{ m.genres | escape }}', '{{ m.user_rating }}', '{{ m.avg }}', '{{ m.count }}', '', '{{ m.poster_url if m.poster_url and m.poster_url.startswith('http') else '' }}')" class="group cursor-pointer">
-                            <div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container border border-outline-variant/20 group-hover:-translate-y-1 transition-all shadow">
+                            <div class="relative aspect-[2/3] rounded-full px-4 overflow-hidden bg-surface-container border border-outline-variant/20 group-hover:-translate-y-1 transition-all shadow">
                                 {% if m.poster_url and m.poster_url.startswith('http') %}
                                 <img src="{{ m.poster_url }}" alt="{{ m.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.classList.add('hidden'); if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');">
                                 {% endif %}
@@ -593,11 +589,11 @@
                     </p>
 
                     <div class="pt-2 flex items-center justify-between">
-                        <a id="modal-imdb" href="#" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-white hover:text-black text-xs font-semibold text-white transition-colors flex items-center gap-1.5">
+                        <a id="modal-imdb" href="#" target="_blank" class="px-3.5 py-1.5 rounded-full px-4 bg-surface-container-high hover:bg-white hover:text-black text-xs font-semibold text-white transition-colors flex items-center gap-1.5">
                             <span>Mở IMDb</span>
                             <span class="material-symbols-outlined text-[14px]">open_in_new</span>
                         </a>
-                        <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-colors">
+                        <button onclick="closeModal()" class="px-4 py-1.5 rounded-full px-4 bg-primary hover:bg-primary-container text-on-primary text-xs font-bold transition-colors">
                             Đóng
                         </button>
                     </div>
