@@ -138,36 +138,44 @@ def evaluate_ranking_metrics(
     )
     pop_eval_df = actual_df.join(ranked_pop, on="userId", how="inner").cache()
 
+    # Optimize: Calculate metrics for all K values in a single Spark job (Action)
+    als_exprs = []
+    pop_exprs = []
+
+    for k in k_list:
+        # F.slice returns an array of up to length 'k'. If rec_items is empty, size is 0.
+        # We handle division by zero using F.when
+        als_exprs.extend([
+            F.avg(
+                F.when(F.size(F.slice("rec_items", 1, k)) == 0, 0.0)
+                .otherwise(F.size(F.array_intersect(F.slice("rec_items", 1, k), "actual_items")) / F.size(F.slice("rec_items", 1, k)))
+            ).alias(f"p_{k}"),
+            F.avg(
+                F.size(F.array_intersect(F.slice("rec_items", 1, k), "actual_items")) / F.col("num_actual")
+            ).alias(f"r_{k}")
+        ])
+
+        pop_exprs.extend([
+            F.avg(
+                F.when(F.size(F.slice("rec_items", 1, k)) == 0, 0.0)
+                .otherwise(F.size(F.array_intersect(F.slice("rec_items", 1, k), "actual_items")) / F.size(F.slice("rec_items", 1, k)))
+            ).alias(f"p_{k}"),
+            F.avg(
+                F.size(F.array_intersect(F.slice("rec_items", 1, k), "actual_items")) / F.col("num_actual")
+            ).alias(f"r_{k}")
+        ])
+
+    als_stat = als_eval_df.agg(*als_exprs).collect()[0]
+    pop_stat = pop_eval_df.agg(*pop_exprs).collect()[0]
+
     results: List[Dict[str, float]] = []
     for k in k_list:
-        als_stat = (
-            als_eval_df
-            .withColumn("k_recs", F.slice("rec_items", 1, k))
-            .withColumn("hits", F.size(F.array_intersect("k_recs", "actual_items")))
-            .withColumn("k_actual_size", F.size("k_recs"))
-            .withColumn("prec", F.col("hits") / F.col("k_actual_size"))
-            .withColumn("rec", F.col("hits") / F.col("num_actual"))
-            .agg(F.avg("prec").alias("p"), F.avg("rec").alias("r"))
-            .collect()[0]
-        )
-
-        pop_stat = (
-            pop_eval_df
-            .withColumn("k_recs", F.slice("rec_items", 1, k))
-            .withColumn("hits", F.size(F.array_intersect("k_recs", "actual_items")))
-            .withColumn("k_actual_size", F.size("k_recs"))
-            .withColumn("prec", F.col("hits") / F.col("k_actual_size"))
-            .withColumn("rec", F.col("hits") / F.col("num_actual"))
-            .agg(F.avg("prec").alias("p"), F.avg("rec").alias("r"))
-            .collect()[0]
-        )
-
         results.append({
             "k": k,
-            "als_prec": float(als_stat["p"]),
-            "als_recall": float(als_stat["r"]),
-            "pop_prec": float(pop_stat["p"]),
-            "pop_recall": float(pop_stat["r"]),
+            "als_prec": float(als_stat[f"p_{k}"]) if als_stat[f"p_{k}"] is not None else 0.0,
+            "als_recall": float(als_stat[f"r_{k}"]) if als_stat[f"r_{k}"] is not None else 0.0,
+            "pop_prec": float(pop_stat[f"p_{k}"]) if pop_stat[f"p_{k}"] is not None else 0.0,
+            "pop_recall": float(pop_stat[f"r_{k}"]) if pop_stat[f"r_{k}"] is not None else 0.0,
         })
 
     return results
