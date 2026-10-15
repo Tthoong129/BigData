@@ -14,7 +14,9 @@ from src.config import (
     DEFAULT_ALS_MAX_ITER,
     DEFAULT_ALS_RANK,
     DEFAULT_ALS_REG_PARAM,
+    DEFAULT_TEST_RATIO,
     DEFAULT_TRAIN_RATIO,
+    DEFAULT_VAL_RATIO,
     RESULTS_DIR,
     get_hdfs_paths,
 )
@@ -24,6 +26,7 @@ from src.data import (
     load_ratings,
     preprocess_ratings,
     split_train_test_by_time,
+    split_train_val_test_by_time,
 )
 from src.hdfs import hdfs_mkdir, hdfs_write_text
 from src.metrics import (
@@ -121,12 +124,12 @@ def run_baseline_pipeline(dataset_size: str = "100k") -> Dict[str, Any]:
 
 
 def run_tuning_suite(dataset_size: str = "25m") -> Dict[str, Any]:
-    """Execute hyperparameter grid search, train optimal model, and compute ranking metrics."""
+    """Execute hyperparameter grid search on Validation set, train optimal model, and evaluate on Test set."""
     paths = get_hdfs_paths(dataset_size)
     total_start = time.time()
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    logger.info("Executing MovieLens %s Tuning & Evaluation Suite", dataset_size.upper())
+    logger.info("Executing MovieLens %s 3-Way Split (Train/Val/Test) Tuning & Evaluation Suite", dataset_size.upper())
     check_system_resources()
 
     spark = get_spark_session(
@@ -144,17 +147,19 @@ def run_tuning_suite(dataset_size: str = "25m") -> Dict[str, Any]:
             num_partitions=16,
         )
 
-        train_df, test_df, _, train_count, test_count = split_train_test_by_time(
+        train_df, val_df, test_df, split_info = split_train_val_test_by_time(
             ratings_df=cleaned_ratings,
             train_ratio=DEFAULT_TRAIN_RATIO,
+            val_ratio=DEFAULT_VAL_RATIO,
         )
         train_df.cache()
+        val_df.cache()
         test_df.cache()
 
         csv_tuning_file = str(RESULTS_DIR / f"tuning_results_{dataset_size}.csv")
         best_rank, best_reg, _ = run_grid_tuning(
             train_df=train_df,
-            test_df=test_df,
+            val_df=val_df,
             ranks=[10, 20, 50],
             reg_params=[0.01, 0.1, 0.5],
             max_iter=10,
@@ -169,9 +174,10 @@ def run_tuning_suite(dataset_size: str = "25m") -> Dict[str, Any]:
             max_iter=final_max_iter,
         )
 
+        # Đánh giá độc lập trên tập Test (Unbiased Test Evaluation)
         final_preds = final_model.transform(test_df)
         final_rmse, final_mae = evaluate_regression(final_preds)
-        logger.info("Final Tuned Model -> RMSE: %.4f, MAE: %.4f", final_rmse, final_mae)
+        logger.info("Final Tuned Model on Test Set -> RMSE: %.4f, MAE: %.4f", final_rmse, final_mae)
 
         hdfs_mkdir(spark, paths.model_final)
         save_spark_model(final_model, f"{paths.model_final}/spark_model")
@@ -193,6 +199,7 @@ def run_tuning_suite(dataset_size: str = "25m") -> Dict[str, Any]:
 
         summary: Dict[str, Any] = {
             "dataset_size": dataset_size,
+            "split_info": split_info,
             "best_hyperparameters": {
                 "rank": best_rank,
                 "regParam": best_reg,
@@ -212,8 +219,9 @@ def run_tuning_suite(dataset_size: str = "25m") -> Dict[str, Any]:
 
         final_metrics: Dict[str, Any] = {
             "dataset_size": dataset_size,
-            "train_count": train_count,
-            "test_count": test_count,
+            "train_count": split_info["train_count"],
+            "val_count": split_info["val_count"],
+            "test_count": split_info["test_count"],
             "best_rank": best_rank,
             "best_reg_param": best_reg,
             "final_max_iter": final_max_iter,

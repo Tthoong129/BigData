@@ -175,3 +175,53 @@ def split_train_test_by_time(
     logger.info("Time Split @ %s (%s) -> Train: %s (%.1f%%) | Test: %s (%.1f%%)", threshold, split_date, f"{train_count:,}", train_count / total * 100, f"{test_count:,}", test_count / total * 100)
 
     return train_df, test_df, threshold, train_count, test_count
+
+
+def split_train_val_test_by_time(
+    ratings_df: DataFrame,
+    train_ratio: float = 0.8,
+    val_ratio: float = 0.1,
+    relative_error: float = 0.005,
+) -> Tuple[DataFrame, DataFrame, DataFrame, dict]:
+    """Split data temporally via approxQuantile into Train, Validation, and Test sets.
+    
+    - Train (e.g. 80%): Oldest historical ratings used for model training.
+    - Validation (e.g. 10%): Middle ratings used for hyperparameter tuning / model selection.
+    - Test (e.g. 10%): Most recent ratings used strictly for final unbiased evaluation.
+    """
+    quantiles = ratings_df.approxQuantile("timestamp", [train_ratio, train_ratio + val_ratio], relative_error)
+    t_train = float(quantiles[0])
+    t_val = float(quantiles[1])
+
+    train_df = ratings_df.filter(F.col("timestamp") <= t_train)
+    val_df = ratings_df.filter((F.col("timestamp") > t_train) & (F.col("timestamp") <= t_val))
+    test_df = ratings_df.filter(F.col("timestamp") > t_val)
+
+    train_count = train_df.count()
+    val_count = val_df.count()
+    test_count = test_df.count()
+    total = train_count + val_count + test_count
+
+    split_info = {
+        "train_threshold": t_train,
+        "val_threshold": t_val,
+        "train_date": datetime.fromtimestamp(t_train).strftime("%Y-%m-%d %H:%M:%S"),
+        "val_date": datetime.fromtimestamp(t_val).strftime("%Y-%m-%d %H:%M:%S"),
+        "train_count": train_count,
+        "val_count": val_count,
+        "test_count": test_count,
+        "total_count": total,
+    }
+
+    logger.info(
+        "Time 3-Way Split -> Train: %s (%.1f%%) | Val: %s (%.1f%%) | Test: %s (%.1f%%)",
+        f"{train_count:,}",
+        train_count / total * 100,
+        f"{val_count:,}",
+        val_count / total * 100,
+        f"{test_count:,}",
+        test_count / total * 100,
+    )
+
+    return train_df, val_df, test_df, split_info
+

@@ -68,13 +68,18 @@ def save_spark_model(model: ALSModel, hdfs_model_path: str) -> None:
 
 def run_grid_tuning(
     train_df: DataFrame,
-    test_df: DataFrame,
+    val_df: Optional[DataFrame] = None,
     ranks: Optional[List[int]] = None,
     reg_params: Optional[List[float]] = None,
     max_iter: int = 10,
     csv_log_path: Optional[str] = None,
+    test_df: Optional[DataFrame] = None,  # Backward-compatible alias
 ) -> Tuple[int, float, List[Dict[str, Any]]]:
-    """Perform grid search tuning across rank and regParam parameters."""
+    """Perform grid search tuning across rank and regParam parameters evaluated on Validation Set."""
+    eval_df = val_df if val_df is not None else test_df
+    if eval_df is None:
+        raise ValueError("Either val_df or test_df must be provided for grid tuning evaluation.")
+
     if ranks is None:
         ranks = [10, 20, 50]
     if reg_params is None:
@@ -86,19 +91,19 @@ def run_grid_tuning(
     if csv_log_path:
         with open(csv_log_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["rank", "regParam", "rmse", "mae", "train_time_sec"])
+            writer.writerow(["rank", "regParam", "val_rmse", "val_mae", "train_time_sec"])
 
     for idx, (r, reg) in enumerate(combinations, start=1):
         logger.info("[%d/%d] Grid trial: rank=%d, regParam=%.2f, maxIter=%d", idx, len(combinations), r, reg, max_iter)
         model, t_train = train_als(train_df, rank=r, reg_param=reg, max_iter=max_iter)
-        preds = model.transform(test_df)
+        preds = model.transform(eval_df)
         rmse, mae = evaluate_regression(preds)
 
         record: Dict[str, Any] = {
             "rank": r,
             "regParam": reg,
-            "rmse": round(rmse, 6),
-            "mae": round(mae, 6),
+            "val_rmse": round(rmse, 6),
+            "val_mae": round(mae, 6),
             "train_time_sec": round(t_train, 2),
         }
         results.append(record)
@@ -106,11 +111,12 @@ def run_grid_tuning(
         if csv_log_path:
             with open(csv_log_path, "a", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
-                writer.writerow([r, reg, record["rmse"], record["mae"], record["train_time_sec"]])
+                writer.writerow([r, reg, record["val_rmse"], record["val_mae"], record["train_time_sec"]])
 
-        logger.info("[%d/%d] -> RMSE: %.4f, MAE: %.4f (took %.1fs)", idx, len(combinations), rmse, mae, t_train)
+        logger.info("[%d/%d] -> Val RMSE: %.4f, Val MAE: %.4f (took %.1fs)", idx, len(combinations), rmse, mae, t_train)
 
-    best_config = min(results, key=lambda x: x["rmse"])
-    logger.info("Best Grid Configuration: rank=%d, regParam=%.2f (RMSE=%.4f)", best_config["rank"], best_config["regParam"], best_config["rmse"])
+    best_config = min(results, key=lambda x: x["val_rmse"])
+    logger.info("Best Grid Configuration: rank=%d, regParam=%.2f (Val RMSE=%.4f)", best_config["rank"], best_config["regParam"], best_config["val_rmse"])
 
     return int(best_config["rank"]), float(best_config["regParam"]), results
+
